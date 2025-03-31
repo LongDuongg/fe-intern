@@ -243,3 +243,60 @@ const reverseString2 = (str) => str.split("").reverse().join("");
 const abba = (str1, str2) => `${str1}${str2}${reverseString(str1)}`;
 
 exports.abba = abba;
+
+const table = (list) => {
+  if (!Array.isArray(list) || list.length === 0) {
+    console.log("No list available");
+    return;
+  }
+
+  // Get column names dynamically
+  const columns = Object.keys(list[0]);
+  const colWidths = columns.map((col) => col.length);
+
+  // Calculate column widths based on the longest entry
+  list.forEach((row) => {
+    columns.forEach((col, i) => {
+      colWidths[i] = Math.max(
+        colWidths[i],
+        (row[col]?.toString() || "").length
+      );
+    });
+  });
+
+  // Create a row divider
+  const divider = "#" + colWidths.map((w) => "-".repeat(w + 2)).join("#") + "#";
+
+  // Print header
+  const header =
+    "# " + columns.map((col, i) => col.padEnd(colWidths[i])).join(" | ") + " #";
+  console.log("#".repeat(divider.length));
+  console.log(header);
+  console.log(divider);
+
+  // Print rows
+  list.forEach((row, index) => {
+    if (index === 3 && list.length > 4) {
+      console.log(
+        "# " +
+          columns.map((_, i) => "...".padEnd(colWidths[i])).join(" | ") +
+          " #"
+      );
+    } else if (index < 3 || index === list.length - 1) {
+      const rowStr =
+        "# " +
+        columns
+          .map((col, i) => {
+            const a = row[col]?.toString() || "";
+            return a.padEnd(colWidths[i]);
+          })
+          .join(" | ") +
+        " #";
+      console.log(rowStr);
+    }
+  });
+
+  console.log("#".repeat(divider.length));
+};
+
+exports.table = table;
