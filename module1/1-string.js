@@ -186,3 +186,41 @@ const trimAll3 = (string) =>
     .join(" ");
 
 exports.trimAll = trimAll3;
+
+// first way
+const formatNumber = (number) => {
+  let string = number.toString();
+  for (let i = string.length - 3; i > 0; i -= 3) {
+    string = string.substring(0, i) + "," + string.substring(i);
+  }
+  return string;
+};
+
+// second way
+const formatNumber2 = (number) => {
+  const string = number.toString();
+  return string.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  // \d matches a digit
+  // (?=(\d{3})+(?!\d)) is a positive lookahead that checks if there are groups of three digits ahead, but not followed by another digit
+  // $1 is the first capturing group, which is the digit matched by \d
+};
+
+// third way
+const formatNumber3 = (number) => number.toLocaleString();
+
+// fourth way
+const formatNumber4 = (number) => {
+  const str = number.toString().split("").reverse();
+  let formatted = [];
+
+  for (let i = 0; i < str.length; i++) {
+    if (i > 0 && i % 3 === 0) {
+      formatted.push(",");
+    }
+    formatted.push(str[i]);
+  }
+
+  return formatted.reverse().join("");
+};
+
+exports.formatNumber = formatNumber4;
