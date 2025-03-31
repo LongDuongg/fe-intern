@@ -3,6 +3,7 @@ const {
   kebabToCamel,
   camelToKebab,
   isUpperCase,
+  upperLower,
 } = require("./1-string");
 
 // console.log(mergeStrings("abc", "123456"));
@@ -10,5 +11,6 @@ const {
 // console.log(kebabToCamel("ho-chi-minh-city"));
 // console.log(camelToKebab("daNang"));
 // console.log(camelToKebab("hoChiMinhCity"));
-console.log(isUpperCase("A"));
-console.log(isUpperCase("a"));
+// console.log(isUpperCase("A"));
+// console.log(isUpperCase("a"));
+console.log(upperLower(" a NiCE  dAY "));
