@@ -8,6 +8,7 @@ const {
   trim,
   trimAll,
   formatNumber,
+  abba,
 } = require("./1-string");
 
 // console.log(mergeStrings("abc", "123456"));
@@ -21,4 +22,6 @@ const {
 // console.log(capitalize(" a NiCE  dAY "));
 // console.log(trim(" a nice  day "));
 // console.log(trimAll(" a nice  day "));
-console.log(formatNumber(100000000));
+// console.log(formatNumber(100000000));
+console.log(abba("ab", "cde"));
+console.log(abba("Hi", " John "));
