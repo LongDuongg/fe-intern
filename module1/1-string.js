@@ -138,3 +138,27 @@ const capitalize = (string) => {
 };
 
 exports.capitalize = capitalize;
+
+// first way
+const trim = (string) => string.trim();
+
+// second way
+const trim2 = (string) => string.replace(/^\s+|\s+$/g, "");
+// ^\s+ matches one or more whitespace characters at the beginning of the string
+// \s+$ matches one or more whitespace characters at the end of the string
+
+// third way
+const trim3 = (string) => {
+  let newStr = "";
+  const words = string.split(" ");
+  for (let i = 0; i < words.length; i++) {
+    if (words[0] === " " || words[words.length - 1] === " ") {
+      continue;
+    } else {
+      newStr += words[i] + " ";
+    }
+  }
+  return newStr;
+};
+
+exports.trim = trim3;
