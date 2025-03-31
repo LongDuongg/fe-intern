@@ -76,7 +76,10 @@ const camelToKebab = (string) => {
 const camelToKebab2 = (string) =>
   string.replace(
     /[A-Z]+(?![a-z])|[A-Z]/g,
-    ($, ofs) => (ofs ? "-" : "") + $.toLowerCase()
+    ($, ofs) => {
+      console.log(`Match: '${$}', Offset: ${ofs}`);
+      return (ofs ? "-" : "") + $.toLowerCase();
+    }
     // $ represents the matched text from the regular expression
     // ofs is the offset of the match in the string
   );
