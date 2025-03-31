@@ -75,7 +75,8 @@ const camelToKebab = (string) => {
 // second way
 const camelToKebab2 = (string) =>
   string.replace(
-    /[A-Z]+(?![a-z])|[A-Z]/g,
+    // /[A-Z]+(?![a-z])|[A-Z]/g,
+    /[A-Z]+/g,
     ($, ofs) => {
       console.log(`Match: '${$}', Offset: ${ofs}`);
       return (ofs ? "-" : "") + $.toLowerCase();
