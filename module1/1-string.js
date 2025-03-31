@@ -224,3 +224,22 @@ const formatNumber4 = (number) => {
 };
 
 exports.formatNumber = formatNumber4;
+
+// first way
+const reverseString = (str) => {
+  const charArr = str.split("");
+  let newStr = "";
+  for (let i = charArr.length - 1; i >= 0; i--) {
+    // newStr += charArr[i];
+    // or
+    newStr += str.substring(i, i + 1);
+  }
+  return newStr;
+};
+
+// second way
+const reverseString2 = (str) => str.split("").reverse().join("");
+
+const abba = (str1, str2) => `${str1}${str2}${reverseString(str1)}`;
+
+exports.abba = abba;
