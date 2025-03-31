@@ -110,3 +110,17 @@ const isUpperCase4 = (letter) => {
 const isUpperCase5 = (letter) => letter.match(/[A-Z]/) !== null;
 
 exports.isUpperCase = isUpperCase5;
+
+const upperLower = (string) => {
+  let newStr = "";
+  for (let i = 0; i < string.length; i++) {
+    if (isUpperCase(string[i])) {
+      newStr += string[i].toLowerCase();
+    } else {
+      newStr += string[i].toUpperCase();
+    }
+  }
+  return newStr;
+};
+
+exports.upperLower = upperLower;
