@@ -34,7 +34,27 @@ const mergeStrings2 = (...string) => {
 
 exports.mergeStrings = mergeStrings2;
 
-const uppercase = () => "abc";
-const uppercase2 = () => "abc2";
+// first way
+const kebabToCamel = (string) => {
+  let newStr = "";
+  for (let i = 0; i < string.length; i++) {
+    if (string[i] === "-") {
+      newStr += string[i + 1].toUpperCase();
+      i++;
+    } else {
+      newStr += string[i];
+    }
+  }
+  return newStr;
+};
 
-exports.uppercase = uppercase2;
+// second way
+const kebabToCamel2 = (string) =>
+  string
+    .split("-")
+    .map((word, index) =>
+      index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
+    )
+    .join("");
+
+exports.kebabToCamel = kebabToCamel2;
