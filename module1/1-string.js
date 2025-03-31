@@ -124,3 +124,17 @@ const upperLower = (string) => {
 };
 
 exports.upperLower = upperLower;
+
+const capitalize = (string) => {
+  const capitalizeWord = (word) =>
+    word ? word[0].toUpperCase() + word.slice(1).toLowerCase() : "";
+
+  let newStr = "";
+  const words = string.split(" ");
+  for (const word of words) {
+    newStr += capitalizeWord(word) + " ";
+  }
+  return newStr;
+};
+
+exports.capitalize = capitalize;
