@@ -162,3 +162,27 @@ const trim3 = (string) => {
 };
 
 exports.trim = trim3;
+
+// first way
+const trimAll = (string) => string.trim().replace(/\s+/g, " ");
+
+// second way
+const trimAll2 = (string) => {
+  let newStr = "";
+  const words = string.split(" ");
+  for (let i = 0; i < words.length; i++) {
+    if (words[i]) {
+      newStr += words[i] + " ";
+    }
+  }
+  return newStr;
+};
+
+// third way
+const trimAll3 = (string) =>
+  string
+    .split(" ")
+    .filter((word) => word)
+    .join(" ");
+
+exports.trimAll = trimAll3;
