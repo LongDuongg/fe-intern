@@ -58,3 +58,28 @@ const kebabToCamel2 = (string) =>
     .join("");
 
 exports.kebabToCamel = kebabToCamel2;
+
+// first way
+const camelToKebab = (string) => {
+  let newStr = "";
+  for (let i = 0; i < string.length; i++) {
+    if (string[i] === string[i].toUpperCase()) {
+      newStr += "-" + string[i].toLowerCase();
+    } else {
+      newStr += string[i];
+    }
+  }
+  return newStr;
+};
+
+// second way
+const camelToKebab2 = (string) =>
+  string.replace(
+    /[A-Z]+(?![a-z])|[A-Z]/g,
+    ($, ofs) => (ofs ? "-" : "") + $.toLowerCase()
+    // $ represents the matched text from the regular expression
+    // ofs is the offset of the match in the string
+  );
+// [A-Z]+ matches one or more uppercase letters that are not followed by lowercase letters (?![a-z])
+// |[A-Z] Matches a single uppercase letter if not caught by the first pattern.
+exports.camelToKebab = camelToKebab2;
