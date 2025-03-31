@@ -87,3 +87,26 @@ const camelToKebab2 = (string) =>
 // [A-Z]+ matches one or more uppercase letters that are not followed by lowercase letters (?![a-z])
 // |[A-Z] Matches a single uppercase letter if not caught by the first pattern.
 exports.camelToKebab = camelToKebab2;
+
+// first way
+const isUpperCase = (letter) => letter === letter.toUpperCase();
+
+// second way
+const isUpperCase2 = (letter) => letter >= "A" && letter <= "Z";
+
+// third way
+const isUpperCase3 = (letter) => {
+  const upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  return upperCaseLetters.includes(letter);
+};
+
+// fourth way
+const isUpperCase4 = (letter) => {
+  const upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  return upperCaseLetters.indexOf(letter) !== -1;
+};
+
+// fifth way
+const isUpperCase5 = (letter) => letter.match(/[A-Z]/) !== null;
+
+exports.isUpperCase = isUpperCase5;
