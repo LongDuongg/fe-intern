@@ -4,6 +4,7 @@ const {
   camelToKebab,
   isUpperCase,
   upperLower,
+  capitalize,
 } = require("./1-string");
 
 // console.log(mergeStrings("abc", "123456"));
@@ -13,4 +14,5 @@ const {
 // console.log(camelToKebab("hoChiMinhCity"));
 // console.log(isUpperCase("A"));
 // console.log(isUpperCase("a"));
-console.log(upperLower(" a NiCE  dAY "));
+// console.log(upperLower(" a NiCE  dAY "));
+console.log(capitalize(" a NiCE  dAY "));
