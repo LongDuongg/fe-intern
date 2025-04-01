@@ -137,3 +137,22 @@ const allCharactersHaveHeightUnder200 = (characters) =>
 const allCharactersAreMale = (characters) =>
   characters.every((character) => character.gender === "male");
 // console.log(allCharactersAreMale(characters));
+
+// ==================================================================================
+
+// Some
+const someCharactersAreMale = (characters) =>
+  characters.some((character) => character.gender === "male");
+// console.log(someCharactersAreMale(characters));
+
+const someCharactersHaveBlueEyes = (characters) =>
+  characters.some((character) => character.eyeColor === "blue");
+// console.log(someCharactersHaveBlueEyes(characters));
+
+const someCharactersHaveHeightOver200 = (characters) =>
+  characters.some((character) => character.height > 200);
+// console.log(someCharactersHaveHeightOver200(characters));
+
+const someCharactersHaveMassUnder50 = (characters) =>
+  characters.some((character) => character.mass < 50);
+// console.log(someCharactersHaveMassUnder50(characters));
