@@ -98,3 +98,23 @@ const getTotalEyeColor = (characters) =>
       return acc;
     }, {});
 // console.log(getTotalEyeColor(characters));
+
+// ==================================================================================
+
+// Sort
+const sortString = (str) => str.split("").sort().join("");
+
+const sortByName = (characters) =>
+  characters.sort((a, b) => a.name.localeCompare(b.name));
+console.log(sortByName(characters));
+
+const sortByMass = (characters) => characters.sort((a, b) => a.mass - b.mass);
+// console.log(sortByMass(characters));
+
+const sortByHeight = (characters) =>
+  characters.sort((a, b) => a.height - b.height);
+// console.log(sortByHeight(characters));
+
+const sortByGender = (characters) =>
+  characters.sort((a, b) => a.gender - b.gender);
+// console.log(sortByGender(characters));
