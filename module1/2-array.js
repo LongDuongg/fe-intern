@@ -30,15 +30,13 @@ const characters = [
 ];
 
 // Map
-// get an array of names
-const getNames = (characters) =>
-  characters.map((character) => character.name[0]);
+const getNames = (characters) => characters.map((character) => character.name);
+// console.log(getNames(characters));
 
-// get an array of heights
 const getHeights = (characters) =>
   characters.map((character) => character.height);
+// console.log(getHeights(characters));
 
-// get an array of names and heights
 const getNamesAndHeights = (characters) =>
   characters.map((character) => {
     return {
@@ -46,8 +44,8 @@ const getNamesAndHeights = (characters) =>
       height: character.height,
     };
   });
+// console.log(getNamesAndHeights(characters));
 
-// get an array of first name
 const getFirstNames = (characters) =>
   characters.map((character) => character.name.split(" ")[0]);
 
