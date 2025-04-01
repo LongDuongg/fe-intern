@@ -54,6 +54,25 @@ const getFirstNames2 = (characters) =>
     character.name.substring(0, character.name.indexOf(" "))
   );
 
-console.log(getFirstNames2(characters));
+// console.log(getFirstNames2(characters));
+
+// ==================================================================================
+
+// Filter
+const getCharWithMassOver100 = (characters) =>
+  characters.filter((character) => character.mass > 100);
+// console.log(getCharWithMassOver100(characters));
+
+const getCharWithHeightUnder200 = (characters) =>
+  characters.filter((character) => character.height < 200);
+// console.log(getCharWithHeightUnder200(characters));
+
+const getMaleCharacters = (characters) =>
+  characters.filter((character) => character.gender === "male");
+// console.log(getMaleCharacters(characters));
+
+const getFemaleCharacters = (characters) =>
+  characters.filter((character) => character.gender === "female");
+// console.log(getFemaleCharacters(characters));
 
 // ==================================================================================
