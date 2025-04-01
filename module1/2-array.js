@@ -106,7 +106,7 @@ const sortString = (str) => str.split("").sort().join("");
 
 const sortByName = (characters) =>
   characters.sort((a, b) => a.name.localeCompare(b.name));
-console.log(sortByName(characters));
+// console.log(sortByName(characters));
 
 const sortByMass = (characters) => characters.sort((a, b) => a.mass - b.mass);
 // console.log(sortByMass(characters));
@@ -118,3 +118,22 @@ const sortByHeight = (characters) =>
 const sortByGender = (characters) =>
   characters.sort((a, b) => a.gender - b.gender);
 // console.log(sortByGender(characters));
+
+// ==================================================================================
+
+// Every
+const allCharactersHaveBlueEyes = (characters) =>
+  characters.every((character) => character.eyeColor === "blue");
+// console.log(allCharactersHaveBlueEyes(characters));
+
+const allCharacterHaveMassOver40 = (characters) =>
+  characters.every((character) => character.mass > 40);
+// console.log(allCharacterHaveMassOver40(characters));
+
+const allCharactersHaveHeightUnder200 = (characters) =>
+  characters.every((character) => character.height < 200);
+// console.log(allCharactersHaveHeightUnder200(characters));
+
+const allCharactersAreMale = (characters) =>
+  characters.every((character) => character.gender === "male");
+// console.log(allCharactersAreMale(characters));
