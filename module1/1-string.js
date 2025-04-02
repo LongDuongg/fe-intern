@@ -99,7 +99,7 @@ const isUpperCase3 = (letter) => {
 
 const isUpperCase4 = (letter) => letter.match(/[A-Z]/) !== null;
 
-exports.isUpperCase = isUpperCase5;
+exports.isUpperCase = isUpperCase4;
 
 // /===================================================================================
 
