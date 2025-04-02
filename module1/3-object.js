@@ -32,11 +32,11 @@ const getData = (obj, keys) => {
   return getData(obj[firstKey], restKeys);
 };
 
-console.log(getData(school, ["classes", "pupils", "name"]));
+// console.log(getData(school, ["classes", "pupils", "name"]));
 
 // const setData = (obj, keys, value) => {
 //   // If there is no keys, return the value itself
-//   if (keys.length === 0 || keys === undefined) {
+//   if (!keys || keys.length === 0) {
 //     return value;
 //   }
 
