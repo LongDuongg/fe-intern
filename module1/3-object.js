@@ -51,6 +51,23 @@ const setData = (obj, keys, value) => {
   return obj;
 };
 
+const clone = (input) => {
+  if (input === null || typeof input !== "object") {
+    return input; // Return the value if input is not an object
+  }
+
+  let clone = {};
+
+  if (Array.isArray(input)) {
+    clone = input.map((item) => clone(item));
+  }
+
+  for (const key in input) {
+    clone[key] = input[key];
+  }
+  return clone;
+};
+
 // 1.Add pupil named Jack to class 1A.
 // console.dir(setData(school, ["classes", 0, "pupils", 2], { name: "Jack" }));
 
