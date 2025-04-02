@@ -1,3 +1,5 @@
+const util = require("util");
+
 let school = {
   name: "ABC School",
   classes: [
@@ -56,16 +58,16 @@ const clone = (input) => {
     return input; // Return the value if input is not an object
   }
 
-  let clone = {};
+  let ret = [] || {}; // Create an array or object to hold the cloned values
 
   if (Array.isArray(input)) {
-    clone = input.map((item) => clone(item));
+    ret = input.map((item) => clone(item));
   }
 
   for (const key in input) {
-    clone[key] = input[key];
+    ret[key] = input[key]; // Recursively clone each property
   }
-  return clone;
+  return ret;
 };
 
 // 1.Add pupil named Jack to class 1A.
@@ -125,31 +127,31 @@ let schoolClone = clone(school);
 //   ],
 // });
 
-// setData(
-//   school,
-//   ["classes"],
-//   [
-//     {
-//       name: "1A",
-//       pupils: [
-//         {
-//           name: "John",
-//         },
-//       ],
-//     },
-//     {
-//       name: "1B",
-//       pupils: [
-//         {
-//           name: "Mary",
-//         },
-//         {
-//           name: "Jane",
-//         },
-//       ],
-//     },
-//   ]
-// );
+setData(
+  school,
+  ["classes"],
+  [
+    {
+      name: "1A",
+      pupils: [
+        {
+          name: "John",
+        },
+      ],
+    },
+    {
+      name: "1B",
+      pupils: [
+        {
+          name: "Mary",
+        },
+        {
+          name: "Jane",
+        },
+      ],
+    },
+  ]
+);
 console.log("schoolClone:");
 console.log(util.inspect(schoolClone, false, null, true /* enable colors */));
 // console.log(JSON.stringify(schoolClone, null, 2));
