@@ -34,18 +34,22 @@ const getData = (obj, keys) => {
 
 // console.log(getData(school, ["classes", "pupils", "name"]));
 
-// const setData = (obj, keys, value) => {
-//   // If there is no keys, return the value itself
-//   if (!keys || keys.length === 0) {
-//     return value;
-//   }
+const setData = (obj, keys, value) => {
+  // If there is no keys, return the value itself
+  if (!keys || keys.length === 0) {
+    return value;
+  }
 
-//   const [firstKey, ...restKeys] = keys;
+  const [firstKey, ...restKeys] = keys;
 
-//   obj[firstKey] = setData(obj[firstKey], restKeys, value);
+  // If the key doesn't exist, initialize it as an array if next key is a number, otherwise as an object
+  if (!(firstKey in obj)) {
+    obj[firstKey] = isNaN(restKeys[0]) ? {} : [];
+  }
 
-//   return obj;
-// };
+  obj[firstKey] = setData(obj[firstKey], restKeys, value);
+  return obj;
+};
 
 // console.log(setData(school, "Luan"));
 // 1.Add pupil named Jack to class 1A.
