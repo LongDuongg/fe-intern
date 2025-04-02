@@ -51,8 +51,51 @@ const setData = (obj, keys, value) => {
   return obj;
 };
 
-// console.log(setData(school, "Luan"));
 // 1.Add pupil named Jack to class 1A.
+// console.dir(setData(school, ["classes", 0, "pupils", 2], { name: "Jack" }));
+
 // 2.Add class named 1B having pupil named Mary to school.
+// console.dir(
+//   setData(school, ["classes", 1], {
+//     name: "1B",
+//     pupils: [
+//       {
+//         name: "Mary",
+//       },
+//     ],
+//   })
+// );
+
 // 3.Move Jane to class 1B.
+// console.dir(
+//   setData(
+//     school,
+//     ["classes"],
+//     [
+//       {
+//         name: "1A",
+//         pupils: [
+//           {
+//             name: "John",
+//           },
+//         ],
+//       },
+//       {
+//         name: "1B",
+//         pupils: [
+//           {
+//             name: "Mary",
+//           },
+//           {
+//             name: "Jane",
+//           },
+//         ],
+//       },
+//     ]
+//   )
+// );
+
 // 4.Do the above 3 tasks without mutating the object school. Create a new object for each task.
+
+console.log("=========================");
+console.log(getData(school, ["classes"]));
