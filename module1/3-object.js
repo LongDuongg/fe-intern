@@ -14,6 +14,17 @@ let school = {
         },
       ],
     },
+    {
+      name: "1C",
+      pupils: [
+        {
+          name: "Long",
+        },
+        {
+          name: "Luan",
+        },
+      ],
+    },
   ],
 };
 
@@ -57,28 +68,6 @@ let school = {
 //   })),
 // }; // deep clone the school object
 
-// lam them cach : sua den dau, clone den do
-const school2 = {
-  ...school,
-  classes: [
-    ...school.classes.map(
-      (cla) =>
-        cla.name === "1A"
-          ? {
-              ...cla,
-              pupils: cla.pupils.filter((pupil) => pupil.name !== "Jane"),
-            }
-          : cla // Remain the same pointer to old class
-    ),
-    {
-      name: "2A",
-      pupils: [school.classes[0].pupils.find((pupil) => pupil.name === "Jane")],
-    },
-  ],
-};
-
-console.log("school2:");
-console.log(JSON.stringify(school2, null, 2));
 // schoolClone.classes[0].pupils.push({ name: "Jack" });
 
 // schoolClone.classes.push({
@@ -99,8 +88,57 @@ console.log(JSON.stringify(school2, null, 2));
 // console.log("schoolClone:");
 // console.log(util.inspect(schoolClone, false, null, true /* enable colors */));
 
-// // console.log("schoolClone:");
-// // console.log(util.inspect(schoolClone, false, null, true /* enable colors */));
-// console.log("=========================");
-// console.log("school:");
-// console.log(util.inspect(school, false, null, true /* enable colors */));
+// Do with another way : update and clone accordingly
+const school1 = {
+  ...school,
+  classes: [
+    ...school.classes.map((cla) =>
+      cla.name === "1A"
+        ? { ...cla, pupils: [...cla.pupils, { name: "Jack" }] }
+        : cla
+    ),
+  ],
+};
+
+// console.log("school1:");
+// console.log(JSON.stringify(school1, null, 2));
+
+const school2 = {
+  ...school,
+  classes: [
+    ...school.classes,
+    {
+      name: "1B",
+      pupils: [{ name: "Mary" }],
+    },
+  ],
+};
+
+// console.log("school2:");
+// console.log(JSON.stringify(school2, null, 2));
+
+const school3 = {
+  ...school,
+  classes: [
+    ...school.classes.map(
+      (cla) =>
+        cla.name === "1A"
+          ? {
+              ...cla,
+              pupils: cla.pupils.filter((pupil) => pupil.name !== "Jane"),
+            }
+          : cla // Remain the same pointer to old class
+    ),
+    {
+      name: "2A",
+      pupils: [school.classes[0].pupils.find((pupil) => pupil.name === "Jane")],
+    },
+  ],
+};
+
+// console.log("school3:");
+// console.log(JSON.stringify(school3, null, 2));
+
+console.log("====================================");
+console.log("school:");
+console.log(JSON.stringify(school, null, 2));
