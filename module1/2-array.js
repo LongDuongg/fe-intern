@@ -79,7 +79,7 @@ const getFemaleCharacters = (characters) =>
 
 // Reduce
 const getTotalMass = (characters) =>
-  characters.reduce((acc, character) => acc + Number(character.mass), 0);
+  characters.reduce((acc, character) => acc + +character.mass, 0);
 // console.log(getTotalMass(characters));
 
 const getTotalHeight = (characters) =>
@@ -90,12 +90,21 @@ const getTotalCharactersInNames = (characters) =>
   characters.reduce((acc, character) => acc + character.name.length, 0);
 // console.log(getTotalCharactersInNames(characters));
 
+// const getTotalEyeColor = (characters) =>
+//   characters
+//     .map((character) => character.eyeColor)
+//     .reduce((acc, color) => {
+//       acc[color] = (acc[color] || 0) + 1;
+//       return acc;
+//     }, {});
 const getTotalEyeColor = (characters) =>
   characters
     .map((character) => character.eyeColor)
     .reduce((acc, color) => {
-      acc[color] = (acc[color] || 0) + 1;
-      return acc;
+      return {
+        ...acc,
+        [color]: (acc[color] ?? 0) + 1,
+      };
     }, {});
 // console.log(getTotalEyeColor(characters));
 

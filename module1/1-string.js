@@ -130,7 +130,7 @@ const capitalize = (string) => {
   }
   return newStr;
 };
-
+// thua dau cach
 exports.capitalize = capitalize;
 
 // /===================================================================================
@@ -154,7 +154,7 @@ const trim3 = (string) => {
   return newStr;
 };
 
-exports.trim = trim3;
+exports.trim = trim3; // check again
 
 // /===================================================================================
 
@@ -169,7 +169,7 @@ const trimAll2 = (string) => {
     }
   }
   return newStr;
-};
+}; // check again
 
 const trimAll3 = (string) =>
   string

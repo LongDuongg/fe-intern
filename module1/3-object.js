@@ -49,36 +49,58 @@ let school = {
 //   })),
 // }; // deep clone the school object
 
-let schoolClone = {
-  name: school.name,
-  classes: school.classes.map((cls) => ({
-    name: cls.name,
-    pupils: cls.pupils.map((pupil) => ({ name: pupil.name })),
-  })),
-}; // deep clone the school object
+// let schoolClone = {
+//   name: school.name,
+//   classes: school.classes.map((cls) => ({
+//     name: cls.name,
+//     pupils: cls.pupils.map((pupil) => ({ name: pupil.name })),
+//   })),
+// }; // deep clone the school object
 
-schoolClone.classes[0].pupils.push({ name: "Jack" });
+// lam them cach : sua den dau, clone den do
+const school2 = {
+  ...school,
+  classes: [
+    ...school.classes.map(
+      (cla) =>
+        cla.name === "1A"
+          ? {
+              ...cla,
+              pupils: cla.pupils.filter((pupil) => pupil.name !== "Jane"),
+            }
+          : cla // Remain the same pointer to old class
+    ),
+    {
+      name: "2A",
+      pupils: [school.classes[0].pupils.find((pupil) => pupil.name === "Jane")],
+    },
+  ],
+};
 
-schoolClone.classes.push({
-  name: "1B",
-  pupils: [{ name: "Mary" }],
-});
+console.log("school2:");
+console.log(JSON.stringify(school2, null, 2));
+// schoolClone.classes[0].pupils.push({ name: "Jack" });
 
-const janeIndex = schoolClone.classes[0].pupils.findIndex(
-  (pupil) => pupil.name === "Jane"
-);
+// schoolClone.classes.push({
+//   name: "1B",
+//   pupils: [{ name: "Mary" }],
+// });
 
-if (janeIndex !== -1) {
-  // after finding the index, use splice() to remove Jane from class 1A and then push her to class 1B
-  const jane = schoolClone.classes[0].pupils.splice(janeIndex, 1)[0];
-  schoolClone.classes[1].pupils.push(jane);
-}
+// const janeIndex = schoolClone.classes[0].pupils.findIndex(
+//   (pupil) => pupil.name === "Jane"
+// );
 
-console.log("schoolClone:");
-console.log(util.inspect(schoolClone, false, null, true /* enable colors */));
+// if (janeIndex !== -1) {
+//   // after finding the index, use splice() to remove Jane from class 1A and then push her to class 1B
+//   const jane = schoolClone.classes[0].pupils.splice(janeIndex, 1)[0];
+//   schoolClone.classes[1].pupils.push(jane);
+// }
 
 // console.log("schoolClone:");
 // console.log(util.inspect(schoolClone, false, null, true /* enable colors */));
-console.log("=========================");
-console.log("school:");
-console.log(util.inspect(school, false, null, true /* enable colors */));
+
+// // console.log("schoolClone:");
+// // console.log(util.inspect(schoolClone, false, null, true /* enable colors */));
+// console.log("=========================");
+// console.log("school:");
+// console.log(util.inspect(school, false, null, true /* enable colors */));
