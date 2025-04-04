@@ -34,16 +34,16 @@ exports.mergeStrings = mergeStrings2;
 
 // /===================================================================================
 const kebabToCamel = (string) => {
-  let newStr = "";
+  let newStr = [];
   for (let i = 0; i < string.length; i++) {
     if (string[i] === "-") {
-      newStr += string[i + 1].toUpperCase();
+      newStr.push(string[i + 1].toUpperCase());
       i++;
     } else {
-      newStr += string[i];
+      newStr.push(string[i]);
     }
   }
-  return newStr;
+  return newStr.join("");
 };
 
 const kebabToCamel2 = (string) =>
@@ -54,20 +54,20 @@ const kebabToCamel2 = (string) =>
     )
     .join("");
 
-exports.kebabToCamel = kebabToCamel2;
+exports.kebabToCamel = kebabToCamel;
 
 // /===================================================================================
 
 const camelToKebab = (string) => {
-  let newStr = "";
+  let newStr = [];
   for (let i = 0; i < string.length; i++) {
     if (string[i] === string[i].toUpperCase()) {
-      newStr += "-" + string[i].toLowerCase();
+      newStr.push("-" + string[i].toLowerCase());
     } else {
-      newStr += string[i];
+      newStr.push(string[i]);
     }
   }
-  return newStr;
+  return newStr.join("");
 };
 
 const camelToKebab2 = (string) =>
@@ -82,7 +82,7 @@ const camelToKebab2 = (string) =>
   );
 // [A-Z]+ matches one or more uppercase letters
 
-exports.camelToKebab = camelToKebab2;
+exports.camelToKebab = camelToKebab;
 
 // /===================================================================================
 
@@ -123,14 +123,14 @@ const capitalize = (string) => {
   const capitalizeWord = (word) =>
     word ? word[0].toUpperCase() + word.slice(1).toLowerCase() : "";
 
-  let newStr = "";
+  let newStr = [];
   const words = string.split(" ");
   for (const word of words) {
-    newStr += capitalizeWord(word) + " ";
+    newStr.push(capitalizeWord(word));
   }
-  return newStr;
+  return newStr.join(" ");
 };
-// thua dau cach
+
 exports.capitalize = capitalize;
 
 // /===================================================================================
@@ -142,16 +142,14 @@ const trim2 = (string) => string.replace(/^\s+|\s+$/g, "");
 // \s+$ matches one or more whitespace characters at the end of the string
 
 const trim3 = (string) => {
-  let newStr = "";
+  let newStr = [];
   const words = string.split(" ");
   for (let i = 0; i < words.length; i++) {
-    if (words[0] === " " || words[words.length - 1] === " ") {
-      continue;
-    } else {
-      newStr += words[i] + " ";
+    if (words[i]) {
+      newStr.push(words[i]);
     }
   }
-  return newStr;
+  return newStr.join(" ");
 };
 
 exports.trim = trim3; // check again
@@ -161,15 +159,15 @@ exports.trim = trim3; // check again
 const trimAll = (string) => string.trim().replace(/\s+/g, " ");
 
 const trimAll2 = (string) => {
-  let newStr = "";
+  let newStr = [];
   const words = string.split(" ");
   for (let i = 0; i < words.length; i++) {
     if (words[i]) {
-      newStr += words[i] + " ";
+      newStr.push(words[i]);
     }
   }
-  return newStr;
-}; // check again
+  return newStr.join(" ");
+};
 
 const trimAll3 = (string) =>
   string
@@ -177,7 +175,7 @@ const trimAll3 = (string) =>
     .filter((word) => word)
     .join(" ");
 
-exports.trimAll = trimAll3;
+exports.trimAll = trimAll2;
 
 // /===================================================================================
 

@@ -23,22 +23,22 @@ const people = [
 
 // console.log(mergeStrings("abc", "123456"));
 
-// console.log(kebabToCamel("da-nang"));
-// console.log(kebabToCamel("ho-chi-minh-city"));
+// console.log(`(${kebabToCamel("da-nang")})`);
+// console.log(`(${kebabToCamel("ho-chi-minh-city")})`);
 
-// console.log(camelToKebab("daNang"));
-// console.log(camelToKebab("hoChiMinhCity"));
+// console.log(`(${camelToKebab("daNang")})`);
+// console.log(`(${camelToKebab("hoChiMinhCity")})`);
 
 // console.log(isUpperCase("A"));
 // console.log(isUpperCase("a"));
 
-// console.log(upperLower(" a NiCE  dAY "));
+// console.log(`(${upperLower(" a NiCE  dAY ")})`);
 
 // console.log(`(${capitalize("duong Phuoc Long")})`);
 
-// console.log(trim(" a nice  day "));
+// console.log(`(${trim(" a nice  day ")})`);
 
-// console.log(trimAll(" a nice  day "));
+// console.log(`(${trimAll(" a nice  day ")})`);
 
 // console.log(formatNumber(10000000));
 
