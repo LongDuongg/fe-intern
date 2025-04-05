@@ -29,6 +29,9 @@ const characters = [
   },
 ];
 
+// Note : when compare a string to number, the Javascript will convert the string to number automatically
+// but if compare a stringified number to another stringified number, it will compare lexicographically
+
 // Map
 const getNames = (characters) => characters.map((character) => character.name);
 // console.log(getNames(characters));
