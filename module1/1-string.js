@@ -34,16 +34,16 @@ exports.mergeStrings = mergeStrings2;
 
 // /===================================================================================
 const kebabToCamel = (string) => {
-  let newStr = [];
+  let newStr = "";
   for (let i = 0; i < string.length; i++) {
     if (string[i] === "-") {
-      newStr.push(string[i + 1].toUpperCase());
+      newStr += string[i + 1].toUpperCase();
       i++;
     } else {
-      newStr.push(string[i]);
+      newStr += string[i];
     }
   }
-  return newStr.join("");
+  return newStr;
 };
 
 const kebabToCamel2 = (string) =>
@@ -59,15 +59,15 @@ exports.kebabToCamel = kebabToCamel;
 // /===================================================================================
 
 const camelToKebab = (string) => {
-  let newStr = [];
+  let newStr = "";
   for (let i = 0; i < string.length; i++) {
     if (string[i] === string[i].toUpperCase()) {
-      newStr.push("-" + string[i].toLowerCase());
+      newStr += "-" + string[i].toLowerCase();
     } else {
-      newStr.push(string[i]);
+      newStr += string[i];
     }
   }
-  return newStr.join("");
+  return newStr;
 };
 
 const camelToKebab2 = (string) =>
