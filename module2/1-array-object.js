@@ -10,15 +10,15 @@ const filter = (array, callback) => {
 
 exports.filter = filter;
 
-Array.prototype.filter2 = function (callback) {
-  let result = [];
-  for (let i = 0; i < this.length; i++) {
-    if (callback(this[i])) {
-      result.push(this[i]);
-    }
-  }
-  return result;
-};
+// Array.prototype.filter2 = function (callback) {
+//   let result = [];
+//   for (let i = 0; i < this.length; i++) {
+//     if (callback(this[i])) {
+//       result.push(this[i]);
+//     }
+//   }
+//   return result;
+// };
 
 // =========================================================================
 
@@ -61,14 +61,14 @@ const remove = (element, array) => {
 
 exports.remove = remove;
 
-Array.prototype.remove2 = function (element) {
-  for (let i = 0; i < this.length; i++) {
-    if (deepEqual(this[i], element)) {
-      this.splice(i, 1);
-    }
-  }
-  return this;
-};
+// Array.prototype.remove2 = function (element) {
+//   for (let i = 0; i < this.length; i++) {
+//     if (deepEqual(this[i], element)) {
+//       this.splice(i, 1);
+//     }
+//   }
+//   return this;
+// };
 
 // =========================================================================
 
@@ -84,15 +84,15 @@ const without = (array, callback) => {
 
 exports.without = without;
 
-Array.prototype.without2 = function (callback) {
-  let result = [];
-  for (let i = 0; i < this.length; i++) {
-    if (!callback(this[i])) {
-      result.push(this[i]);
-    }
-  }
-  return result;
-};
+// Array.prototype.without2 = function (callback) {
+//   let result = [];
+//   for (let i = 0; i < this.length; i++) {
+//     if (!callback(this[i])) {
+//       result.push(this[i]);
+//     }
+//   }
+//   return result;
+// };
 
 // =========================================================================
 
@@ -157,6 +157,42 @@ const sort = (array, getValue = (v) => v) => {
 };
 
 exports.sort = sort;
+
+// =========================================================================
+
+const clone = (obj) => {
+  if (obj === null || typeof obj !== "object") {
+    return obj;
+  }
+  let result = {};
+  for (const key in obj) {
+    if (typeof obj[key] === "object") {
+      result[key] = Array.isArray(obj[key])
+        ? obj[key].map((item) => clone(item))
+        : clone(obj[key]);
+    } else {
+      result[key] = obj[key];
+    }
+  }
+  return result;
+};
+exports.clone = clone;
+
+// =========================================================================
+
+const getData = (obj, keys) => {
+  if (keys.length === 0) {
+    return obj;
+  }
+  if (obj === null) {
+    return undefined;
+  }
+  const [currentKey, ...restKeys] = keys;
+  return getData(obj[currentKey], restKeys);
+};
+exports.getData = getData;
+
+// =========================================================================
 
 const setData = (obj, keys, value) => {
   if (keys.length === 0 || keys == null) {
