@@ -6,6 +6,7 @@ const {
   addToListMap,
   sortByDistance,
   sort,
+  setData,
 } = require("./1-array-object.js");
 
 const array = [
@@ -27,6 +28,28 @@ const people = [
   { name: "Luan", age: 24 },
   { name: "Hoa", age: 28 },
 ];
+
+const person = {
+  name: "Tung",
+  age: 12,
+  address: {
+    street: "Le Trong Tan",
+    city: "Ha Noi",
+  },
+  hobbies: ["reading", "swimming"],
+  jobs: [
+    { title: "developer", salary: 1000 },
+    { title: "designer", salary: 1200 },
+  ],
+};
+
+setData(person, ["name"], "Nguyen Trai");
+setData(person, ["age"], 20);
+setData(person, ["address", "city"], "Ha Giang");
+setData(person, ["address", "street"], "Ta Hien");
+setData(person, ["hobbies", 0], "gaming");
+setData(person, ["jobs", 0, "title"], "senior developer");
+setData(person, ["gender"], "male");
 
 // console.log(filter(array, (item) => item.name.indexOf("u") > -1));
 // console.log(filter(array, (item) => item.name.indexOf("a") > -1));
@@ -58,5 +81,6 @@ const people = [
 // console.log(numbArr);
 // console.log(people);
 
-// console.log("original object :");
+console.log("original object :");
 // console.log(listMap);
+console.log(person);

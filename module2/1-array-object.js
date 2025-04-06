@@ -157,3 +157,33 @@ const sort = (array, getValue = (v) => v) => {
 };
 
 exports.sort = sort;
+
+const setData = (obj, keys, value) => {
+  if (keys.length === 0 || keys == null) {
+    return value;
+  }
+
+  const [currentKey, ...restKeys] = keys;
+
+  if (typeof obj[currentKey] === "object") {
+    obj[currentKey] = Array.isArray(obj[currentKey])
+      ? [
+          ...obj[currentKey].map((item, index) => {
+            if (index === restKeys[0]) {
+              return setData(obj[currentKey], restKeys, value);
+            }
+            return item;
+          }),
+        ]
+      : {
+          ...obj[currentKey],
+          [restKeys]: setData(obj[currentKey], restKeys, value),
+        };
+  } else {
+    obj[currentKey] = setData(obj[currentKey], restKeys, value);
+  }
+
+  return obj[currentKey];
+};
+
+exports.setData = setData;
