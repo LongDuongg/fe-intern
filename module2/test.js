@@ -7,6 +7,8 @@ const {
   sortByDistance,
   sort,
   setData,
+  clone,
+  getData,
 } = require("./1-array-object.js");
 
 const array = [
@@ -43,14 +45,6 @@ const person = {
   ],
 };
 
-setData(person, ["name"], "Nguyen Trai");
-setData(person, ["age"], 20);
-setData(person, ["address", "city"], "Ha Giang");
-setData(person, ["address", "street"], "Ta Hien");
-setData(person, ["hobbies", 0], "gaming");
-setData(person, ["jobs", 0, "title"], "senior developer");
-setData(person, ["gender"], "male");
-
 // console.log(filter(array, (item) => item.name.indexOf("u") > -1));
 // console.log(filter(array, (item) => item.name.indexOf("a") > -1));
 // console.log(array.filter2((item) => item.name.indexOf("x") > -1));
@@ -75,7 +69,31 @@ setData(person, ["gender"], "male");
 // console.log(sort(people, (person) => person.name));
 // console.log(sort(people, (person) => person.age));
 
-// console.log("=========================");
+// =========================================================================
+
+const hieu = clone(person);
+
+hieu.name = "Hieu";
+hieu.age = 25;
+hieu.address.street = "Ba Trieu";
+
+console.log("Hieu :");
+console.log(hieu);
+
+console.log(getData(person, ["name"]));
+console.log(getData(person, ["age"]));
+console.log(getData(person, ["address", "city"]));
+console.log(getData(person, ["address", "street"]));
+
+// setData(person, ["name"], "Nguyen Trai");
+// setData(person, ["age"], 20);
+// setData(person, ["address", "city"], "Ha Giang");
+// setData(person, ["address", "street"], "Ta Hien");
+// setData(person, ["hobbies", 0], "gaming");
+// setData(person, ["jobs", 0, "title"], "senior developer");
+// setData(person, ["gender"], "male");
+
+console.log("=========================");
 // console.log("original array :");
 // console.log(array);
 // console.log(numbArr);
