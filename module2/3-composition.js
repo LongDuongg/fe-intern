@@ -59,8 +59,7 @@ const toLowerCase = (str) => str.toLowerCase();
 
 const removeSpecialChars = (str) => str.replace(/[^a-zA-Z0-9 ]/g, "");
 
-const limitLength = (max) => (str) =>
-  str.length > max ? "exceed max limit" : `"${str}"`;
+const limitLength = (max) => (str) => str.slice(0, max);
 
 // composition of the above functions
 const sanitizeInput = (str) =>
