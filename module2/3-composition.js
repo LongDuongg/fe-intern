@@ -122,6 +122,83 @@ const apiResponse = {
 };
 
 // console.log(processUsers(apiResponse));
-console.log(processUsers2(apiResponse));
+// console.log(processUsers2(apiResponse));
+
+// =========================================================================
 
 // Generate SEO-Friendly URLs
+const removePunctuation = (str) => {
+  const punctuations = [
+    ".",
+    ",",
+    "!",
+    "?",
+    ":",
+    ";",
+    '"',
+    "'",
+    "(",
+    ")",
+    "[",
+    "]",
+    "{",
+    "}",
+    "-",
+    "_",
+    "/",
+    "\\",
+    "@",
+    "#",
+    "$",
+    "%",
+    "^",
+    "&",
+    "*",
+    "=",
+    "+",
+    "<",
+    ">",
+    "|",
+    "`",
+    "~",
+  ];
+  let cleanStr = "";
+
+  for (let char of str) {
+    if (!punctuations.includes(char)) {
+      cleanStr += char;
+    }
+  }
+
+  // Replace multiple spaces with a single space
+  return cleanStr.replace(/\s+/g, " ").trim();
+};
+
+const toKebabCase = (str) => str.toLowerCase().split(" ").join("-");
+
+const limitLengthSafely = (max) => (str) => {
+  if (str.length <= max) return str;
+  const words = str.split("-");
+  let result = "";
+
+  for (let word of words) {
+    if ((result + word).length > max) break;
+    result += (result ? "-" : "") + word;
+  }
+
+  return result;
+};
+
+const createSlugGenerator = ({ maxLength }) => {
+  // composition of the above functions
+  return (title) =>
+    limitLengthSafely(maxLength)(toKebabCase(removePunctuation(title)));
+};
+
+const generateSlug = createSlugGenerator({ maxLength: 50 });
+
+console.log(
+  generateSlug(
+    "10 Tips to Write Great JavaScript Code for Beginners and Experts!"
+  )
+);
