@@ -69,13 +69,59 @@ const sanitizeInput = (str) =>
 const sanitizeInput2 = (str) =>
   pipe(trim, toLowerCase, removeSpecialChars, limitLength(100))(str);
 
-console.log(sanitizeInput("   Hello@WORLD!!! Welcome to JavaScript.  "));
-console.log(sanitizeInput2("   Hello@WORLD!!! Welcome to JavaScript.  "));
+// console.log(sanitizeInput("   Hello@WORLD!!! Welcome to JavaScript.  "));
+// console.log(sanitizeInput2("   Hello@WORLD!!! Welcome to JavaScript.  "));
+
+// =========================================================================
 
 // Display Prices
+const toDollars = (priceInCents) =>
+  priceInCents.map((priceInCent) => priceInCent / 100);
+
+const applyDiscount = (discount) => (prices) =>
+  prices.map((price) => price * discount);
+
+const formatPrice = (prices) =>
+  prices.map((price) => (price === 0 ? "Free" : `$${price.toFixed(2)}`));
+
+// composition of the above functions
+const processPrices = (prices, discount) =>
+  formatPrice(applyDiscount(discount)(toDollars(prices)));
+
+const processPrices2 = (prices, discount) =>
+  pipe(toDollars, applyDiscount(discount), formatPrice)(prices);
+
+const prices = [0, 500, 1500, 0, 20000]; // cents
+// console.log(processPrices(prices, 0.1));
+// console.log(processPrices2(prices, 0.1));
+
+// =========================================================================
 
 // Transform API Response
+const extractData = (res) => res.data;
+
+const filterActive = (users) => users.filter((user) => user.active);
+
+const mapUserNames = (users) => users.map((user) => user.name);
+
+const sortNames = (names) => names.sort();
+
+// composition of the above functions
+const processUsers = (res) =>
+  sortNames(mapUserNames(filterActive(extractData(res))));
+
+const processUsers2 = (res) =>
+  pipe(extractData, filterActive, mapUserNames, sortNames)(res);
+
+const apiResponse = {
+  data: [
+    { name: "Charlie", active: true },
+    { name: "Alice", active: true },
+    { name: "Bob", active: false },
+  ],
+};
+
+// console.log(processUsers(apiResponse));
+console.log(processUsers2(apiResponse));
 
 // Generate SEO-Friendly URLs
-
-//
