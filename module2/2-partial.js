@@ -19,11 +19,7 @@ const formatJPY = createCurrencyFormatter("ja-JP", "JPY");
 // 2 Logging Utility
 const log = (level) => {
   return function (message) {
-    let arr = [];
-    for (const letter of level) {
-      arr.push(letter.toUpperCase());
-    }
-    return `[${arr.join("")}] ${message}`;
+    return `[${level.toUpperCase()}] ${message}`;
   };
 };
 
