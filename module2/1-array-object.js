@@ -48,11 +48,13 @@ const deepEqual = (obj1, obj2) => {
   return false;
 };
 
+exports.deepEqual = deepEqual;
+
 // =========================================================================
 
 const remove = (element, array) => {
   for (let i = 0; i < array.length; i++) {
-    if (deepEqual(array[i], element)) {
+    if (array[i] == element) {
       array.splice(i, 1);
     }
   }
@@ -125,7 +127,7 @@ const addToListMap = (key, value, listMap) => {
   if (listMap[key]) {
     listMap[key].push(value);
   } else {
-    listMap[key] = value;
+    listMap[key] = [value];
   }
 
   return listMap;
@@ -161,7 +163,7 @@ exports.sort = sort;
 // =========================================================================
 
 const clone = (obj) => {
-  if (obj === null || typeof obj !== "object") {
+  if (obj == null || typeof obj !== "object") {
     return obj;
   }
   let result = {};
@@ -195,31 +197,33 @@ exports.getData = getData;
 // =========================================================================
 
 const setData = (obj, keys, value) => {
+  const clonedObj = clone(obj);
+
   if (keys.length === 0 || keys == null) {
     return value;
   }
 
   const [currentKey, ...restKeys] = keys;
 
-  if (typeof obj[currentKey] === "object") {
-    obj[currentKey] = Array.isArray(obj[currentKey])
+  if (typeof clonedObj[currentKey] === "object") {
+    clonedObj[currentKey] = Array.isArray(clonedObj[currentKey])
       ? [
-          ...obj[currentKey].map((item, index) => {
+          ...clonedObj[currentKey].map((item, index) => {
             if (index === restKeys[0]) {
-              return setData(obj[currentKey], restKeys, value);
+              return setData(item, restKeys.slice(1), value);
             }
             return item;
           }),
         ]
       : {
-          ...obj[currentKey],
-          [restKeys]: setData(obj[currentKey], restKeys, value),
+          ...clonedObj[currentKey],
+          [restKeys[0]]: setData(restKeys[0], restKeys.slice(1), value),
         };
   } else {
-    obj[currentKey] = setData(obj[currentKey], restKeys, value);
+    clonedObj[currentKey] = setData(clonedObj[currentKey], restKeys, value);
   }
 
-  return obj[currentKey];
+  return clonedObj;
 };
 
 exports.setData = setData;
