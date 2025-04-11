@@ -199,16 +199,16 @@ exports.getData = getData;
 // =========================================================================
 
 const setData = (obj, keys, value) => {
-  const clonedObj = clone(obj);
-
   if (keys.length === 0 || keys == null) {
     return value;
   }
 
+  let clonedObj = Array.isArray(obj) ? [...obj] : { ...obj };
+
   const [currentKey, ...restKeys] = keys;
 
-  if (typeof clonedObj[currentKey] === "object") {
-    clonedObj[currentKey] = Array.isArray(clonedObj[currentKey])
+  if (typeof obj[currentKey] === "object") {
+    clonedObj[currentKey] = Array.isArray(obj[currentKey])
       ? [
           ...clonedObj[currentKey].map((item, index) => {
             if (index === restKeys[0]) {
@@ -218,7 +218,7 @@ const setData = (obj, keys, value) => {
           }),
         ]
       : {
-          ...clonedObj[currentKey],
+          ...obj[currentKey],
           [restKeys[0]]: setData(restKeys[0], restKeys.slice(1), value),
         };
   } else {
