@@ -210,7 +210,7 @@ const setData = (obj, keys, value) => {
   if (typeof obj[currentKey] === "object") {
     clonedObj[currentKey] = Array.isArray(obj[currentKey])
       ? [
-          ...clonedObj[currentKey].map((item, index) => {
+          ...obj[currentKey].map((item, index) => {
             if (index === restKeys[0]) {
               return setData(item, restKeys.slice(1), value);
             }
