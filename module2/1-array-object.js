@@ -221,8 +221,42 @@ const setData = (obj, keys, value) => {
           ...obj[currentKey],
           [restKeys[0]]: setData(restKeys[0], restKeys.slice(1), value),
         };
+  }
+
+  return clonedObj;
+};
+
+const setData2 = (obj, path, value) => {
+  if (path.length === 0 || path == null) {
+    return value;
+  }
+  let clonedObj = Array.isArray(obj) ? [...obj] : { ...obj };
+
+  const [currentKey, ...restKeys] = path;
+
+  if (restKeys.length === 0 || restKeys == null) {
+    clonedObj[currentKey] = value;
+    return clonedObj;
+  }
+
+  const [currentKey1, ...restKeys1] = restKeys;
+
+  if (Array.isArray(obj[currentKey])) {
+    let clonedObj1 = [...obj[currentKey]];
+    clonedObj1[currentKey1] = setData(
+      obj[currentKey][currentKey1],
+      restKeys1,
+      value
+    );
+    clonedObj[currentKey] = clonedObj1;
   } else {
-    clonedObj[currentKey] = setData(clonedObj[currentKey], restKeys, value);
+    let clonedObj1 = { ...obj[currentKey] };
+    clonedObj1[currentKey1] = setData(
+      obj[currentKey][currentKey1],
+      restKeys1,
+      value
+    );
+    clonedObj[currentKey] = clonedObj1;
   }
 
   return clonedObj;
