@@ -262,4 +262,23 @@ const setData2 = (obj, path, value) => {
   return clonedObj;
 };
 
+const setData3 = (obj, path, value) => {
+  if (path.length === 0 || path == null) {
+    return value;
+  }
+
+  const [currentKey, ...restKeys] = path;
+
+  if (Array.isArray(obj)) {
+    let clone = [...obj];
+    clone[currentKey] = setData2(obj[currentKey], restKeys, value);
+    return clone;
+  } else {
+    return {
+      ...obj,
+      [currentKey]: setData2(obj[currentKey], restKeys, value),
+    };
+  }
+};
+
 exports.setData = setData;
