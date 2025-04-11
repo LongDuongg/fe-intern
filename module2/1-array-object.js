@@ -184,14 +184,14 @@ exports.deepEqual = deepEqual;
 
 // =========================================================================
 
-const getData = (obj, keys) => {
-  if (keys.length === 0) {
+const getData = (obj, path) => {
+  if (path.length === 0) {
     return obj;
   }
   if (obj === null) {
     return undefined;
   }
-  const [currentKey, ...restKeys] = keys;
+  const [currentKey, ...restKeys] = path;
   return getData(obj[currentKey], restKeys);
 };
 exports.getData = getData;
