@@ -28,10 +28,14 @@ const a2 = {
 // console.log(deepEqual(ha, luan));
 // console.log(deepEqual(a, a2));
 // console.log(deepEqual(null, undefined));
+// console.log(deepEqual(null, null));
+// console.log(deepEqual(null, null));
 
 // ======================================================================================================
 
+// Check again if the remove function works correctly
 const array = [
+  ha,
   ha,
   { name: "Quan" },
   { name: "Son" },
@@ -59,7 +63,7 @@ const array = [
 
 // console.log(merge({ name: "Quan" }, { age: 20 }));
 // console.log(
-//   merge({ name: "Quan", age: 23 }, { age: null }, { birthday: "26/02/2000" })
+//   merge2({ name: "Quan", age: 23 }, { age: null }, { birthday: "26/02/2000" })
 // );
 
 // ======================================================================================================

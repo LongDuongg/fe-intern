@@ -80,28 +80,28 @@ const fn = () => () => console.log("Hello");
 
 // hof
 // closure
-const fn2 = () => {
-  let a = 0;
-  return (n) => {
-    a++;
-    return a;
-  };
-};
+// const fn2 = () => {
+//   let a = 0;
+//   return (n) => {
+//     a++;
+//     return a;
+//   };
+// };
 
-const g = fn2();
+// const g = fn2();
 
-const v1 = g(1);
-const v2 = g(1);
-const v3 = g(1);
-console.log({ v1, v2, v3 });
+// const v1 = g(1);
+// const v2 = g(1);
+// const v3 = g(1);
+// console.log({ v1, v2, v3 });
 
-let m = 0;
-const h = (x) => {
-  // m++;
-  return x + 1;
-};
+// let m = 0;
+// const h = (x) => {
+//   // m++;
+//   return x + 1;
+// };
 
-const m1 = h(1);
-const m2 = h(1);
-const m3 = h(1);
-console.log({ m1, m2, m3 });
+// const m1 = h(1);
+// const m2 = h(1);
+// const m3 = h(1);
+// console.log({ m1, m2, m3 });

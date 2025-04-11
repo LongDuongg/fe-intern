@@ -22,10 +22,12 @@ exports.filter = filter;
 
 // =========================================================================
 
+// Check again this function
 const remove = (element, array) => {
   for (let i = 0; i < array.length; i++) {
     if (array[i] == element) {
       array.splice(i, 1);
+      i--; // Adjust index after removal . Check this line
     }
   }
   return array;
@@ -79,6 +81,8 @@ const merge = (obj1, obj2) => {
   return result;
 };
 
+exports.merge = merge;
+
 const merge2 = (...objs) => {
   let result = {};
   for (const obj of objs) {
@@ -89,7 +93,7 @@ const merge2 = (...objs) => {
   return result;
 };
 
-exports.merge = merge2;
+exports.merge2 = merge2;
 
 // =========================================================================
 
@@ -107,22 +111,39 @@ exports.addToListMap = addToListMap;
 
 // =========================================================================
 
+// const clone = (obj) => {
+//   if (obj == null || typeof obj !== "object") {
+//     return obj;
+//   }
+//   let result = {};
+//   for (const key in obj) {
+//     if (typeof obj[key] === "object") {
+//       result[key] = Array.isArray(obj[key])
+//         ? obj[key].map((item) => clone(item))
+//         : clone(obj[key]);
+//     } else {
+//       result[key] = obj[key];
+//     }
+//   }
+//   return result;
+// };
+// check again this function
 const clone = (obj) => {
   if (obj == null || typeof obj !== "object") {
     return obj;
   }
+
+  if (Array.isArray(obj)) {
+    return obj.map((item) => clone(item));
+  }
+
   let result = {};
   for (const key in obj) {
-    if (typeof obj[key] === "object") {
-      result[key] = Array.isArray(obj[key])
-        ? obj[key].map((item) => clone(item))
-        : clone(obj[key]);
-    } else {
-      result[key] = obj[key];
-    }
+    result[key] = clone(obj[key]);
   }
   return result;
 };
+
 exports.clone = clone;
 
 // =========================================================================
@@ -198,6 +219,7 @@ exports.getData = getData;
 
 // =========================================================================
 
+// Check again
 const setData = (obj, keys, value) => {
   if (keys.length === 0 || keys == null) {
     return value;
@@ -207,25 +229,29 @@ const setData = (obj, keys, value) => {
 
   const [currentKey, ...restKeys] = keys;
 
-  if (typeof obj[currentKey] === "object") {
-    clonedObj[currentKey] = Array.isArray(obj[currentKey])
-      ? [
-          ...obj[currentKey].map((item, index) => {
-            if (index === restKeys[0]) {
-              return setData(item, restKeys.slice(1), value);
-            }
-            return item;
-          }),
-        ]
-      : {
-          ...obj[currentKey],
-          [restKeys[0]]: setData(restKeys[0], restKeys.slice(1), value),
-        };
-  } else {
-    clonedObj[currentKey] = setData(obj[currentKey], restKeys, value);
-  }
+  clonedObj[currentKey] = setData(obj[currentKey], restKeys, value);
+
+  // if (typeof obj[currentKey] === "object") {
+  //   clonedObj[currentKey] = Array.isArray(obj[currentKey])
+  //     ? [
+  //         ...obj[currentKey].map((item, index) => {
+  //           if (index === restKeys[0]) {
+  //             return setData(item, restKeys.slice(1), value);
+  //           }
+  //           return item;
+  //         }),
+  //       ]
+  //     : {
+  //         ...obj[currentKey],
+  //         [restKeys[0]]: setData(restKeys[0], restKeys.slice(1), value),
+  //       };
+  // } else {
+  //   clonedObj[currentKey] = setData(obj[currentKey], restKeys, value);
+  // }
   return clonedObj;
 };
+
+exports.setData = setData;
 
 const setData2 = (obj, path, value) => {
   if (path.length === 0 || path == null) {
@@ -282,4 +308,4 @@ const setData3 = (obj, path, value) => {
   }
 };
 
-exports.setData = setData;
+exports.setData = setData3;
