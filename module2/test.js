@@ -14,8 +14,16 @@ const {
 
 const ha = { name: "Ha" };
 const luan = { name: "Luan" };
-const a = { name: "Ha", jobs: ["developer", "teacher"] };
-const a2 = { name: "Ha", jobs: ["developer", "teacher"] };
+const a = {
+  name: "Ha",
+  jobs: ["developer", "teacher"],
+  address: { city: "Ha Giang" },
+};
+const a2 = {
+  name: "Ha",
+  jobs: ["developer", "teacher"],
+  address: { city: "Ha Giang" },
+};
 
 // console.log(deepEqual(ha, luan));
 // console.log(deepEqual(a, a2));
@@ -111,7 +119,8 @@ const person = {
 
 // ======================================================================================================
 
-// console.log(getData(person, ["name"])););// console.log(getData(person, ["age"]));
+// console.log(getData(person, ["name"]));
+// console.log(getData(person, ["age"]));
 // console.log(getData(person, ["address", "city"]));
 // console.log(getData(person, ["address", "street"]));
 // console.log(getData(person, ["jobs", 0, "salary"]));
@@ -121,6 +130,8 @@ const person = {
 // console.log(setData(person, ["name"], "Nguyen Trai"));
 // console.log(setData(person, ["age"], 20));
 // console.log(setData(person, ["address", "city"], "Ha Giang"));
+// const newPerson = setData(person, ["jobs", 0, "title"], "senior developer");
+// console.log(newPerson);
 // console.log(setData(person, ["address", "street"], "Ta Hien"));
 // console.log(setData(person, ["hobbies", 0], "gaming"));
 // console.log(setData(person, ["jobs", 0, "title"], "senior developer"));
