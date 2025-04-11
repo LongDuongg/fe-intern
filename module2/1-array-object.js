@@ -221,8 +221,9 @@ const setData = (obj, keys, value) => {
           ...obj[currentKey],
           [restKeys[0]]: setData(restKeys[0], restKeys.slice(1), value),
         };
+  } else {
+    clonedObj[currentKey] = setData(obj[currentKey], restKeys, value);
   }
-
   return clonedObj;
 };
 
@@ -243,7 +244,7 @@ const setData2 = (obj, path, value) => {
 
   if (Array.isArray(obj[currentKey])) {
     let clonedObj1 = [...obj[currentKey]];
-    clonedObj1[currentKey1] = setData(
+    clonedObj1[currentKey1] = setData2(
       obj[currentKey][currentKey1],
       restKeys1,
       value
@@ -251,7 +252,7 @@ const setData2 = (obj, path, value) => {
     clonedObj[currentKey] = clonedObj1;
   } else {
     let clonedObj1 = { ...obj[currentKey] };
-    clonedObj1[currentKey1] = setData(
+    clonedObj1[currentKey1] = setData2(
       obj[currentKey][currentKey1],
       restKeys1,
       value
@@ -271,12 +272,12 @@ const setData3 = (obj, path, value) => {
 
   if (Array.isArray(obj)) {
     let clone = [...obj];
-    clone[currentKey] = setData2(obj[currentKey], restKeys, value);
+    clone[currentKey] = setData3(obj[currentKey], restKeys, value);
     return clone;
   } else {
     return {
       ...obj,
-      [currentKey]: setData2(obj[currentKey], restKeys, value),
+      [currentKey]: setData3(obj[currentKey], restKeys, value),
     };
   }
 };
