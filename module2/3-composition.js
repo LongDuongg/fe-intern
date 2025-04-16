@@ -40,15 +40,15 @@ const addTitle = (name) => {
 // composition of the above functions
 const formatUser = (user) => addTitle(toUpperCase(getFullName(user)));
 
-const formatUser2 = (user) => pipe(getFullName, toUpperCase, addTitle)(user);
+const formatUser2 = pipe(getFullName, toUpperCase, addTitle);
 
 // console.log(formatUser({ firstName: "John", lastName: "Doe" }));
 // console.log(formatUser({ firstName: "Jane" })); //
 // console.log(formatUser({}));
 
-// console.log(formatUser({ firstName: "John", lastName: "Doe" }));
-// console.log(formatUser({ firstName: "Jane" })); //
-// console.log(formatUser({}));
+// console.log(formatUser2({ firstName: "John", lastName: "Doe" }));
+// console.log(formatUser2({ firstName: "Jane" })); //
+// console.log(formatUser2({}));
 
 // =========================================================================
 
@@ -109,8 +109,7 @@ const sortNames = (names) => names.sort();
 const processUsers = (res) =>
   sortNames(mapUserNames(filterActive(extractData(res))));
 
-const processUsers2 = (res) =>
-  pipe(extractData, filterActive, mapUserNames, sortNames)(res);
+const processUsers2 = pipe(extractData, filterActive, mapUserNames, sortNames);
 
 const apiResponse = {
   data: [
@@ -176,12 +175,17 @@ const removePunctuation = (str) => {
 const toKebabCase = (str) => str.toLowerCase().split(" ").join("-");
 
 const limitLengthSafely = (max) => (str) => {
-  if (str.length <= max) return str;
+  if (str.length <= max) {
+    return str;
+  }
+
   const words = str.split("-");
   let result = "";
 
   for (let word of words) {
-    if ((result + word).length > max) break;
+    if ((result + word).length > max) {
+      break;
+    }
     result += (result ? "-" : "") + word;
   }
 
@@ -194,7 +198,7 @@ const createSlugGenerator = ({ maxLength }) => {
     limitLengthSafely(maxLength)(toKebabCase(removePunctuation(title)));
 };
 
-const generateSlug = createSlugGenerator({ maxLength: 50 });
+const generateSlug = createSlugGenerator({ maxLength: 40 });
 
 console.log(
   generateSlug(
