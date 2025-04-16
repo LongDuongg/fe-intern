@@ -125,51 +125,59 @@ const apiResponse = {
 // =========================================================================
 
 // Generate SEO-Friendly URLs
+// const removePunctuation = (str) => {
+//   const punctuations = [
+//     ".",
+//     ",",
+//     "!",
+//     "?",
+//     ":",
+//     ";",
+//     '"',
+//     "'",
+//     "(",
+//     ")",
+//     "[",
+//     "]",
+//     "{",
+//     "}",
+//     "-",
+//     "_",
+//     "/",
+//     "\\",
+//     "@",
+//     "#",
+//     "$",
+//     "%",
+//     "^",
+//     "&",
+//     "*",
+//     "=",
+//     "+",
+//     "<",
+//     ">",
+//     "|",
+//     "`",
+//     "~",
+//   ];
+//   let cleanStr = "";
+
+//   for (let char of str) {
+//     if (!punctuations.includes(char)) {
+//       cleanStr += char;
+//     }
+//   }
+
+//   // Replace multiple spaces with a single space
+//   return cleanStr.replace(/\s+/g, " ").trim();
+// };
+
+// Use Regex instead
 const removePunctuation = (str) => {
-  const punctuations = [
-    ".",
-    ",",
-    "!",
-    "?",
-    ":",
-    ";",
-    '"',
-    "'",
-    "(",
-    ")",
-    "[",
-    "]",
-    "{",
-    "}",
-    "-",
-    "_",
-    "/",
-    "\\",
-    "@",
-    "#",
-    "$",
-    "%",
-    "^",
-    "&",
-    "*",
-    "=",
-    "+",
-    "<",
-    ">",
-    "|",
-    "`",
-    "~",
-  ];
-  let cleanStr = "";
-
-  for (let char of str) {
-    if (!punctuations.includes(char)) {
-      cleanStr += char;
-    }
-  }
-
-  // Replace multiple spaces with a single space
-  return cleanStr.replace(/\s+/g, " ").trim();
+  return str
+    .replace(/[.,!?:;"'()\[\]{}\-_/\\@#$%^&*+=<>|`~]/g, "") // remove punctuation
+    .replace(/\s+/g, " ") // replace multiple spaces with a single space
+    .trim(); // remove leading/trailing spaces
 };
 
 const toKebabCase = (str) => str.toLowerCase().split(" ").join("-");
