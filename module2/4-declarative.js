@@ -62,4 +62,73 @@ const countVowels = (arr) => {
 // console.log(countVowels(["this", "is", "a", "longer", "array"]));
 // console.log(countVowels(["Apple", "bAnAnA", "CHERRY", "date", "elderberry"]));
 
-// write a function (or series of functions) that takes in an array of numbers and returns an an array of only the unique num
+// write a function (or series of functions) that takes in a string of word and returns an an array of only the unique num.
+const unique = (arr) =>
+  arr.reduce(
+    (acc, number) => (acc.includes(number) ? acc : [...acc, number]),
+    []
+  );
+
+// console.log(unique([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+// console.log(unique([1, 1, 2, 3, 4, 5, 6, 3]));
+// console.log(unique([3, 3, 3, 4, 4, 4, 5, 6, 7, 7, 7]));
+
+// write a function (or series of functions) that takes in an array of numbers and capitalizes the last letter of every word, removes any word that has an even amount of letters, and returns a string.
+const isEven = (number) => number % 2 === 0;
+
+const capitalizeLastLetter = (word) => {
+  return (
+    word.slice(0, word.length - 1) + word.slice(word.length - 1).toUpperCase()
+  );
+};
+
+const trimAll = (phrase) => {
+  return phrase.replace(/\s+/g, " ").trim();
+};
+
+const capitalizeLastLetterInWords = (string) => {
+  const wordArr = trimAll(string).split(" ");
+
+  return wordArr
+    .filter((word) => !isEven(word.length))
+    .map((word) => capitalizeLastLetter(word))
+    .join(" ");
+};
+
+// console.log(capitalizeLastLetterInWords("hey how do you feel today"));
+// console.log(
+//   capitalizeLastLetterInWords("this      is a     longer array of       words")
+// );
+
+// write a function (or series of functions) that takes in an array of numbers, squares every number, removes all numbers that's square is even, converts every number to a string, and returns an array.
+const squareAndRemoveEven = (arr) => {
+  return arr
+    .map((num) => num * num)
+    .filter((num) => num % 2 !== 0)
+    .map((num) => num.toString());
+};
+
+// console.log(squareAndRemoveEven([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+// console.log(squareAndRemoveEven([10, 11]));
+
+//write a function (or series of functions) that takes in an array of strings, removes duplicate strings, removes all of the strings with an even number of letters, and multiplies the remaining letter counts together to return a product.
+const removeDuplicates = (arr) => {
+  return arr.filter((str, index) => arr.indexOf(str) === index);
+};
+
+const removeEvenLength = (arr) => {
+  return arr.filter((str) => str.length % 2 !== 0);
+};
+
+const multiplyLetterCounts = (arr) => {
+  return arr.reduce((acc, str) => acc * str.length, 1);
+};
+
+const productOfLetterCounts = (arr) => {
+  return multiplyLetterCounts(removeEvenLength(removeDuplicates(arr)));
+};
+console.log(
+  productOfLetterCounts(["bird", "cat", "snake", "cat", "dog", "frog"])
+);
+
+console.log(productOfLetterCounts(["this", "is", "a", "test", "test"]));
