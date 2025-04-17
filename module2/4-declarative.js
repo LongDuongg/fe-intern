@@ -47,7 +47,7 @@ const sumOfLetters = (arr) => {
 
 // write a function (or series of functions) that takes in an array of strings and returns an object with the vowel count of all of the strings combined
 const countVowels = (arr) => {
-  const vowels = ["u", "e", "o", "a", "i", "h"];
+  const vowels = ["u", "e", "o", "a", "i"];
 
   const countMap = vowels.reduce((acc, letter) => {
     acc[letter] = 0;
@@ -57,9 +57,9 @@ const countVowels = (arr) => {
   // console.log(countMap);
 
   return arr
-    .join("") // Combine all strings
-    .toLowerCase() // Make it case-insensitive
-    .split("") // Split into characters
+    .join("")
+    .toLowerCase()
+    .split("")
     .reduce((acc, char) => {
       if (vowels.includes(char)) {
         acc[char] = acc[char] + 1;
@@ -73,10 +73,10 @@ const countVowels = (arr) => {
 // console.log(countVowels(["Apple", "bAnAnA", "CHERRY", "date", "elderberry"]));
 
 // write a function (or series of functions) that takes in a string of word and returns an an array of only the unique num.
-// Check again
 const unique = (arr) => {
-  // Use a Set to store unique numbers and convert it back to an array
-  return [...new Set(arr)];
+  return arr.filter(
+    (number) => arr.indexOf(number) === arr.lastIndexOf(number)
+  );
 };
 
 // console.log(unique([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
@@ -89,10 +89,6 @@ const isEven = (number) => number % 2 === 0;
 const capitalizeLastLetter = (word) => {
   return word.slice(0, word.length - 1) + word[word.length - 1].toUpperCase();
 };
-
-// const trimAll = (phrase) => {
-//   return phrase.replace(/\s+/g, " ").trim();
-// };
 
 const capitalizeLastLetterInWords = (string) => {
   return string
