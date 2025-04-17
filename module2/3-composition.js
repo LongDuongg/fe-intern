@@ -7,6 +7,8 @@ const pipe = (...functions) => {
   };
 };
 
+exports.pipe = pipe;
+
 const pipe2 =
   (...functions) =>
   (arg) =>
@@ -208,8 +210,8 @@ const createSlugGenerator = ({ maxLength }) => {
 
 const generateSlug = createSlugGenerator({ maxLength: 40 });
 
-console.log(
-  generateSlug(
-    "10 Tips to Write Great JavaScript Code for Beginners and Experts!"
-  )
-);
+// console.log(
+//   generateSlug(
+//     "10 Tips to Write Great JavaScript Code for Beginners and Experts!"
+//   )
+// );
