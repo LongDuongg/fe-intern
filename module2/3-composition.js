@@ -29,8 +29,8 @@ const triple = (x) => x * 3;
 
 // Format and Display User Information
 const getFullName = (user) => {
-  const { firstName = "", lastName = "" } = user;
-  return `${firstName} ${lastName}`;
+  const { firstName, lastName } = user;
+  return [firstName, lastName].filter((v) => v).join(" ");
 };
 
 const toUpperCase = (str) => str.toUpperCase();
@@ -80,7 +80,7 @@ const toDollars = (priceInCents) =>
   priceInCents.map((priceInCent) => priceInCent / 100);
 
 const applyDiscount = (discount) => (prices) =>
-  prices.map((price) => price * discount);
+  prices.map((price) => price * (1 - discount)); // checkagain
 
 const formatPrice = (prices) =>
   prices.map((price) => (price === 0 ? "Free" : `$${price.toFixed(2)}`));
@@ -193,7 +193,7 @@ const limitLengthSafely = (max) => (str) => {
   let result = "";
 
   for (let word of words) {
-    if ((result + word).length > max) {
+    if (result.length + word.length > max) {
       break;
     }
     result += (result ? "-" : "") + word;

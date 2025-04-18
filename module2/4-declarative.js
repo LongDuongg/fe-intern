@@ -50,8 +50,10 @@ const countVowels = (arr) => {
   const vowels = ["u", "e", "o", "a", "i"];
 
   const countMap = vowels.reduce((acc, letter) => {
-    acc[letter] = 0;
-    return acc;
+    return {
+      ...acc,
+      [letter]: 0,
+    };
   }, {});
 
   // console.log(countMap);
@@ -62,10 +64,11 @@ const countVowels = (arr) => {
     .split("")
     .reduce((acc, char) => {
       if (vowels.includes(char)) {
-        acc[char] = acc[char] + 1;
+        return { ...acc, [char]: acc[char] + 1 };
+      } else {
+        return acc;
       }
-      return acc;
-    }, countMap); // Start with all vowels at 0
+    }, countMap);
 };
 
 // console.log(countVowels(["hey", "hi", "hello"]));
