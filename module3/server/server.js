@@ -5,6 +5,10 @@ const path = require("path");
 
 const PORT = 3000;
 
+const getFilePath = (fileName) => path.join(__dirname, fileName);
+
+const stringify = (data) => JSON.stringify(data);
+
 const sendResponse = (
   res,
   data,
@@ -57,7 +61,7 @@ const server = http.createServer((req, res) => {
       let payload = JSON.parse(body);
       sendResponse(
         res,
-        JSON.stringify({
+        stringify({
           queryParams: parsedUrl.query,
           payload: payload,
         })
@@ -86,11 +90,11 @@ const server = http.createServer((req, res) => {
         if (Object.keys(data).length === 0) {
           throw new Error("User not found");
         } else {
-          sendResponse(res, JSON.stringify(data));
+          sendResponse(res, stringify(data));
         }
       })
       .catch((error) => {
-        sendError(res, JSON.stringify({ error: error.message }));
+        sendError(res, stringify({ error: error.message }));
       });
 
     // 5.
