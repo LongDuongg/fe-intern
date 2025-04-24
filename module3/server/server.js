@@ -6,13 +6,13 @@ const path = require("path");
 const PORT = 3000;
 
 const server = http.createServer((req, res) => {
-  console.log({
-    method: req.method,
-    url: req.url,
-  });
+  // console.log({
+  //   method: req.method,
+  //   url: req.url,
+  // });
 
   const parsedUrl = url.parse(req.url, true);
-  console.dir(`parsedUrl : ${JSON.stringify(parsedUrl)}`);
+  // console.dir(`parsedUrl : ${JSON.stringify(parsedUrl)}`);
 
   const pathname = parsedUrl.pathname;
 
@@ -60,25 +60,24 @@ const server = http.createServer((req, res) => {
       }
     });
 
-    // 4.
+    // 4
   } else if (req.method === "GET" && pathname.startsWith("/users/")) {
     const userId = pathname.split("/")[2];
 
     fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("User not found");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.write(JSON.stringify(data));
-        res.end();
+        if (Object.keys(data).length === 0) {
+          throw new Error("User not found");
+        } else {
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.write(JSON.stringify(data));
+          res.end();
+        }
       })
       .catch((error) => {
         res.writeHead(404, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ error: "Failed to fetch user" }));
+        res.end(JSON.stringify({ error: error.message }));
       });
 
     // 5.
