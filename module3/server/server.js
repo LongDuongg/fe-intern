@@ -7,99 +7,104 @@ const PORT = 3000;
 
 const getFilePath = (fileName) => path.join(__dirname, fileName);
 
-const stringify = (data) => JSON.stringify(data);
-
-const sendResponse = (
+const sendRes = ({
   res,
   data,
-  header = { "Content-Type": "application/json" },
-  statusCode = 200
-) => {
-  res.writeHead(statusCode, header);
-  res.write(data);
+  statusCode = 200,
+  contentType = "application/json",
+}) => {
+  res.writeHead(statusCode, { "Content-Type": contentType });
+  res.write(JSON.stringify(data));
   res.end();
 };
 
-const sendError = (
-  res,
-  message,
-  statusCode = 404,
-  header = { "Content-Type": "text/plain" }
-) => {
-  res.writeHead(statusCode, header);
-  res.end(message);
+const sendError = ({ res, message, statusCode = 500 }) => {
+  sendRes({ res, data: { error: message }, statusCode });
 };
 
 const readFileAndRespond = (res, filePath, contentType) => {
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      sendError(res, `Error loading ${filePath}`, 500);
-    } else {
-      sendResponse(res, data, { "Content-Type": contentType });
+      sendError({
+        res,
+        message: `Error loading ${filePath}`,
+      });
+      return;
     }
+    res.writeHead(200, { "Content-Type": contentType });
+    res.write(data);
+    res.end();
   });
 };
 
 const server = http.createServer((req, res) => {
-  // console.log({
-  //   method: req.method,
-  //   url: req.url,
-  // });
-
   const parsedUrl = url.parse(req.url, true);
-
-  // console.dir(`parsedUrl : ${JSON.stringify(parsedUrl)}`);
 
   const pathname = parsedUrl.pathname;
 
   // 1.
   if (req.method === "GET" && pathname === "/") {
-    const filePath = getFilePath("index.html");
+    readFileAndRespond(res, getFilePath("index.html"), "text/html");
+    return;
+  }
 
-    readFileAndRespond(res, filePath, "text/html");
-
-    // 2.
-  } else if (req.method === "POST" && pathname === "/echo") {
+  // 2.
+  if (req.method === "POST" && pathname === "/echo") {
     let body = "";
     req.on("data", (chunk) => (body += chunk));
     req.on("end", () => {
       let payload = JSON.parse(body);
-      sendResponse(
+
+      sendRes({
         res,
-        stringify({
+        data: {
           queryParams: parsedUrl.query,
           payload: payload,
-        })
-      );
+        },
+      });
     });
+    return;
+  }
 
-    // 3.
-  } else if (req.method === "GET" && pathname === "/image") {
-    const imgPath = getFilePath("image.png");
+  // 3.
+  if (req.method === "GET" && pathname === "/image") {
+    readFileAndRespond(res, getFilePath("image.png"), "image/png");
+    return;
+  }
 
-    readFileAndRespond(res, imgPath, "image/png");
-
-    // 4
-  } else if (req.method === "GET" && pathname.startsWith("/users/")) {
+  // 4
+  if (req.method === "GET" && pathname.startsWith("/users/")) {
     const userId = pathname.split("/")[2];
 
     fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        if (Object.keys(data).length === 0) {
-          throw new Error("User not found");
+        console.log(data);
+        if (!data.id) {
+          sendError({
+            res,
+            message: "User not found",
+            statusCode: 404,
+          });
         } else {
-          sendResponse(res, stringify(data));
+          sendRes({ res, data });
         }
       })
       .catch((error) => {
-        sendError(res, stringify({ error: error.message }));
+        sendError({
+          res,
+          message: error.message,
+        });
       });
-
-    // 5.
-  } else {
-    sendError(res, "404 Not Found");
+    return;
   }
+
+  // 5.
+  sendError({
+    res,
+    message: "404 Not Found",
+    statusCode: 404,
+  });
 });
 
 server.listen(PORT, () => {
