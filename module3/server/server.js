@@ -16,6 +16,16 @@ const sendResponse = (
   res.end();
 };
 
+const sendError = (
+  res,
+  message,
+  statusCode = 404,
+  header = { "Content-Type": "text/plain" }
+) => {
+  res.writeHead(statusCode, header);
+  res.end(message);
+};
+
 const server = http.createServer((req, res) => {
   // console.log({
   //   method: req.method,
@@ -33,8 +43,7 @@ const server = http.createServer((req, res) => {
     fs.readFile(filePath, (err, data) => {
       console.log(`data type: ${typeof data}`);
       if (err) {
-        res.writeHead(500);
-        res.end("Error loading index.html");
+        sendError(res, "Error loading index.html", 500);
       } else {
         sendResponse(res, data, { "Content-Type": "text/html" });
       }
@@ -61,8 +70,7 @@ const server = http.createServer((req, res) => {
     fs.readFile(imgPath, (err, data) => {
       console.log(`data type: ${typeof data}`);
       if (err) {
-        res.writeHead(404, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ error: "Image not found" }));
+        sendError(res, JSON.stringify({ error: "Image not found" }));
       } else {
         sendResponse(res, data, { "Content-Type": "image/png" });
       }
@@ -82,14 +90,12 @@ const server = http.createServer((req, res) => {
         }
       })
       .catch((error) => {
-        res.writeHead(404, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ error: error.message }));
+        sendError(res, JSON.stringify({ error: error.message }));
       });
 
     // 5.
   } else {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("404 Not Found");
+    sendError(res, "404 Not Found");
   }
 });
 
