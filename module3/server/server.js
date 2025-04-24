@@ -47,6 +47,7 @@ const server = http.createServer((req, res) => {
   // });
 
   const parsedUrl = url.parse(req.url, true);
+
   // console.dir(`parsedUrl : ${JSON.stringify(parsedUrl)}`);
 
   const pathname = parsedUrl.pathname;
@@ -54,14 +55,6 @@ const server = http.createServer((req, res) => {
   // 1.
   if (req.method === "GET" && pathname === "/") {
     const filePath = getFilePath("index.html");
-    // fs.readFile(filePath, (err, data) => {
-    //   // console.log(`data type: ${typeof data}`);
-    //   if (err) {
-    //     sendError(res, "Error loading index.html", 500);
-    //   } else {
-    //     sendResponse(res, data, { "Content-Type": "text/html" });
-    //   }
-    // });
 
     readFileAndRespond(res, filePath, "text/html");
 
@@ -83,14 +76,7 @@ const server = http.createServer((req, res) => {
     // 3.
   } else if (req.method === "GET" && pathname === "/image") {
     const imgPath = getFilePath("image.png");
-    // fs.readFile(imgPath, (err, data) => {
-    //   // console.log(`data type: ${typeof data}`);
-    //   if (err) {
-    //     sendError(res, stringify({ error: "Image not found" }));
-    //   } else {
-    //     sendResponse(res, data, { "Content-Type": "image/png" });
-    //   }
-    // });
+
     readFileAndRespond(res, imgPath, "image/png");
 
     // 4
