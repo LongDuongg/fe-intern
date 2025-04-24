@@ -5,6 +5,17 @@ const path = require("path");
 
 const PORT = 3000;
 
+const sendResponse = (
+  res,
+  data,
+  header = { "Content-Type": "application/json" },
+  statusCode = 200
+) => {
+  res.writeHead(statusCode, header);
+  res.write(data);
+  res.end();
+};
+
 const server = http.createServer((req, res) => {
   // console.log({
   //   method: req.method,
@@ -20,13 +31,12 @@ const server = http.createServer((req, res) => {
   if (req.method === "GET" && pathname === "/") {
     const filePath = path.join(__dirname, "index.html");
     fs.readFile(filePath, (err, data) => {
+      console.log(`data type: ${typeof data}`);
       if (err) {
         res.writeHead(500);
         res.end("Error loading index.html");
       } else {
-        res.writeHead(200, { "Content-Type": "text/html" });
-        res.write(data);
-        res.end();
+        sendResponse(res, data, { "Content-Type": "text/html" });
       }
     });
 
@@ -36,27 +46,25 @@ const server = http.createServer((req, res) => {
     req.on("data", (chunk) => (body += chunk));
     req.on("end", () => {
       let payload = JSON.parse(body);
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.write(
+      sendResponse(
+        res,
         JSON.stringify({
           queryParams: parsedUrl.query,
           payload: payload,
         })
       );
-      res.end();
     });
 
     // 3.
   } else if (req.method === "GET" && pathname === "/image") {
     const imgPath = path.join(__dirname, "image.png");
     fs.readFile(imgPath, (err, data) => {
+      console.log(`data type: ${typeof data}`);
       if (err) {
         res.writeHead(404, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ error: "Image not found" }));
       } else {
-        res.writeHead(200, { "Content-Type": "image/png" });
-        res.write(data);
-        res.end();
+        sendResponse(res, data, { "Content-Type": "image/png" });
       }
     });
 
@@ -70,9 +78,7 @@ const server = http.createServer((req, res) => {
         if (Object.keys(data).length === 0) {
           throw new Error("User not found");
         } else {
-          res.writeHead(200, { "Content-Type": "application/json" });
-          res.write(JSON.stringify(data));
-          res.end();
+          sendResponse(res, JSON.stringify(data));
         }
       })
       .catch((error) => {
