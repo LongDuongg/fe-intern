@@ -1,0 +1,44 @@
+.app-1hj {
+  position: relative;
+
+  & > .color-area {
+    img {
+      width: 100%;
+    }
+  }
+
+  & > .back-card {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+  }
+
+  & > .front-card {
+    position: absolute;
+    top: 153px;
+    left: 20px;
+  }
+
+  & > .details-form {
+    margin-top: 70px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  // @media screen and (min-width: 768px) {
+  //   flex-direction: row;
+
+  //   .left-area-1la {
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  //     flex: 1 0 40%;
+  //   }
+
+  //   .right-area-1ra {
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  //     flex: 0, 0, 60%;
+  //   }
+  // }
+}

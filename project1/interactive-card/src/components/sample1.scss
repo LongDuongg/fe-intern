@@ -1,0 +1,13 @@
+.sample-3as {
+  color: red;
+
+  & > .label {
+    color: blue;
+  }
+
+  & > .table {
+    & > .label {
+      color: yellow;
+    }
+  }
+}
