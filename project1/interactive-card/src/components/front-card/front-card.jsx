@@ -1,7 +1,7 @@
 import "./front-card.scss";
 import cn from "classnames";
 
-import frontCard from "../assets/bg-card-front.png";
+import frontCard from "../../assets/bg-card-front.png";
 
 function FrontCard({ className }) {
   return (

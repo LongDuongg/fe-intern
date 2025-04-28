@@ -1,6 +1,6 @@
 import "./back-card.scss";
 import cn from "classnames";
-import backCard from "../assets/bg-card-back.png";
+import backCard from "../../assets/bg-card-back.png";
 
 function BackCard({ className }) {
   return (
