@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="app-1hj">
       <div className="color-area">
-        <img src={backgroundImage} alt="" />
+        <img src={null} alt="" />
       </div>
       <BackCard className="back-card" />
       <FrontCard

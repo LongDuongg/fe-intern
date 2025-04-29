@@ -4,6 +4,7 @@
 
   & > .color-area {
     img {
+      content: url("./assets/bg-main-mobile.png");
       width: 100%;
     }
   }
@@ -34,6 +35,7 @@
       width: 36%;
       
       img {
+        content: url("./assets/bg-main-desktop.png");
         width: 100%;
         height: 100vh;
       }
@@ -41,14 +43,20 @@
 
     & > .back-card {
       position: absolute;
-      top: 574px;
-      left: 266px;
+      top: 50%;
+      left: unset;
+      right: calc(100% - 36%);
+      transform: translate(146px,10px);
+      
     }
   
     & > .front-card {
       position: absolute;
-      top: 353px;
-      left: 191px;
+      top: unset;
+      left: unset;
+      right: calc(100% - 36%);
+      bottom: 50%;
+      transform: translate(80px,-10px);
     }
   
     & > .details-form {
