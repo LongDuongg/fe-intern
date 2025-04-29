@@ -13,7 +13,12 @@ function App() {
         <img src={backgroundImage} alt="" />
       </div>
       <BackCard className="back-card" />
-      <FrontCard className="front-card" />
+      <FrontCard
+        className="front-card"
+        cardNumber="0000 0000 0000 0000"
+        cardHolder="Jane Appleseed"
+        expDate="00/00"
+      />
       <DetailsForm className="details-form" />
     </div>
   );
