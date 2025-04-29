@@ -1,6 +1,7 @@
 import "./details-form.scss";
 import cn from "classnames";
 import InputField from "./input-field/input-field";
+import Button from "./button/button";
 
 function DetailsForm({ className }) {
   return (
@@ -15,6 +16,7 @@ function DetailsForm({ className }) {
         placeholder="e.g. 1234 5678 9123 4567"
         type="text"
       />
+      <Button label="Confirm" />
     </div>
   );
 }
