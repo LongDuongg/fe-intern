@@ -1,0 +1,78 @@
+import { useState } from "react";
+import { cs } from "../common/chain-services.js";
+import { State } from "../common/react/state.js";
+
+function ModalToggle({ render }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen((prev) => !prev);
+
+  return render({ isOpen, toggle });
+}
+
+function Sample3() {
+  return (
+    <ModalToggle
+      render={({ isOpen, toggle }) => (
+        <>
+          <button onClick={toggle}>
+            {isOpen ? "Close Modal" : "Open Modal"}
+          </button>
+          {isOpen && (
+            <div className="modal">
+              <p>This is a modal!</p>
+              <button onClick={toggle}>Close</button>
+            </div>
+          )}
+        </>
+      )}
+    />
+  );
+}
+exports.Sample3 = Sample3;
+
+function ModalToggleCs({ next: rootNext }) {
+  return cs(
+    ["open", ({}, next) => State({ initValue: false, next })],
+    ({ open }) => {
+      return rootNext({
+        isOpen: open.value,
+        toggle: () => {
+          open.change((v) => !v);
+        },
+      });
+    }
+  );
+}
+
+function Sample3Cs() {
+  return cs(["modal", ({}, next) => ModalToggleCs({ next })], ({ modal }) => (
+    <>
+      <button onClick={modal.toggle}>
+        {modal.isOpen ? "Close Modal" : "Open Modal"}
+      </button>
+      {modal.isOpen && (
+        <div className="modal">
+          <p>This is a modal!</p>
+          <button onClick={modal.toggle}>Close</button>
+        </div>
+      )}
+    </>
+  ));
+}
+exports.Sample3Cs = Sample3Cs;
+
+const SampleCounter = () => {
+  return cs(
+    ["count", ({}, next) => State({ initValue: 0, next })],
+    ({ count }) => (
+      <div>
+        Count: {count.value}
+        <button onClick={() => count.change((v) => v + 1)}>+</button>
+        <button onClick={() => count.change((v) => v - 1)}>-</button>
+      </div>
+    )
+  );
+};
+
+exports.SampleCounter = SampleCounter;
