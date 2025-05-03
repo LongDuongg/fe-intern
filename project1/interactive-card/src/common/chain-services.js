@@ -4,6 +4,8 @@ function cs() {
 exports.cs = cs;
 
 const gather = (chain, prev, index) => {
+  console.log(`prev: ${JSON.stringify(prev)}`);
+  console.log(`index: ${index}`);
   const first = chain[index];
   let name;
   let fn;
@@ -22,6 +24,8 @@ const gather = (chain, prev, index) => {
     chain.length <= index + 1
       ? null
       : (value) => {
+          // console.log(`value: ${value}`);
+          console.log(`value: ${JSON.stringify(value)}`);
           let values;
           if (name != null && name !== "") {
             values = Object.assign({}, prev);
@@ -29,7 +33,8 @@ const gather = (chain, prev, index) => {
           } else {
             values = prev;
           }
+          console.log(`values: ${JSON.stringify(values)}`);
           return gather(chain, values, index + 1);
-        },
+        }
   );
 };

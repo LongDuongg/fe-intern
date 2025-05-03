@@ -45,33 +45,41 @@ function ModalToggleCs({ next: rootNext }) {
   );
 }
 
-function Sample3Cs() {
-  return cs(["modal", ({}, next) => ModalToggleCs({ next })], ({ modal }) => (
-    <>
-      <button onClick={modal.toggle}>
-        {modal.isOpen ? "Close Modal" : "Open Modal"}
-      </button>
-      {modal.isOpen && (
-        <div className="modal">
-          <p>This is a modal!</p>
-          <button onClick={modal.toggle}>Close</button>
-        </div>
-      )}
-    </>
-  ));
-}
-exports.Sample3Cs = Sample3Cs;
+// function Sample3Cs() {
+//   return cs(["modal", ({}, next) => ModalToggleCs({ next })], ({ modal }) => (
+//     <>
+//       <button onClick={modal.toggle}>
+//         {modal.isOpen ? "Close Modal" : "Open Modal"}
+//       </button>
+//       {modal.isOpen && (
+//         <div className="modal">
+//           <p>This is a modal!</p>
+//           <button onClick={modal.toggle}>Close</button>
+//         </div>
+//       )}
+//     </>
+//   ));
+// }
+// exports.Sample3Cs = Sample3Cs;
 
 const SampleCounter = () => {
   return cs(
-    ["count", ({}, next) => State({ initValue: 0, next })],
-    ({ count }) => (
-      <div>
-        Count: {count.value}
-        <button onClick={() => count.change((v) => v + 1)}>+</button>
-        <button onClick={() => count.change((v) => v - 1)}>-</button>
-      </div>
-    )
+    [
+      "aaa",
+      ({}, next) => (
+        <div>
+          <div>
+            I am Foo
+            {next("Foo")}
+          </div>
+          <div>
+            I am Bar
+            {next("Bar")}
+          </div>
+        </div>
+      ),
+    ],
+    ({ aaa }) => <div>Hello {aaa}</div>
   );
 };
 

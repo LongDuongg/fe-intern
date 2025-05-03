@@ -5,7 +5,7 @@ import backgroundImage from "./assets/bg-main-mobile.png";
 import Sample1 from "./components/sample1";
 import Sample2 from "./components/sample2";
 import DetailsForm from "./components/details-form/details-form";
-import { Sample3, Sample3Cs, SampleCounter } from "./components/sample3";
+import { SampleCounter } from "./components/sample3";
 
 function App() {
   return (
@@ -21,7 +21,6 @@ function App() {
         expDate="00/00"
       />
       <DetailsForm className="details-form" />
-      {/* <Sample3Cs /> */}
       {/* <SampleCounter /> */}
     </div>
   );
