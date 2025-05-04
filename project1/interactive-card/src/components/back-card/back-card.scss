@@ -1,8 +1,20 @@
 .back-card-2bc {
+  position: relative;
   width: 300px;
   
   img {
     width: 100%;
   }
 
+  & > .cvc {
+    position: absolute;
+    width: fit-content;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -48%);
+    font-size: 26px;
+    color: #fff;
+    text-align: center;
+  }
 }

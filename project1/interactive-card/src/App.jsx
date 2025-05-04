@@ -19,13 +19,8 @@ function App() {
           <div className="color-area">
             <img src={null} alt="" />
           </div>
-          <BackCard className="back-card" />
-          <FrontCard
-            className="front-card"
-            cardNumber="0000 0000 0000 0000"
-            cardHolder="Jane Appleseed"
-            expDate="00/00"
-          />
+          <BackCard card={card} className="back-card" />
+          <FrontCard className="front-card" card={card} />
           <DetailsForm card={card} className="details-form" />
           {/* <SampleCounter /> */}
         </div>
