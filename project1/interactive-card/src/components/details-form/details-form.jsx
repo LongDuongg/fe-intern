@@ -1,7 +1,6 @@
 import "./details-form.scss";
 import cn from "classnames";
 import FormGroup from "./form-group/form-group";
-import Button from "./button/button";
 import { cs } from "../../common/chain-services.js";
 import { scope } from "../../common/react/scope.js";
 import { bindInput } from "../../common/react/bind-input.js";
