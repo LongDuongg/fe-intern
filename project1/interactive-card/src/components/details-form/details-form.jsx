@@ -3,75 +3,55 @@ import cn from "classnames";
 import FormGroup from "./form-group/form-group";
 import Button from "./button/button";
 import { cs } from "../../common/chain-services.js";
+import { scope } from "../../common/react/scope.js";
+import { bindInput } from "../../common/react/bind-input.js";
 
-function DetailsForm({ className }) {
-  return (
-    <div className={cn("details-form-1ms", className)}>
-      {cs(
-        [
-          "formGroup",
-          ({}, next) =>
-            FormGroup({ label: "Cardholder Name", children: next() }),
-        ],
-        ({ formGroup }) => (
+function DetailsForm({ card, className }) {
+  return cs(() => {
+    return (
+      <div className={cn("details-form-1ms", className)}>
+        <FormGroup label="Cardholder Name">
           <input
             type="text"
             placeholder="e.g. Jane Doe"
-            // value={formGroup.value}
-            // onChange={formGroup.onChange(value)}
+            {...bindInput(scope(card, ["name"]))}
           />
-        )
-      )}
+        </FormGroup>
 
-      {cs(
-        [
-          "formGroup",
-          ({}, next) =>
-            FormGroup({ label: "Cardholder Number", children: next() }),
-        ],
-        ({ formGroup }) => (
+        <FormGroup label="Card number">
           <input
             type="text"
             placeholder="e.g. 1234 5678 9123 0000"
-            // value={formGroup.value}
-            // onChange={formGroup.onChange(value)}
+            {...bindInput(scope(card, ["number"]))}
           />
-        )
-      )}
+        </FormGroup>
 
-      <div className="flex-row">
-        {cs(
-          [
-            "formGroup",
-            ({}, next) =>
-              FormGroup({ label: "Exp. Date (MM/YY)", children: next() }),
-          ],
-          ({ formGroup }) => (
-            <>
-              <input type="text" placeholder="MM" />
-              <input type="text" placeholder="YY" />
-            </>
-          )
-        )}
+        <div className="flex-row">
+          <FormGroup label="Exp. Date (MM/YY)">
+            <input
+              type="text"
+              placeholder="MM"
+              {...bindInput(scope(card, ["expDate", "month"]))}
+            />
+            <input
+              type="text"
+              placeholder="YY"
+              {...bindInput(scope(card, ["expDate", "year"]))}
+            />
+          </FormGroup>
 
-        {cs(
-          [
-            "formGroup",
-            ({}, next) => FormGroup({ label: "CVC", children: next() }),
-          ],
-          ({ formGroup }) => (
+          <FormGroup label="CVC">
             <input
               type="text"
               placeholder="e.g. 123"
-              // value={formGroup.value}
-              // onChange={formGroup.onChange(value)}
+              {...bindInput(scope(card, ["cvc"]))}
             />
-          )
-        )}
+          </FormGroup>
+        </div>
+        <Button label="Confirm" />
       </div>
-      <Button label={"Confirm"} />
-    </div>
-  );
+    );
+  });
 }
 
 export default DetailsForm;
