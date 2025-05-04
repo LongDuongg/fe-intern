@@ -27,7 +27,7 @@ function DetailsForm({ card, className }) {
         </FormGroup>
 
         <div className="flex-row">
-          <FormGroup label="Exp. Date (MM/YY)">
+          <FormGroup className="exp-date" label="Exp. Date (MM/YY)">
             <input
               type="text"
               placeholder="MM"
@@ -40,7 +40,7 @@ function DetailsForm({ card, className }) {
             />
           </FormGroup>
 
-          <FormGroup label="CVC">
+          <FormGroup className="cvc" label="CVC">
             <input
               type="text"
               placeholder="e.g. 123"
@@ -48,7 +48,7 @@ function DetailsForm({ card, className }) {
             />
           </FormGroup>
         </div>
-        <Button label="Confirm" />
+        <button className="confirm-btn">Confirm</button>
       </div>
     );
   });
