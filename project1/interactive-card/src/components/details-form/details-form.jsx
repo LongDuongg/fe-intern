@@ -6,7 +6,7 @@ import { scope } from "../../common/react/scope.js";
 import { bindInput } from "../../common/react/bind-input.js";
 import ErrorMessage from "../error-message/error-message.jsx";
 
-function DetailsForm({ card, errors, handleSubmit, className }) {
+function DetailsForm({ card, errors, onSubmit, className }) {
   return cs(() => {
     return (
       <div className={cn("details-form-1ms", className)}>
@@ -25,7 +25,7 @@ function DetailsForm({ card, errors, handleSubmit, className }) {
 
         <FormGroup label="Card number">
           <input
-            className={errors?.value.name ? "error" : ""} // add error class if there is an error
+            className={errors?.value.number ? "error" : ""} // add error class if there is an error
             type="text"
             placeholder="e.g. 1234 5678 9123 0000"
             {...bindInput(scope(card, ["number"]))}
@@ -39,30 +39,30 @@ function DetailsForm({ card, errors, handleSubmit, className }) {
         <div className="flex-row">
           <FormGroup className="exp-date" label="Exp. Date (MM/YY)">
             <input
-              className={errors?.value.name ? "error" : ""} // add error class if there is an error
+              className={errors?.value["expDate.month"] ? "error" : ""} // add error class if there is an error
               type="text"
               placeholder="MM"
               {...bindInput(scope(card, ["expDate", "month"]))}
             />
             <ErrorMessage
-              message={errors?.value.month}
+              message={errors?.value["expDate.month"]}
               className={"error-message"}
             />
             <input
-              className={errors?.value.name ? "error" : ""} // add error class if there is an error
+              className={errors?.value["expDate.year"] ? "error" : ""} // add error class if there is an error
               type="text"
               placeholder="YY"
               {...bindInput(scope(card, ["expDate", "year"]))}
             />
             <ErrorMessage
-              message={errors?.value.year}
+              message={errors?.value["expDate.year"]}
               className={"error-message"}
             />
           </FormGroup>
 
           <FormGroup className="cvc" label="CVC">
             <input
-              className={errors?.value.name ? "error" : ""} // add error class if there is an error
+              className={errors?.value.cvc ? "error" : ""} // add error class if there is an error
               type="text"
               placeholder="e.g. 123"
               {...bindInput(scope(card, ["cvc"]))}
@@ -73,7 +73,7 @@ function DetailsForm({ card, errors, handleSubmit, className }) {
             />
           </FormGroup>
         </div>
-        <button className="confirm-btn" onClick={() => handleSubmit()}>
+        <button className="confirm-btn" onClick={() => onSubmit()}>
           Confirm
         </button>
       </div>

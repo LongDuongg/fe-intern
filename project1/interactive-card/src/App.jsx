@@ -8,7 +8,7 @@ import DetailsForm from "./components/details-form/details-form";
 import { SampleCounter } from "./components/sample3";
 import { cs } from "./common/chain-services.js";
 import { State } from "./common/react/state.js";
-import { setPath } from "./common/utils/arr-path.js";
+import { getPath, setPath } from "./common/utils/arr-path.js";
 
 function App() {
   return cs(
@@ -18,42 +18,14 @@ function App() {
       console.log(errors);
       const validate = () => {
         const newErrors = {};
-        const { name, number, expDate, cvc } = card.value;
-        const currentYear = new Date().getFullYear() % 100; // get last two numbers
 
-        // no name but use trim() to prevent empty spaces
-        if (!name?.trim()) {
-          newErrors.name = "Cardholder name is required.";
-        } else if (!/^[a-zA-Z\s]+$/.test(name)) {
-          newErrors.name = "Name must contain only letters.";
-        }
-
-        // no number but use trim() to prevent empty spaces
-        if (!number?.trim()) {
-          newErrors.number = "Card number is required.";
-        } else if (!/^\d{16}$/.test(number.replace(/\s+/g, ""))) {
-          newErrors.number = "Card number must be 16 digits.";
-        }
-
-        // no month but use trim() to prevent empty spaces
-        if (!expDate?.month.trim()) {
-          newErrors.month = "Month is required.";
-        } else if (!/^(0[1-9]|1[0-2])$/.test(month)) {
-          newErrors.month = "Invalid month.";
-        }
-
-        // no year but use trim() to prevent empty spaces
-        if (!expDate?.year.trim()) {
-          newErrors.year = "Year is required.";
-        } else if (!/^\d{2}$/.test(year) || parseInt(year) < currentYear) {
-          newErrors.year = "Invalid year.";
-        }
-
-        // no number but use trim() to prevent empty spaces
-        if (!cvc?.trim()) {
-          newErrors.cvc = "CVC is required.";
-        } else if (!/^\d{3}$/.test(cvc)) {
-          newErrors.cvc = "CVC must be 3 digits.";
+        for (const { field, validators } of formValidation) {
+          for (const { validate, message } of validators) {
+            if (!validate(getPath(card.value, field.split(".")))) {
+              newErrors[field] = message;
+              break; // stop checking other validators for this field
+            }
+          }
         }
 
         return newErrors;
@@ -66,7 +38,8 @@ function App() {
           // API processing logic here
         } else {
           console.log("errors: ", validationErrors);
-          errors.onChange(setPath(errors.value, [], validationErrors));
+          // errors.onChange(setPath(errors.value, [], validationErrors));
+          errors.onChange(validationErrors);
         }
       };
 
@@ -80,7 +53,7 @@ function App() {
           <DetailsForm
             card={card}
             errors={errors}
-            handleSubmit={handleSubmit}
+            onSubmit={handleSubmit}
             className="details-form"
           />
           {/* <SampleCounter /> */}
@@ -91,3 +64,75 @@ function App() {
 }
 
 export default App;
+
+const required = (message) => {
+  return {
+    validate: (value) => {
+      return value != null && value !== "";
+    },
+    message: message || "This field is required.",
+  };
+};
+
+const formValidation = [
+  {
+    field: "name",
+    validators: [
+      required("Cardholder name is required."),
+      {
+        validate: (value) => {
+          return /^[a-zA-Z\s]+$/.test(value);
+        },
+        message: "Name must contain only letters.",
+      },
+    ],
+  },
+  {
+    field: "number",
+    validators: [
+      required("Card number is required."),
+      {
+        validate: (value) => {
+          return /^\d{16}$/.test(value.replace(/\s+/g, ""));
+        },
+        message: "Card number must be 16 digits.",
+      },
+    ],
+  },
+  {
+    field: "expDate.month",
+    validators: [
+      required("Month is required."),
+      {
+        validate: (value) => {
+          return /^(0[1-9]|1[0-2])$/.test(value);
+        },
+        message: "Invalid month.",
+      },
+    ],
+  },
+  {
+    field: "expDate.year",
+    validators: [
+      required("Year is required."),
+      {
+        validate: (value) => {
+          return /^\d{2}$/.test(value);
+        },
+        message: "Invalid year.",
+      },
+    ],
+  },
+  {
+    field: "cvc",
+    validators: [
+      required("CVC is required."),
+      {
+        validate: (value) => {
+          return /^\d{3}$/.test(value);
+        },
+        message: "CVC must be 3 digits.",
+      },
+    ],
+  },
+];
