@@ -35,6 +35,9 @@
         width: 40%;
         margin-right: 10px;
       }
+      & > .error-message {
+        margin-top: 5px;
+      }
     }
 
     & > .cvc {

@@ -46,7 +46,7 @@ function App() {
         if (!expDate?.year.trim()) {
           newErrors.year = "Year is required.";
         } else if (!/^\d{2}$/.test(year) || parseInt(year) < currentYear) {
-          newErrors.year = "Year is invalid or expired.";
+          newErrors.year = "Invalid year.";
         }
 
         // no number but use trim() to prevent empty spaces
