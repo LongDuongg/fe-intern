@@ -14,8 +14,9 @@ function App() {
   return cs(
     ["card", ({}, next) => State({ initValue: {}, next })],
     ["errors", ({}, next) => State({ initValue: {}, next })],
-    ({ card, errors }) => {
-      console.log(errors);
+    ["success", ({}, next) => State({ initValue: false, next })],
+    ({ card, errors, success }) => {
+      // console.log(errors);
       const validate = () => {
         const newErrors = {};
 
@@ -23,11 +24,10 @@ function App() {
           for (const { validate, message } of validators) {
             if (!validate(getPath(card.value, field.split(".")))) {
               newErrors[field] = message;
-              break; // stop checking other validators for this field
+              break;
             }
           }
         }
-
         return newErrors;
       };
 
@@ -35,10 +35,11 @@ function App() {
         const validationErrors = validate();
         if (Object.keys(validationErrors).length === 0) {
           console.log("Valid card info:", card.value);
+          success.onChange(true);
+          errors.onChange({}); // clear errors
           // API processing logic here
         } else {
-          console.log("errors: ", validationErrors);
-          // errors.onChange(setPath(errors.value, [], validationErrors));
+          // console.log("errors: ", validationErrors);
           errors.onChange(validationErrors);
         }
       };
@@ -49,7 +50,7 @@ function App() {
             <img src={null} alt="" />
           </div>
           <BackCard card={card} className="back-card" />
-          <FrontCard className="front-card" card={card} />
+          <FrontCard className="front-card" card={card} success={success} />
           <DetailsForm
             card={card}
             errors={errors}
@@ -93,6 +94,7 @@ const formValidation = [
       required("Card number is required."),
       {
         validate: (value) => {
+          //5105 1051 0510 5100
           return /^\d{16}$/.test(value.replace(/\s+/g, ""));
         },
         message: "Card number must be 16 digits.",
@@ -102,7 +104,7 @@ const formValidation = [
   {
     field: "expDate.month",
     validators: [
-      required("Month is required."),
+      required("Month and Year is required."),
       {
         validate: (value) => {
           return /^(0[1-9]|1[0-2])$/.test(value);
