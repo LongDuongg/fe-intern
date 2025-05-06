@@ -44,18 +44,18 @@ function DetailsForm({ card, errors, onSubmit, className }) {
               placeholder="MM"
               {...bindInput(scope(card, ["expDate", "month"]))}
             />
-            <ErrorMessage
-              message={errors?.value["expDate.month"]}
-              className={"error-message"}
-            />
+
             <input
               className={errors?.value["expDate.year"] ? "error" : ""} // add error class if there is an error
               type="text"
               placeholder="YY"
               {...bindInput(scope(card, ["expDate", "year"]))}
             />
+
             <ErrorMessage
-              message={errors?.value["expDate.year"]}
+              message={
+                errors?.value["expDate.month"] || errors?.value["expDate.year"]
+              }
               className={"error-message"}
             />
           </FormGroup>

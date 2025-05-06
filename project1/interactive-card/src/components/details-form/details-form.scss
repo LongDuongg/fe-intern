@@ -31,16 +31,27 @@
     margin-bottom: 20px;
 
     & > .exp-date {
+      
       input {
         width: 40%;
         margin-right: 10px;
       }
+
+      & > .label {
+        margin-bottom: 10px;
+      }
+
       & > .error-message {
         margin-top: 5px;
       }
     }
 
     & > .cvc {
+
+      & > .label {
+        margin-bottom: 10px;
+      }
+
       & > .error-message {
         margin-top: 5px;
       }
@@ -60,7 +71,7 @@
     color: white;
   
     &:hover {
-      background-color: #eaeaea;
+      background-color: #9050b6;
     }
   }
 }
