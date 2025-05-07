@@ -1,7 +1,7 @@
 const { Component, createElement: h } = require("react");
 
-const State = ({ next, getInitValue, initValue }) =>
-  h(State1, { next, getInitValue, initValue });
+const State = ({ next, getInitValue, initValue, name }) =>
+  h(State1, { next, getInitValue, initValue, name });
 exports.State = State;
 
 class State1 extends Component {
@@ -29,6 +29,7 @@ class State1 extends Component {
   }
 
   render() {
+    // console.log(this.props.name);
     const { next } = this.props;
     const { value } = this.state;
 
@@ -44,7 +45,7 @@ class State1 extends Component {
               ...state,
               value: reduceValue(state.value),
             }),
-            cb,
+            cb
           );
         },
       }) ?? null

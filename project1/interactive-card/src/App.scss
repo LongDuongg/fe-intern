@@ -27,6 +27,11 @@
     margin-right: auto;
   }
 
+  & > .list-saved-cards {
+    position: absolute;
+
+  }
+
   @media screen and (min-width: 640px) {
     display: flex;
     flex-direction: row;
@@ -61,6 +66,22 @@
   
     & > .details-form {
       margin: auto;
+    }
+
+    & > .list-saved-cards, .no-saved-cards {
+      position: absolute;
+      right: calc((100% - 36%)/2);
+      bottom: 20%;
+      transform: translate(80px,-10px);
+
+      & > .saved-card {
+        border: 2px solid black;
+        border-radius: 10px;
+        padding: 20px;
+        width: fit-content;
+        height: fit-content;
+        margin-bottom: 20px;
+      }
     }
   }
 }

@@ -27,7 +27,7 @@
     }
   }
 
-  & > .confirm-btn {
+  & > .confirm-btn, .save-btn {
     width: 100%;
     border: none;
     border-radius: 5px;
@@ -39,6 +39,14 @@
     background-color: #220930;
     color: white;
   
+    &:hover {
+      background-color: #9050b6;
+    }
+  }
+
+  & > .save-btn {
+    margin-top: 10px;
+
     &:hover {
       background-color: #9050b6;
     }

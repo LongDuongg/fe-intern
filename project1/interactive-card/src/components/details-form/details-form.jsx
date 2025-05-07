@@ -5,7 +5,7 @@ import { cs } from "../../common/chain-services.js";
 import { scope } from "../../common/react/scope.js";
 import { bindInput } from "../../common/react/bind-input.js";
 
-function DetailsForm({ card, errors, onSubmit, className }) {
+function DetailsForm({ card, errors, success, onSubmit, onSave, className }) {
   return cs(() => {
     return (
       <div className={cn("details-form-1ms", className)}>
@@ -61,6 +61,11 @@ function DetailsForm({ card, errors, onSubmit, className }) {
         <button className="confirm-btn" onClick={() => onSubmit()}>
           Confirm
         </button>
+        {success && (
+          <button className="save-btn" onClick={() => onSave()}>
+            Save
+          </button>
+        )}
       </div>
     );
   });

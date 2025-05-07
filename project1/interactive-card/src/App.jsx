@@ -12,9 +12,17 @@ import { getPath, setPath } from "./common/utils/arr-path.js";
 
 function App() {
   return cs(
-    ["card", ({}, next) => State({ initValue: null, next })],
-    ["validation", ({}, next) => State({ initValue: {}, next })],
-    ({ card, validation }) => {
+    [
+      "savedCards",
+      ({}, next) => State({ initValue: [], next, name: "savedCards" }),
+    ],
+    ["card", ({}, next) => State({ initValue: null, next, name: "cards" })],
+    [
+      "validation",
+      ({}, next) => State({ initValue: {}, next, name: "validation" }),
+    ],
+    ({ card, validation, savedCards }) => {
+      console.log(savedCards.value);
       const validate = () => {
         const newErrors = {};
 
@@ -41,6 +49,21 @@ function App() {
         }
       };
 
+      const saveCardInfo = () => {
+        const cardInfo = {
+          name: card.value.name,
+          number: card.value.number,
+          expDate: {
+            month: card.value.expDate.month,
+            year: card.value.expDate.year,
+          },
+          cvc: card.value.cvc,
+        };
+        savedCards.onChange([cardInfo, ...savedCards.value]);
+        card.onChange(null);
+        validation.onChange({ success: false });
+      };
+
       return (
         <div className="app-1hj">
           <div className="color-area">
@@ -55,10 +78,29 @@ function App() {
           <DetailsForm
             card={card}
             errors={validation.value.errors}
+            success={validation.value.success}
             onSubmit={handleSubmit}
+            onSave={saveCardInfo}
             className="details-form"
           />
-          {/* <SampleCounter /> */}
+          <div className="list-saved-cards">
+            {savedCards.value.map((savedCard, index) => (
+              <div key={index} className="saved-card">
+                <div className="saved-card-name">Name : {savedCard.name}</div>
+                <div className="saved-card-number">
+                  Number : {savedCard.number}
+                </div>
+                <div className="saved-card-exp-date">
+                  EXP. DATE : {savedCard.expDate.month}/{savedCard.expDate.year}
+                </div>
+                <div className="saved-card-cvc">CVC : {savedCard.cvc}</div>
+                <button onClick={() => card.onChange(savedCard)}>edit</button>
+              </div>
+            ))}
+            {savedCards.value.length === 0 && (
+              <div className="no-saved-cards">No saved cards</div>
+            )}
+          </div>
         </div>
       );
     }
