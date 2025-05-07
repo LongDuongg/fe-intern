@@ -4,12 +4,12 @@ import logo from "../../assets/card-logo.png";
 import frontCard from "../../assets/bg-card-front.png";
 import iconComplete from "../../assets/icon-complete.png";
 
-function FrontCard({ className, card, success }) {
-  const { name, number, expDate } = card.value;
+function FrontCard({ className, card, validation }) {
+  const { name, number, expDate } = card.value || {};
   return (
     <div className={cn("front-card-2fc", className)}>
       <img className="card-logo" src={logo} alt="" />
-      {success.value && (
+      {validation.value.success && (
         <img className="icon-complete" src={iconComplete} alt="" />
       )}
       <img src={frontCard} alt=""></img>

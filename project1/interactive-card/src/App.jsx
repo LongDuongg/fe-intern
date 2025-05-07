@@ -12,11 +12,9 @@ import { getPath, setPath } from "./common/utils/arr-path.js";
 
 function App() {
   return cs(
-    ["card", ({}, next) => State({ initValue: {}, next })],
-    ["errors", ({}, next) => State({ initValue: {}, next })],
-    ["success", ({}, next) => State({ initValue: false, next })],
-    ({ card, errors, success }) => {
-      // console.log(errors);
+    ["card", ({}, next) => State({ initValue: null, next })],
+    ["validation", ({}, next) => State({ initValue: {}, next })],
+    ({ card, validation }) => {
       const validate = () => {
         const newErrors = {};
 
@@ -35,12 +33,11 @@ function App() {
         const validationErrors = validate();
         if (Object.keys(validationErrors).length === 0) {
           console.log("Valid card info:", card.value);
-          success.onChange(true);
-          errors.onChange({}); // clear errors
+          validation.onChange({ success: true });
           // API processing logic here
         } else {
           // console.log("errors: ", validationErrors);
-          errors.onChange(validationErrors);
+          validation.onChange({ errors: validationErrors });
         }
       };
 
@@ -50,10 +47,14 @@ function App() {
             <img src={null} alt="" />
           </div>
           <BackCard card={card} className="back-card" />
-          <FrontCard className="front-card" card={card} success={success} />
+          <FrontCard
+            className="front-card"
+            card={card}
+            validation={validation}
+          />
           <DetailsForm
             card={card}
-            errors={errors}
+            errors={validation.value.errors}
             onSubmit={handleSubmit}
             className="details-form"
           />
@@ -101,10 +102,40 @@ const formValidation = [
       },
     ],
   },
+  // {
+  //   field: "expDate",
+  //   validators: [
+  //     required("Month and Year is required."),
+  //     {
+  //       validate: (value) => {
+  //         return value.month != null && value.month !== "";
+  //       },
+  //       message: "Month is required.",
+  //     },
+  //     {
+  //       validate: (value) => {
+  //         return /^(0[1-9]|1[0-2])$/.test(value.month);
+  //       },
+  //       message: "Invalid month.",
+  //     },
+  //     {
+  //       validate: (value) => {
+  //         return value.year != null && value.year !== "";
+  //       },
+  //       message: "Year is required.",
+  //     },
+  //     {
+  //       validate: (value) => {
+  //         return /^\d{2}$/.test(value.year);
+  //       },
+  //       message: "Invalid year.",
+  //     },
+  //   ],
+  // },
   {
     field: "expDate.month",
     validators: [
-      required("Month and Year is required."),
+      required("Month is required."),
       {
         validate: (value) => {
           return /^(0[1-9]|1[0-2])$/.test(value);

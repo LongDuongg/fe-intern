@@ -1,0 +1,29 @@
+@mixin input {
+  border: 2px solid #eaeaea;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+
+  &:focus {
+    border-color: blue;
+    box-shadow: 0 0 5px blue;
+  }
+
+  &:hover {
+    border-color: rgb(183, 0, 255);
+    box-shadow: 0 0 5px rgb(183, 0, 255);
+  }
+
+  &.error {
+    border-color: red;
+    box-shadow: 0 0 5px red;
+  }
+
+  &.success {
+    border-color: green;
+    box-shadow: 0 0 5px green;
+  }
+}

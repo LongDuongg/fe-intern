@@ -2,38 +2,14 @@
 
   & > .label {
     text-transform: uppercase;
-    font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 13px;
+    margin-bottom: 10px;
   }
 
-  input {
-    border: 2px solid #eaeaea;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
-    outline: none;
-    transition: all 0.3s ease-in-out;
-
-    &:focus {
-      border-color: blue;
-      box-shadow: 0 0 5px blue;
-    }
-
-    &:hover {
-      border-color: rgb(183, 0, 255);
-      box-shadow: 0 0 5px rgb(183, 0, 255);
-    }
-
-    &.error {
-      border-color: red;
-      box-shadow: 0 0 5px red;
-    }
-
-    &.success {
-      border-color: green;
-      box-shadow: 0 0 5px green;
-    }
+  & > .error-message{
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
   }
 }
