@@ -1,7 +1,7 @@
 const { Component, createElement: h } = require("react");
 
-const State = ({ next, getInitValue, initValue, name }) =>
-  h(State1, { next, getInitValue, initValue, name });
+const State = ({ next, getInitValue, initValue }) =>
+  h(State1, { next, getInitValue, initValue });
 exports.State = State;
 
 class State1 extends Component {

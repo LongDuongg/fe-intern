@@ -1,4 +1,5 @@
 import "./App.scss";
+import cn from "classnames";
 import FrontCard from "./components/front-card/front-card";
 import BackCard from "./components/back-card/back-card";
 import backgroundImage from "./assets/bg-main-mobile.png";
@@ -12,23 +13,16 @@ import { getPath, setPath } from "./common/utils/arr-path.js";
 
 function App() {
   return cs(
-    [
-      "savedCards",
-      ({}, next) => State({ initValue: [], next, name: "savedCards" }),
-    ],
-    ["card", ({}, next) => State({ initValue: null, next, name: "cards" })],
-    [
-      "validation",
-      ({}, next) => State({ initValue: {}, next, name: "validation" }),
-    ],
+    ["savedCards", ({}, next) => State({ initValue: [], next })],
+    ["card", ({}, next) => State({ initValue: null, next })],
+    ["validation", ({}, next) => State({ initValue: {}, next })],
     ({ card, validation, savedCards }) => {
-      console.log(savedCards.value);
-      const validate = () => {
+      const validate = (cardDetails) => {
         const newErrors = {};
 
         for (const { field, validators } of formValidation) {
           for (const { validate, message } of validators) {
-            if (!validate(getPath(card.value, field.split(".")))) {
+            if (!validate(getPath(cardDetails, field.split(".")))) {
               newErrors[field] = message;
               break;
             }
@@ -38,7 +32,7 @@ function App() {
       };
 
       const handleSubmit = () => {
-        const validationErrors = validate();
+        const validationErrors = validate(card.value);
         if (Object.keys(validationErrors).length === 0) {
           console.log("Valid card info:", card.value);
           validation.onChange({ success: true });
@@ -49,19 +43,39 @@ function App() {
         }
       };
 
+      const generateId = (length = 8) => {
+        const chars =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let id = "";
+        for (let i = 0; i < length; i++) {
+          id += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return id;
+      };
+
       const saveCardInfo = () => {
-        const cardInfo = {
-          name: card.value.name,
-          number: card.value.number,
-          expDate: {
-            month: card.value.expDate.month,
-            year: card.value.expDate.year,
-          },
-          cvc: card.value.cvc,
-        };
-        savedCards.onChange([cardInfo, ...savedCards.value]);
+        if (card.value.id) {
+          const updatedCards = savedCards.value.map((savedCard) =>
+            savedCard.details.id === card.value.id
+              ? {
+                  details: card.value,
+                  validation: validation.value,
+                }
+              : savedCard
+          );
+          savedCards.onChange(updatedCards);
+        } else {
+          savedCards.onChange([
+            {
+              details: { id: generateId(), ...card.value },
+              validation: validation.value,
+            },
+            ...savedCards.value,
+          ]);
+        }
+
         card.onChange(null);
-        validation.onChange({ success: false });
+        validation.onChange({});
       };
 
       return (
@@ -85,16 +99,46 @@ function App() {
           />
           <div className="list-saved-cards">
             {savedCards.value.map((savedCard, index) => (
-              <div key={index} className="saved-card">
-                <div className="saved-card-name">Name : {savedCard.name}</div>
+              <div
+                key={index}
+                className={cn(
+                  "saved-card",
+                  savedCard.validation.success ? "valid" : "invalid"
+                )}
+              >
+                <div className="saved-card-name">
+                  Name : {savedCard.details.name}
+                </div>
                 <div className="saved-card-number">
-                  Number : {savedCard.number}
+                  Number : {savedCard.details.number}
                 </div>
                 <div className="saved-card-exp-date">
-                  EXP. DATE : {savedCard.expDate.month}/{savedCard.expDate.year}
+                  EXP. DATE : {savedCard.details.expDate.month}/
+                  {savedCard.details.expDate.year}
                 </div>
-                <div className="saved-card-cvc">CVC : {savedCard.cvc}</div>
-                <button onClick={() => card.onChange(savedCard)}>edit</button>
+                <div className="saved-card-cvc">
+                  CVC : {savedCard.details.cvc}
+                </div>
+                <button
+                  onClick={() => {
+                    card.onChange(savedCard.details);
+                    validation.onChange(savedCard.validation);
+                  }}
+                >
+                  edit
+                </button>
+
+                <button
+                  onClick={() => {
+                    savedCards.onChange(
+                      savedCards.value.filter(
+                        (card, i) => card.details.id !== savedCard.details.id
+                      )
+                    );
+                  }}
+                >
+                  delete
+                </button>
               </div>
             ))}
             {savedCards.value.length === 0 && (

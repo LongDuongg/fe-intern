@@ -61,11 +61,11 @@ function DetailsForm({ card, errors, success, onSubmit, onSave, className }) {
         <button className="confirm-btn" onClick={() => onSubmit()}>
           Confirm
         </button>
-        {success && (
-          <button className="save-btn" onClick={() => onSave()}>
-            Save
-          </button>
-        )}
+        {/* {success && ( */}
+        <button className="save-btn" onClick={() => onSave()}>
+          Save
+        </button>
+        {/* )} */}
       </div>
     );
   });

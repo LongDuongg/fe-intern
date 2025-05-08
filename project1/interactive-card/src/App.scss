@@ -75,12 +75,20 @@
       transform: translate(80px,-10px);
 
       & > .saved-card {
-        border: 2px solid black;
+        border: 3px solid black;
         border-radius: 10px;
         padding: 20px;
         width: fit-content;
         height: fit-content;
         margin-bottom: 20px;
+      }
+
+      & > .valid {
+        border-color: rgb(17, 190, 40);
+      }
+
+      & > .invalid {
+        border-color: rgb(202, 5, 5);
       }
     }
   }
