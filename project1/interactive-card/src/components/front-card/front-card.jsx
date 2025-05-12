@@ -9,7 +9,7 @@ function FrontCard({ className, card, validation }) {
   return (
     <div className={cn("front-card-2fc", className)}>
       <img className="card-logo" src={logo} alt="" />
-      {validation.value.success && (
+      {validation.success && (
         <img className="icon-complete" src={iconComplete} alt="" />
       )}
       <img src={frontCard} alt=""></img>

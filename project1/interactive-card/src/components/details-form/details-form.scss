@@ -1,9 +1,52 @@
 @import "../../common/styles/input.scss";
+@import "form-group/form-group";
 
 .details-form-1ms {
   max-width: 400px;
   // border: 2px solid black;
   height: fit-content;
+
+
+  & > .cardholder-name {
+    margin-bottom: 25px;
+    //@include form-group;
+
+    & > .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 10px;
+
+      & > .left {
+        & > .label {
+          @include form-label;
+        }
+      }
+      & > .right {
+
+      }
+    }
+
+    & > .error-message {
+      @include form-error-message;
+    }
+
+    & > input {
+      @include input;
+    }
+  }
+
+  & > .exp-date {
+
+  }
+
+  & > .form-group {
+
+    //& > input {
+    //  @include input;
+    //}
+  }
 
   input {
     @include input;
