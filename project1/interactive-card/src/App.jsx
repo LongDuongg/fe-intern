@@ -5,8 +5,8 @@ import BackCard from "./components/back-card/back-card";
 import DetailsForm from "./components/details-form/details-form";
 import { cs } from "./common/chain-services.js";
 import { State } from "./common/react/state.js";
-import { getPath } from "./common/utils/arr-path.js";
-
+import { getPath, setPath } from "./common/utils/arr-path.js";
+import { createElement, useState } from "react";
 const App = () =>
   cs(
     ["savedCards", ({}, next) => State({ initValue: [], next })],
@@ -35,7 +35,8 @@ const App = () =>
           })()
         ),
     ],
-    ({ card, validation, savedCards }) => {
+    ["showErrors", ({}, next) => State({ initValue: {}, next })],
+    ({ card, validation, savedCards, showErrors }) => {
       console.log(validation);
       const handleSubmit = () => {
         if (!validation.errors) {
@@ -64,7 +65,7 @@ const App = () =>
             ...savedCards.value,
           ]);
         }
-
+        showErrors.onChange({});
         card.onChange(null);
       };
 
@@ -85,6 +86,7 @@ const App = () =>
           {DetailsForm({
             card: card,
             errors: validation.errors,
+            showErrors: showErrors,
             success: validation.success,
             onSubmit: handleSubmit,
             onSave: saveCardInfo,
@@ -257,3 +259,29 @@ const formValidation = [
     ],
   },
 ];
+
+const A1 = () => {
+  const [state, setState] = useState(0);
+  return (
+    <div>
+      <div>{state}</div>
+      <button onClick={() => setState(state + 1)}>+</button>
+    </div>
+  );
+};
+
+const A = () => createElement(A1, {});
+
+const B = () => {
+  return cs(
+    ["state", ({}, next) => State({ initValue: 0, next })],
+    ({ state }) => {
+      return (
+        <div>
+          <div>{state.value}</div>
+          <button onClick={() => state.onChange(state.value + 1)}>+</button>
+        </div>
+      );
+    }
+  );
+};
