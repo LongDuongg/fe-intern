@@ -17,7 +17,6 @@ const App = () =>
         next(
           (() => {
             const cardDetails = card.value;
-            // console.log("cardDetails", cardDetails)
             const newErrors = {};
 
             for (const { field, validators } of formValidation) {
@@ -37,6 +36,7 @@ const App = () =>
         ),
     ],
     ({ card, validation, savedCards }) => {
+      console.log(validation);
       const handleSubmit = () => {
         if (!validation.errors) {
           console.log("Valid card info:", card.value);
@@ -81,14 +81,15 @@ const App = () =>
             card={card}
             validation={validation}
           />
-          <DetailsForm
-            card={card}
-            errors={validation.errors}
-            success={validation.success}
-            onSubmit={handleSubmit}
-            onSave={saveCardInfo}
-            className="details-form"
-          />
+
+          {DetailsForm({
+            card: card,
+            errors: validation.errors,
+            success: validation.success,
+            onSubmit: handleSubmit,
+            onSave: saveCardInfo,
+            className: "details-form",
+          })}
 
           <div className="list-saved-cards">
             {savedCards.value.map((savedCard, index) => (
