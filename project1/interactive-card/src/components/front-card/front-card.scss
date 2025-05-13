@@ -1,45 +1,48 @@
 .front-card-2fc {
-  position: relative;
-  width: 300px;
-  color: #fff;
-  & > .card-logo {
-    position: absolute;
-    width: 40px;
-    top: 20px;
-    left: 26px;
-  }
+  & > .box {
+    position: relative;
+    width: 300px;
+    color: #fff;
 
-  & > .icon-complete {
-    position: absolute;
-    width: 24px;
-    top: 19px;
-    left: 25px;
-  }
+    & > .card-logo {
+      position: absolute;
+      width: 40px;
+      top: 20px;
+      left: 26px;
+    }
 
-  img {
-    width: 100%;
-  }
+    & > .icon-complete {
+      position: absolute;
+      width: 24px;
+      top: 19px;
+      left: 25px;
+    }
 
-  & > .card-number{
+    img {
+      width: 100%;
+    }
 
-    font-size: 26px;
-    position: absolute;
-    top: 81px;
-    right: 23px;
-  }
+    & > .card-number{
 
-  & > .owner-name{
-    position: absolute;
-    bottom: 20px;
-    left: 26px;
-    text-transform: uppercase;
-    font-size: 12px;
-  }
+      font-size: 26px;
+      position: absolute;
+      top: 81px;
+      right: 23px;
+    }
 
-  & > .exp-date{
-    position: absolute;
-    bottom: 20px;
-    right: 26px;
-    font-size: 12px;
+    & > .owner-name{
+      position: absolute;
+      bottom: 20px;
+      left: 26px;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    & > .exp-date{
+      position: absolute;
+      bottom: 20px;
+      right: 26px;
+      font-size: 12px;
+    }
   }
 }

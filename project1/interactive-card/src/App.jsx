@@ -1,287 +1,43 @@
+
 import "./App.scss";
-import cn from "classnames";
-import FrontCard from "./components/front-card/front-card";
-import BackCard from "./components/back-card/back-card";
-import DetailsForm from "./components/details-form/details-form";
-import { cs } from "./common/chain-services.js";
-import { State } from "./common/react/state.js";
-import { getPath, setPath } from "./common/utils/arr-path.js";
-import { createElement, useState } from "react";
-const App = () =>
-  cs(
-    ["savedCards", ({}, next) => State({ initValue: [], next })],
-    ["card", ({}, next) => State({ initValue: null, next })],
-    [
-      "validation",
-      ({ card }, next) =>
-        next(
-          (() => {
-            const cardDetails = card.value;
-            const newErrors = {};
 
-            for (const { field, validators } of formValidation) {
-              for (const { validate, message } of validators) {
-                if (!validate(getPath(cardDetails, field.split(".")))) {
-                  newErrors[field] = message;
-                  break;
-                }
-              }
-            }
-            if (Object.keys(newErrors).length === 0) {
-              return { success: true };
-            } else {
-              return { errors: newErrors };
-            }
-          })()
-        ),
-    ],
-    ["showErrors", ({}, next) => State({ initValue: {}, next })],
-    ({ card, validation, savedCards, showErrors }) => {
-      console.log(validation);
-      const handleSubmit = () => {
-        if (!validation.errors) {
-          console.log("Valid card info:", card.value);
-          // API processing logic here
-        }
-      };
+import {cs}             from "./common/chain-services.js";
+import {BackCard}       from "./components/back-card/back-card";
+import {DetailsForm}    from "./components/details-form/details-form";
+import {FrontCard}      from "./components/front-card/front-card";
+import {ListSavedCards} from "./list-saved-cards.jsx";
 
-      const saveCardInfo = () => {
-        if (card.value.id) {
-          const updatedCards = savedCards.value.map((savedCard) =>
-            savedCard.details.id === card.value.id
-              ? {
-                  details: card.value,
-                  validation: validation,
-                }
-              : savedCard
-          );
-          savedCards.onChange(updatedCards);
-        } else {
-          savedCards.onChange([
-            {
-              details: { id: generateId(), ...card.value },
-              validation: validation,
-            },
-            ...savedCards.value,
-          ]);
-        }
-        showErrors.onChange({});
-        card.onChange(null);
-      };
+export const App = () => cs(
+  ["listSavedCards", (_, next) => ListSavedCards({next})],
+  ["detailsForm", (_, next) => DetailsForm({next})],
+  ({listSavedCards, detailsForm}) => (
+    <div className="app-1hj">
+      <div className="color-area">
+        <img src={null} alt="" />
+      </div>
 
-      return (
-        <div className="app-1hj">
-          <div className="color-area">
-            <img src={null} alt="" />
-          </div>
+      {BackCard({
+        card: detailsForm.card,
+        className: "back-card",
+      })}
 
-          <BackCard card={card} className="back-card" />
+      {FrontCard({
+        className: "front-card",
+        card: detailsForm.card,
+        validation: detailsForm.validation,
+      })}
 
-          <FrontCard
-            className="front-card"
-            card={card}
-            validation={validation}
-          />
-
-          {DetailsForm({
-            card: card,
-            errors: validation.errors,
-            showErrors: showErrors,
-            success: validation.success,
-            onSubmit: handleSubmit,
-            onSave: saveCardInfo,
-            className: "details-form",
-          })}
-
-          <div className="list-saved-cards">
-            {savedCards.value.map((savedCard, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "saved-card",
-                  savedCard.validation.success ? "valid" : "invalid"
-                )}
-              >
-                <div className="saved-card-name">
-                  Name : {savedCard.details.name}
-                </div>
-                <div className="saved-card-number">
-                  Number : {savedCard.details.number}
-                </div>
-                <div className="saved-card-exp-date">
-                  EXP. DATE : {savedCard.details.expDate.month}/
-                  {savedCard.details.expDate.year}
-                </div>
-                <div className="saved-card-cvc">
-                  CVC : {savedCard.details.cvc}
-                </div>
-                <button
-                  onClick={() => {
-                    card.onChange(savedCard.details);
-                    // validation.onChange(savedCard.validation);
-                  }}
-                >
-                  edit
-                </button>
-
-                <button
-                  onClick={() => {
-                    savedCards.onChange(
-                      savedCards.value.filter(
-                        (card, i) => card.details.id !== savedCard.details.id
-                      )
-                    );
-                  }}
-                >
-                  delete
-                </button>
-              </div>
-            ))}
-            {savedCards.value.length === 0 && (
-              <div className="no-saved-cards">No saved cards</div>
-            )}
-          </div>
-        </div>
-      );
-    }
-  );
-export default App;
-
-const generateId = (length = 8) => {
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let id = "";
-  for (let i = 0; i < length; i++) {
-    id += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return id;
-};
-
-const required = (message) => {
-  return {
-    validate: (value) => {
-      return value != null && value !== "";
-    },
-    message: message || "This field is required.",
-  };
-};
-
-const formValidation = [
-  {
-    field: "name",
-    validators: [
-      required("Cardholder name is required."),
-      {
-        validate: (value) => {
-          return /^[a-zA-Z\s]+$/.test(value);
+      {detailsForm.render({
+        errors: detailsForm.validation.errors,
+        className: "details-form",
+        onSave: ({card, validation}) => {
+          listSavedCards.addCardInfo({card, validation});
         },
-        message: "Name must contain only letters.",
-      },
-    ],
-  },
-  {
-    field: "number",
-    validators: [
-      required("Card number is required."),
-      {
-        validate: (value) => {
-          //5105 1051 0510 5100
-          return /^\d{16}$/.test(value.replace(/\s+/g, ""));
-        },
-        message: "Card number must be 16 digits.",
-      },
-    ],
-  },
-  // {
-  //   field: "expDate",
-  //   validators: [
-  //     required("Month and Year is required."),
-  //     {
-  //       validate: (value) => {
-  //         return value.month != null && value.month !== "";
-  //       },
-  //       message: "Month is required.",
-  //     },
-  //     {
-  //       validate: (value) => {
-  //         return /^(0[1-9]|1[0-2])$/.test(value.month);
-  //       },
-  //       message: "Invalid month.",
-  //     },
-  //     {
-  //       validate: (value) => {
-  //         return value.year != null && value.year !== "";
-  //       },
-  //       message: "Year is required.",
-  //     },
-  //     {
-  //       validate: (value) => {
-  //         return /^\d{2}$/.test(value.year);
-  //       },
-  //       message: "Invalid year.",
-  //     },
-  //   ],
-  // },
-  {
-    field: "expDate.month",
-    validators: [
-      required("Month is required."),
-      {
-        validate: (value) => {
-          return /^(0[1-9]|1[0-2])$/.test(value);
-        },
-        message: "Invalid month.",
-      },
-    ],
-  },
-  {
-    field: "expDate.year",
-    validators: [
-      required("Year is required."),
-      {
-        validate: (value) => {
-          return /^\d{2}$/.test(value);
-        },
-        message: "Invalid year.",
-      },
-    ],
-  },
-  {
-    field: "cvc",
-    validators: [
-      required("CVC is required."),
-      {
-        validate: (value) => {
-          return /^\d{3}$/.test(value);
-        },
-        message: "CVC must be 3 digits.",
-      },
-    ],
-  },
-];
+      })}
 
-const A1 = () => {
-  const [state, setState] = useState(0);
-  return (
-    <div>
-      <div>{state}</div>
-      <button onClick={() => setState(state + 1)}>+</button>
+      {listSavedCards.render()}
+
     </div>
-  );
-};
+  ),
+);
 
-const A = () => createElement(A1, {});
-
-const B = () => {
-  return cs(
-    ["state", ({}, next) => State({ initValue: 0, next })],
-    ({ state }) => {
-      return (
-        <div>
-          <div>{state.value}</div>
-          <button onClick={() => state.onChange(state.value + 1)}>+</button>
-        </div>
-      );
-    }
-  );
-};

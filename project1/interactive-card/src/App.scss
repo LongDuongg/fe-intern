@@ -57,6 +57,7 @@
   
     & > .front-card {
       position: absolute;
+      //position: static;
       top: unset;
       left: unset;
       right: calc(100% - 36%);
