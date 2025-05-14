@@ -12,4 +12,3 @@ export const BackCard = ({ className, card }) => {
     </div>
   );
 };
-

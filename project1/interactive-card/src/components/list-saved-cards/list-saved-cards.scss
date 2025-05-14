@@ -1,0 +1,44 @@
+.list-saved-cards-1lsc {
+  max-width: 400px;
+
+  & > .saved-card {
+    width: 100%;
+    position: relative;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px 30px 10px 20px;
+    font-size: 14px;
+    margin-bottom: 20px;
+
+    & > .row {
+      white-space: wrap;
+      &:not(:first-child) {
+        margin-top: 4px;
+      }
+    }
+
+    & > .actions {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+
+      & > .btn-action {
+        cursor: pointer;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  & > .no-saved-cards {
+    text-align: center;
+    
+  }
+
+  & > .valid {
+    border-color: rgb(17, 190, 40);
+  }
+
+  & > .invalid {
+    border-color: rgb(202, 5, 5);
+  }
+}

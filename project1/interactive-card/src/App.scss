@@ -10,9 +10,9 @@
   }
 
   & > .back-card {
-    //position: absolute;
-    //top: 40px;
-    //right: 20px;
+    position: absolute;
+    top: 40px;
+    right: 20px;
   }
 
   & > .front-card {
@@ -21,16 +21,23 @@
     left: 20px;
   }
 
-  & > .details-form {
-    margin-top: 70px;
-    margin-left: auto;
-    margin-right: auto;
+  & > .details-form-and-list {
+
+    & > .details-form {
+      margin-top: 70px;
+      display: flex;
+      justify-content: center;
+    }
+
+    & > .list-saved-cards {
+      margin-top: 70px;
+      display: flex;
+      justify-content: center;
+
+    }
   }
 
-  & > .list-saved-cards {
-    position: absolute;
-
-  }
+  
 
   @media screen and (min-width: 640px) {
     display: flex;
@@ -65,31 +72,21 @@
       transform: translate(80px,-10px);
     }
   
-    & > .details-form {
-      margin: auto;
-    }
 
-    & > .list-saved-cards, .no-saved-cards {
-      position: absolute;
-      right: calc((100% - 36%)/2);
-      bottom: 20%;
-      transform: translate(80px,-10px);
+    & > .details-form-and-list {
+      margin-top: 50%;
+      margin-left: auto;
+      margin-right: auto;
+      transform: translateY(-50%);
 
-      & > .saved-card {
-        border: 3px solid black;
-        border-radius: 10px;
-        padding: 20px;
-        width: fit-content;
-        height: fit-content;
-        margin-bottom: 20px;
+      & > .details-form {
+
       }
 
-      & > .valid {
-        border-color: rgb(17, 190, 40);
-      }
-
-      & > .invalid {
-        border-color: rgb(202, 5, 5);
+      & > .list-saved-cards {
+        margin-top: 70px;
+        display: block;
+        justify-content: unset;
       }
     }
   }
