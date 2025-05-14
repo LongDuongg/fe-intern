@@ -61,7 +61,7 @@ export const DetailsForm = ({ next }) =>
             ["showErrors", ({}, next) => State({ initValue: {}, next })],
             ({ showErrors }) => (
               <div className={cn("details-form-1ms", className)}>
-                <div className="cardholder-name">
+                <div className="field cardholder-name">
                   <div className="label">{"Cardholder Name"}</div>
 
                   <input
@@ -82,7 +82,7 @@ export const DetailsForm = ({ next }) =>
                   )}
                 </div>
 
-                <div className="card-number">
+                <div className="field card-number">
                   <div className="label">{"Card Number"}</div>
                   <input
                     className={
@@ -103,7 +103,7 @@ export const DetailsForm = ({ next }) =>
                 </div>
 
                 <div className="flex-row">
-                  <div className="exp-date">
+                  <div className="field exp-date">
                     <div className="label">{"Exp. Date (MM/YY)"}</div>
                     <input
                       className={
@@ -147,7 +147,7 @@ export const DetailsForm = ({ next }) =>
                     </div>
                   </div>
 
-                  <div className="cvc">
+                  <div className="field cvc">
                     <div className="label">{"CVC"}</div>
                     <input
                       {...{

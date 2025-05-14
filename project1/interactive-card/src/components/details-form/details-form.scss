@@ -6,13 +6,11 @@
   max-width: 400px;
   // border: 2px solid black;
   height: fit-content;
-  
-  input {
-    @include input;
-  }
 
-  & > .cardholder-name, .card-number {
-    margin-bottom: 25px;
+  & > .field, & > .flex-row > .field {
+    input {
+      @include input;
+    }
 
     & > .label {
       margin-bottom: 5px;
@@ -22,6 +20,11 @@
     & > .error-message {
       @include form-error-message;
     }
+  }
+  
+
+  & > .cardholder-name, .card-number {
+    margin-bottom: 25px;    
   }
 
   & > .flex-row {
@@ -35,28 +38,10 @@
         margin-right: 10px;
       }
        margin-bottom: 25px;
-
-      & > .label {
-        margin-bottom: 5px;
-        @include form-label;
-      }
-
-      & > .error-message {
-        @include form-error-message;
-      }
     }
 
      & > .cvc {
-       margin-bottom: 25px;
-
-      & > .label {
-        margin-bottom: 5px;
-        @include form-label;
-      }
-
-      & > .error-message {
-        @include form-error-message;
-      }
+      margin-bottom: 25px;
     }
   }
 
