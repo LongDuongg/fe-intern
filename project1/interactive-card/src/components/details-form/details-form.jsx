@@ -15,16 +15,16 @@ export const DetailsForm = ({ next }) =>
       ({}, next) =>
         State({
           initValue: {
-            "name": "werwe",
-            "number": "1231231231231311",
-            "expDate": {
-              "month": "12",
-              "year": "12",
+            name: "werwe",
+            number: "1231231231231311",
+            expDate: {
+              month: "12",
+              year: "12"
             },
-            "cvc": "123",
+            cvc: "123"
           },
-          next,
-        }),
+          next
+        })
     ],
 
     [
@@ -49,7 +49,7 @@ export const DetailsForm = ({ next }) =>
               return { errors: newErrors };
             }
           })()
-        ),
+        )
     ],
 
     ({ card, validation }) =>
@@ -57,143 +57,105 @@ export const DetailsForm = ({ next }) =>
         card: card.value,
         validation,
         render: ({ errors, onSave, className }) =>
-          cs(
-            ["showErrors", ({}, next) => State({ initValue: {}, next })],
-            ({ showErrors }) => (
-              <div className={cn("details-form-1ms", className)}>
-                <div className="field cardholder-name">
-                  <div className="label">{"Cardholder Name"}</div>
+          cs(["showErrors", ({}, next) => State({ initValue: {}, next })], ({ showErrors }) => (
+            <div className={cn("details-form-1ms", className)}>
+              <div className="field cardholder-name">
+                <div className="label">{"Cardholder Name"}</div>
 
+                <input
+                  className={errors?.name && showErrors?.value.name ? "error" : ""} // add error class if there is an error
+                  type="text"
+                  placeholder="e.g. Jane Doe"
+                  {...bindInput(scope(card, ["name"]))}
+                  onKeyDown={() => {
+                    showErrors?.onChange(setPath(showErrors?.value, ["name"], true));
+                  }}
+                />
+                {errors?.name && showErrors?.value.name && <div className="error-message">{errors?.name}</div>}
+              </div>
+
+              <div className="field card-number">
+                <div className="label">{"Card Number"}</div>
+                <input
+                  className={errors?.number && showErrors?.value.number ? "error" : ""} // add error class if there is an error
+                  type="text"
+                  placeholder="e.g. 1234 5678 9123 0000"
+                  {...bindInput(scope(card, ["number"]))}
+                  onKeyDown={() => {
+                    showErrors?.onChange(setPath(showErrors?.value, ["number"], true));
+                  }}
+                />
+                {errors?.number && showErrors?.value.number && <div className="error-message">{errors?.number}</div>}
+              </div>
+
+              <div className="flex-row">
+                <div className="field exp-date">
+                  <div className="label">{"Exp. Date (MM/YY)"}</div>
                   <input
-                    className={
-                      errors?.name && showErrors?.value.name ? "error" : ""
-                    } // add error class if there is an error
+                    className={errors?.["expDate.month"] && showErrors?.value["expDate.month"] ? "error" : ""} // add error class if there is an error
                     type="text"
-                    placeholder="e.g. Jane Doe"
-                    {...bindInput(scope(card, ["name"]))}
+                    placeholder="MM"
+                    {...bindInput(scope(card, ["expDate", "month"]))}
                     onKeyDown={() => {
-                      showErrors?.onChange(
-                        setPath(showErrors?.value, ["name"], true)
-                      );
+                      showErrors.onChange(setPath(showErrors?.value, ["expDate.month"], true));
                     }}
                   />
-                  {errors?.name && showErrors?.value.name && (
-                    <div className="error-message">{errors?.name}</div>
-                  )}
-                </div>
-
-                <div className="field card-number">
-                  <div className="label">{"Card Number"}</div>
                   <input
-                    className={
-                      errors?.number && showErrors?.value.number ? "error" : ""
-                    } // add error class if there is an error
+                    className={errors?.["expDate.year"] && showErrors?.value["expDate.year"] ? "error" : ""} // add error class if there is an error
                     type="text"
-                    placeholder="e.g. 1234 5678 9123 0000"
-                    {...bindInput(scope(card, ["number"]))}
+                    placeholder="YY"
+                    {...bindInput(scope(card, ["expDate", "year"]))}
                     onKeyDown={() => {
-                      showErrors?.onChange(
-                        setPath(showErrors?.value, ["number"], true)
-                      );
+                      showErrors.onChange(setPath(showErrors?.value, ["expDate.year"], true));
                     }}
                   />
-                  {errors?.number && showErrors?.value.number && (
-                    <div className="error-message">{errors?.number}</div>
-                  )}
-                </div>
-
-                <div className="flex-row">
-                  <div className="field exp-date">
-                    <div className="label">{"Exp. Date (MM/YY)"}</div>
-                    <input
-                      className={
-                        errors?.["expDate.month"] &&
-                        showErrors?.value["expDate.month"]
-                          ? "error"
-                          : ""
-                      } // add error class if there is an error
-                      type="text"
-                      placeholder="MM"
-                      {...bindInput(scope(card, ["expDate", "month"]))}
-                      onKeyDown={() => {
-                        showErrors.onChange(
-                          setPath(showErrors?.value, ["expDate.month"], true)
-                        );
-                      }}
-                    />
-                    <input
-                      className={
-                        errors?.["expDate.year"] &&
-                        showErrors?.value["expDate.year"]
-                          ? "error"
-                          : ""
-                      } // add error class if there is an error
-                      type="text"
-                      placeholder="YY"
-                      {...bindInput(scope(card, ["expDate", "year"]))}
-                      onKeyDown={() => {
-                        showErrors.onChange(
-                          setPath(showErrors?.value, ["expDate.year"], true)
-                        );
-                      }}
-                    />
-                    <div className="error-message">
-                      {(errors?.["expDate.month"] &&
-                        showErrors?.value["expDate.month"] &&
-                        errors?.["expDate.month"]) ||
-                        (errors?.["expDate.year"] &&
-                          showErrors?.value["expDate.year"] &&
-                          errors?.["expDate.year"])}
-                    </div>
-                  </div>
-
-                  <div className="field cvc">
-                    <div className="label">{"CVC"}</div>
-                    <input
-                      {...{
-                        className:
-                          errors?.cvc && showErrors?.value.cvc ? "error" : "",
-                        // add error class if there is an error
-                        type: "text",
-                        placeholder: "e.g. 123",
-                        ...bindInput(scope(card, ["cvc"])),
-                        onKeyDown: () => {
-                          showErrors?.onChange(
-                            setPath(showErrors?.value, ["cvc"], true)
-                          );
-                        },
-                      }}
-                    />
-
-                    {errors?.cvc && showErrors?.value.cvc && (
-                      <div className="error-message">{errors?.cvc}</div>
-                    )}
+                  <div className="error-message">
+                    {(errors?.["expDate.month"] && showErrors?.value["expDate.month"] && errors?.["expDate.month"]) ||
+                      (errors?.["expDate.year"] && showErrors?.value["expDate.year"] && errors?.["expDate.year"])}
                   </div>
                 </div>
 
-                {/* <button className="confirm-btn" onClick={() => onSubmit()}>
+                <div className="field cvc">
+                  <div className="label">{"CVC"}</div>
+                  <input
+                    {...{
+                      className: errors?.cvc && showErrors?.value.cvc ? "error" : "",
+                      // add error class if there is an error
+                      type: "text",
+                      placeholder: "e.g. 123",
+                      ...bindInput(scope(card, ["cvc"])),
+                      onKeyDown: () => {
+                        showErrors?.onChange(setPath(showErrors?.value, ["cvc"], true));
+                      }
+                    }}
+                  />
+
+                  {errors?.cvc && showErrors?.value.cvc && <div className="error-message">{errors?.cvc}</div>}
+                </div>
+              </div>
+
+              {/* <button className="confirm-btn" onClick={() => onSubmit()}>
         Confirm
       </button> */}
-                {/* {success && ( */}
+              {/* {success && ( */}
 
-                <button
-                  {...{
-                    className: "save-btn",
-                    onClick: () => {
-                      console.log(JSON.stringify(card.value, null, 2));
-                      onSave({ card: card.value, validation });
-                      showErrors.onChange({});
-                      card.onChange(null);
-                    },
-                  }}
-                >
-                  Save
-                </button>
+              <button
+                {...{
+                  className: "save-btn",
+                  onClick: () => {
+                    console.log(JSON.stringify(card.value, null, 2));
+                    onSave({ card: card.value, validation });
+                    showErrors.onChange({});
+                    card.onChange(null);
+                  }
+                }}
+              >
+                Save
+              </button>
 
-                {/* )} */}
-              </div>
-            )
-          ),
+              {/* )} */}
+            </div>
+          ))
       })
   );
 
@@ -206,9 +168,9 @@ const formValidation = () => [
         validate: (value) => {
           return /^[a-zA-Z\s]+$/.test(value);
         },
-        message: "Name must contain only letters.",
-      },
-    ],
+        message: "Name must contain only letters."
+      }
+    ]
   },
   {
     field: "number",
@@ -219,9 +181,9 @@ const formValidation = () => [
           //5105 1051 0510 5100
           return /^\d{16}$/.test(value.replace(/\s+/g, ""));
         },
-        message: "Card number must be 16 digits.",
-      },
-    ],
+        message: "Card number must be 16 digits."
+      }
+    ]
   },
   // {
   //   field: "expDate",
@@ -261,9 +223,9 @@ const formValidation = () => [
         validate: (value) => {
           return /^(0[1-9]|1[0-2])$/.test(value);
         },
-        message: "Invalid month.",
-      },
-    ],
+        message: "Invalid month."
+      }
+    ]
   },
   {
     field: "expDate.year",
@@ -273,9 +235,9 @@ const formValidation = () => [
         validate: (value) => {
           return /^\d{2}$/.test(value);
         },
-        message: "Invalid year.",
-      },
-    ],
+        message: "Invalid year."
+      }
+    ]
   },
   {
     field: "cvc",
@@ -285,10 +247,10 @@ const formValidation = () => [
         validate: (value) => {
           return /^\d{3}$/.test(value);
         },
-        message: "CVC must be 3 digits.",
-      },
-    ],
-  },
+        message: "CVC must be 3 digits."
+      }
+    ]
+  }
 ];
 
 const required = (message) => {
@@ -296,7 +258,7 @@ const required = (message) => {
     validate: (value) => {
       return value != null && value !== "";
     },
-    message: message || "This field is required.",
+    message: message || "This field is required."
   };
 };
 

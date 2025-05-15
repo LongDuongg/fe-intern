@@ -5,53 +5,7 @@ import { State } from "../../common/react/state.js";
 
 export const ListSavedCards = ({ next }) =>
   cs(
-    // ["savedCards", ({}, next) => State({ initValue: [], next })],
-    [
-      "savedCards",
-      ({}, next) =>
-        State({
-          initValue: [
-            {
-              "details": {
-                "id": "PZpH07r1",
-                "name": "d",
-                "number": "1",
-                "expDate": {
-                  "month": "12",
-                  "year": "2",
-                },
-                "cvc": "123",
-              },
-              "validation": {
-                "errors": {
-                  "number": "Card number must be 16 digits.",
-                  "expDate.year": "Invalid year.",
-                },
-              },
-            },
-            {
-              "details": {
-                "id": "EY8WFiLX",
-                "name": "werwegggggg gggggggggggg ggggggg ggggggg",
-                "number": "1231231231231311",
-                "expDate": {
-                  "month": "12",
-                  "year": "12",
-                },
-                "cvc": "123",
-              },
-              "validation": {
-                "success": true,
-              },
-            },
-          ],
-          next,
-        }),
-    ],
-    ({ savedCards }, next) => {
-      console.log(savedCards);
-      return next({ savedCards });
-    },
+    ["savedCards", ({}, next) => State({ initValue: [], next })],
     ({ savedCards }) =>
       next({
         addCardInfo: ({ card, validation }) => {

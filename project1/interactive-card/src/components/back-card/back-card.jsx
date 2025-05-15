@@ -1,7 +1,5 @@
 import cn from "classnames";
-
 import "./back-card.scss";
-
 import backCard from "../../assets/bg-card-back.png";
 
 export const BackCard = ({ className, card }) => {
