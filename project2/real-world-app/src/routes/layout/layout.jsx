@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 export const Layout = ({ children }) => {
   return (
     <>
@@ -9,43 +11,43 @@ export const Layout = ({ children }) => {
           <ul className="nav navbar-nav pull-xs-right">
             {/* process authen and unauthen user here  */}
             <li className="nav-item">
-              <a className="nav-link active" href="/">
+              <NavLink className="nav-link" to="/">
                 Home
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/login">
-                Sign in
-              </a>
+              <NavLink className="nav-link" to="/login">
+                Login
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/register">
+              <NavLink className="nav-link" to="/register">
                 Sign up
-              </a>
+              </NavLink>
             </li>
 
             {/* <li className="nav-item">
-            <a className="nav-link active" href="/">
+            <NavLink className="nav-link active" to="/">
               Home
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/editor">
+            <NavLink className="nav-link" to="/editor">
               {" "}
               <i className="ion-compose"></i>&nbsp;New Article{" "}
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/settings">
+            <NavLink className="nav-link" to="/settings">
               {" "}
               <i className="ion-gear-a"></i>&nbsp;Settings{" "}
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/profile/eric-simons">
+            <NavLink className="nav-link" to="/profile/eric-simons">
               <img src="" className="user-pic" />
               Eric Simons
-            </a>
+            </NavLink>
           </li> */}
           </ul>
         </div>
