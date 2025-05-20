@@ -6,52 +6,52 @@ export const ArticleForm = () => {
     ({}, next) => <Layout>{next()}</Layout>,
     () => {
       return (
-        <div class="editor-page">
-          <div class="container page">
-            <div class="row">
-              <div class="col-md-10 offset-md-1 col-xs-12">
-                <ul class="error-messages">
+        <div className="editor-page">
+          <div className="container page">
+            <div className="row">
+              <div className="col-md-10 offset-md-1 col-xs-12">
+                <ul className="error-messages">
                   <li>That title is required</li>
                 </ul>
 
                 <form>
                   <fieldset>
-                    <fieldset class="form-group">
+                    <fieldset className="form-group">
                       <input
                         type="text"
-                        class="form-control form-control-lg"
+                        className="form-control form-control-lg"
                         placeholder="Article Title"
                       />
                     </fieldset>
-                    <fieldset class="form-group">
+                    <fieldset className="form-group">
                       <input
                         type="text"
-                        class="form-control"
+                        className="form-control"
                         placeholder="What's this article about?"
                       />
                     </fieldset>
-                    <fieldset class="form-group">
+                    <fieldset className="form-group">
                       <textarea
-                        class="form-control"
+                        className="form-control"
                         rows="8"
                         placeholder="Write your article (in markdown)"
                       ></textarea>
                     </fieldset>
-                    <fieldset class="form-group">
+                    <fieldset className="form-group">
                       <input
                         type="text"
-                        class="form-control"
+                        className="form-control"
                         placeholder="Enter tags"
                       />
-                      <div class="tag-list">
-                        <span class="tag-default tag-pill">
+                      <div className="tag-list">
+                        <span className="tag-default tag-pill">
                           {" "}
-                          <i class="ion-close-round"></i> tag{" "}
+                          <i className="ion-close-round"></i> tag{" "}
                         </span>
                       </div>
                     </fieldset>
                     <button
-                      class="btn btn-lg pull-xs-right btn-primary"
+                      className="btn btn-lg pull-xs-right btn-primary"
                       type="button"
                     >
                       Publish Article
