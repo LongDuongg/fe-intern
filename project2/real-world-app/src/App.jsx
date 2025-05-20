@@ -13,15 +13,15 @@ export const App = () => {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Signup />} />
-        <Route path="/settings" element={<Setting />} />
-        <Route path="/editor" element={<ArticleForm />} />
-        <Route path="/editor/:slug" element={<ArticleForm />} />
-        <Route path="/article/:slug" element={<Article />} />
-        <Route path="/profile/:username" element={<Profile />} />
-        <Route path="/profile/:username/favorite" element={<Profile />} />
+        <Route path="/" element={Home()} />
+        <Route path="/login" element={Login()} />
+        <Route path="/register" element={Signup()} />
+        <Route path="/settings" element={Setting()} />
+        <Route path="/editor" element={ArticleForm()} />
+        <Route path="/editor/:slug" element={ArticleForm()} />
+        <Route path="/article/:slug" element={Article()} />
+        <Route path="/profile/:username" element={Profile()} />
+        <Route path="/profile/:username/favorite" element={Profile()} />
       </Routes>
     </HashRouter>
   );
