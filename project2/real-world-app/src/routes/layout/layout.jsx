@@ -1,51 +1,53 @@
+import { NavLink } from "react-router-dom";
+
 export const Layout = ({ children }) => {
   return (
     <>
       <nav className="navbar navbar-light">
         <div className="container">
-          <a className="navbar-brand" href="/">
+          <NavLink className="navbar-brand" href="/">
             conduit
-          </a>
+          </NavLink>
           <ul className="nav navbar-nav pull-xs-right">
             {/* process authen and unauthen user here  */}
             <li className="nav-item">
-              <a className="nav-link active" href="/">
+              <NavLink className="nav-link" href="/">
                 Home
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/login">
+              <NavLink className="nav-link" href="/#/login">
                 Sign in
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/register">
+              <NavLink className="nav-link" href="/#/register">
                 Sign up
-              </a>
+              </NavLink>
             </li>
 
             {/* <li className="nav-item">
-            <a className="nav-link active" href="/">
+            <NavLink className="nav-link active" href="/">
               Home
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/editor">
+            <NavLink className="nav-link" href="/editor">
               {" "}
               <i className="ion-compose"></i>&nbsp;New Article{" "}
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/settings">
+            <NavLink className="nav-link" href="/settings">
               {" "}
               <i className="ion-gear-a"></i>&nbsp;Settings{" "}
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/profile/eric-simons">
+            <NavLink className="nav-link" href="/profile/eric-simons">
               <img src="" className="user-pic" />
               Eric Simons
-            </a>
+            </NavLink>
           </li> */}
           </ul>
         </div>
