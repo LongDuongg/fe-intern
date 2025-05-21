@@ -1,10 +1,14 @@
 import { cs } from "../../common/chain-services.js";
+import { EmptyFC } from "../../common/react/empty-fc.js";
 import { Layout } from "../layout/layout.jsx";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   return cs(
+    ({}, next) => EmptyFC({ next }),
+    ["navigate", ({}, next) => next(useNavigate())],
     ({}, next) => <Layout>{next()}</Layout>,
-    () => {
+    ({ navigate }) => {
       return (
         <div className="auth-page">
           <div className="container page">
@@ -34,7 +38,12 @@ export const Login = () => {
                       placeholder="Password"
                     />
                   </fieldset>
-                  <button className="btn btn-lg btn-primary pull-xs-right">
+                  <button
+                    className="btn btn-lg btn-primary pull-xs-right"
+                    onClick={() => {
+                      navigate("/");
+                    }}
+                  >
                     Sign in
                   </button>
                 </form>

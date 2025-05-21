@@ -1,10 +1,14 @@
 import { cs } from "../../common/chain-services.js";
 import { Layout } from "../layout/layout.jsx";
+import { EmptyFC } from "../../common/react/empty-fc.js";
+import { useNavigate } from "react-router-dom";
 
 export const Article = () => {
   return cs(
+    ({}, next) => EmptyFC({ next }),
+    ["navigate", ({}, next) => next(useNavigate())],
     ({}, next) => <Layout>{next()}</Layout>,
-    () => {
+    ({ navigate }) => {
       return (
         <div className="article-page">
           <div className="banner">
@@ -31,7 +35,10 @@ export const Article = () => {
                   <i className="ion-heart"></i>
                   &nbsp; Favorite Post <span className="counter">(29)</span>
                 </button>
-                <button className="btn btn-sm btn-outline-secondary">
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => navigate("/editor/234234fdsdaf")}
+                >
                   <i className="ion-edit"></i> Edit Article
                 </button>
                 <button className="btn btn-sm btn-outline-danger">
@@ -76,7 +83,7 @@ export const Article = () => {
                   </a>
                   <span className="date">January 20th</span>
                 </div>
-                <button className="btn btn-sm btn-outline-secondary">
+                {/* <button className="btn btn-sm btn-outline-secondary">
                   <i className="ion-plus-round"></i>
                   &nbsp; Follow Eric Simons
                 </button>
@@ -90,7 +97,7 @@ export const Article = () => {
                 </button>
                 <button className="btn btn-sm btn-outline-danger">
                   <i className="ion-trash-a"></i> Delete Article
-                </button>
+                </button> */}
               </div>
             </div>
 

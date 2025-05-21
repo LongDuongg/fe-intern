@@ -1,10 +1,14 @@
 import { cs } from "../../common/chain-services.js";
+import { EmptyFC } from "../../common/react/empty-fc.js";
 import { Layout } from "../layout/layout.jsx";
+import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {
   return cs(
+    ({}, next) => EmptyFC({ next }),
+    ["navigate", ({}, next) => next(useNavigate())],
     ({}, next) => <Layout>{next()}</Layout>,
-    () => {
+    ({ navigate }) => {
       return (
         <div className="profile-page">
           <div className="user-info">
@@ -24,7 +28,12 @@ export const Profile = () => {
                     <i className="ion-plus-round"></i>
                     &nbsp; Follow Eric Simons
                   </button>
-                  <button className="btn btn-sm btn-outline-secondary action-btn">
+                  <button
+                    className="btn btn-sm btn-outline-secondary action-btn"
+                    onClick={() => {
+                      navigate("/settings");
+                    }}
+                  >
                     <i className="ion-gear-a"></i>
                     &nbsp; Edit Profile Settings
                   </button>

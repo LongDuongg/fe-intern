@@ -1,10 +1,14 @@
 import { cs } from "../../common/chain-services.js";
 import { Layout } from "../layout/layout.jsx";
+import { EmptyFC } from "../../common/react/empty-fc.js";
+import { useNavigate } from "react-router-dom";
 
 export const ArticleForm = () => {
   return cs(
+    ({}, next) => EmptyFC({ next }),
+    ["navigate", ({}, next) => next(useNavigate())],
     ({}, next) => <Layout>{next()}</Layout>,
-    () => {
+    ({ navigate }) => {
       return (
         <div className="editor-page">
           <div className="container page">
@@ -53,6 +57,9 @@ export const ArticleForm = () => {
                     <button
                       className="btn btn-lg pull-xs-right btn-primary"
                       type="button"
+                      onClick={() => {
+                        navigate("/article/fasdf");
+                      }}
                     >
                       Publish Article
                     </button>
