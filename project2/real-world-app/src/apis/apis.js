@@ -2,7 +2,7 @@ import { waitTimeout } from "../common/utils/async";
 
 export const user = {
   login: async ({ email, password }) => {
-    // await waitTimeout(1000);
+    await waitTimeout(1000);
     return fetch(
       "https://conduit-realworld-example-app.fly.dev/api/users/login",
       {

@@ -14,10 +14,11 @@ export const Login = () => {
     consumeContext("auth"),
     ["state", ({}, next) => State({ initValue: {}, next })],
     ["errors", ({}, next) => State({  next })],
+    ["isLoading", ({}, next) => State({  next })],
     ({}, next) => <Layout>{next()}</Layout>,
     ({}, next) => EmptyFC({ next }),
     ["navigate", ({}, next) => next(useNavigate())],
-    ({ navigate, state, auth, errors }) => {
+    ({ navigate, state, auth, errors, isLoading }) => {
       return (
         <div className="auth-page">
           <div className="container page">
@@ -56,6 +57,8 @@ export const Login = () => {
                   <button
                     className="btn btn-lg btn-primary pull-xs-right"
                     onClick={async () => {
+                      isLoading.onChange(true);
+                      setTimeout(() => isLoading.onChange(false), 2000);
                       const user = await apis.user.login(state?.value);
                       if (user.errors) {
                         errors.onChange(user.errors.body);
@@ -65,7 +68,7 @@ export const Login = () => {
                       }
                     }}
                   >
-                    Sign in
+                    {isLoading.value ? "Loading..." : "Sign in"}
                   </button>
                 </form>
               </div>
