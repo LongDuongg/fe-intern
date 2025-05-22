@@ -9,20 +9,43 @@ import { Article } from "./routes/article/article.jsx";
 import { ArticleForm } from "./routes/article/article-form.jsx";
 import { Profile } from "./routes/profile/profile.jsx";
 
+import { cs } from "./common/chain-services.js";
+import { State } from "./common/react/state.js";
+import { provideContext } from "./common/react/context.js";
+
+
 export const App = () => {
-  return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={Home()} />
-        <Route path="/login" element={Login()} />
-        <Route path="/register" element={Signup()} />
-        <Route path="/settings" element={Setting()} />
-        <Route path="/editor" element={ArticleForm()} />
-        <Route path="/editor/:slug" element={ArticleForm()} />
-        <Route path="/article/:slug" element={Article()} />
-        <Route path="/profile/:username" element={Profile()} />
-        <Route path="/profile/:username/favorite" element={Profile()} />
-      </Routes>
-    </HashRouter>
+  return cs(
+    ["auth", ({}, next) => Auth({ next })],
+    ({auth}, next) => provideContext("auth", auth, next),
+    ({auth}) => {
+      return (
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={Home()} />
+            <Route path="/login" element={Login()} />
+            <Route path="/register" element={Signup()} />
+            <Route path="/settings" element={Setting()} />
+            <Route path="/editor" element={ArticleForm()} />
+            <Route path="/editor/:slug" element={ArticleForm()} />
+            <Route path="/article/:slug" element={Article()} />
+            <Route path="/profile/:username" element={Profile()} />
+            <Route path="/profile/:username/favorite" element={Profile()} />
+          </Routes>
+        </HashRouter>
+      );
+    }
+  );
+};
+
+const Auth = ({ next }) => {
+  return cs(
+    ["userInfo", ({}, next) => State({ next })], 
+    ({ userInfo }) => next({
+      user: userInfo.value?.user,
+      login: (user) => {
+        userInfo.onChange(user);
+      },
+    })
   );
 };
