@@ -1,16 +1,20 @@
 import { Layout } from "../layout/layout.jsx";
+import { NavLink } from "react-router-dom";
 
 
 import apis from "../../apis/apis.js";
 import { cs } from "../../common/chain-services.js";
 import { Load } from "../../common/react/load.js";
+import { formatDate } from "../../common/utils/date.js";
 
 
 export const Home = () => {
   return cs(
     ({}, next) => <Layout>{next()}</Layout>,
     ["tags", ({}, next) => Load({ fetch: async () => await apis.tag.getTags(), next })],
-    ({tags}) => {
+    ["globalFeed", ({}, next) => Load({ fetch: async () => await apis.article.getArticles(), next })],
+    ({tags, globalFeed}) => {
+      console.log(globalFeed);
       return (
         <div className="home-page">
           <div className="banner">
@@ -26,83 +30,54 @@ export const Home = () => {
                 <div className="feed-toggle">
                   <ul className="nav nav-pills outline-active">
                     <li className="nav-item">
-                      <a className="nav-link" href="">
+                      <NavLink className="nav-link" to="">
                         Your Feed
-                      </a>
+                      </NavLink>
                     </li>
                     <li className="nav-item">
-                      <a className="nav-link active" href="">
+                      <NavLink className="nav-link active" to="">
                         Global Feed
-                      </a>
+                      </NavLink>
                     </li>
                   </ul>
                 </div>
 
-                <div className="article-preview">
-                  <div className="article-meta">
-                    <a href="/profile/eric-simons">
-                      <img src="http://i.imgur.com/Qr71crq.jpg" />
-                    </a>
-                    <div className="info">
-                      <a href="/profile/eric-simons" className="author">
-                        Eric Simons
-                      </a>
-                      <span className="date">January 20th</span>
+                {globalFeed?.articles.map((article,i) => {
+                  return (
+                    <div key={i} className="article-preview">
+                      <div className="article-meta">
+                        <NavLink to="/profile/eric-simons">
+                          {/* <img src="http://i.imgur.com/Qr71crq.jpg" /> */}
+                          <img src={article.author.image} />
+                        </NavLink>
+                        <div className="info">
+                          <NavLink to={`/profile/${article.author.username}`} className="author">
+                            {article.author.username}
+                          </NavLink>
+                          <span className="date">{formatDate(article.createdAt)}</span>
+                        </div>
+                        <button className="btn btn-outline-primary btn-sm pull-xs-right">
+                          <i className="ion-heart"></i> {article.favoritesCount}
+                        </button>
+                      </div>
+                      <NavLink
+                        to={`/article/${article.slug}`}
+                        className="preview-link"
+                      >
+                        <h1>{article.title}</h1>
+                        <p>{article.description}</p>
+                        <span>Read more...</span>
+                        <ul className="tag-list">
+                          {article.tagList.map((tag,i) => {
+                            <li key={i} className="tag-default tag-pill tag-outline">
+                              {tag}
+                            </li>
+                          })}
+                        </ul>
+                      </NavLink>
                     </div>
-                    <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                      <i className="ion-heart"></i> 29
-                    </button>
-                  </div>
-                  <a
-                    href="/article/how-to-build-webapps-that-scale"
-                    className="preview-link"
-                  >
-                    <h1>How to build webapps that scale</h1>
-                    <p>This is the description for the post.</p>
-                    <span>Read more...</span>
-                    <ul className="tag-list">
-                      <li className="tag-default tag-pill tag-outline">
-                        realworld
-                      </li>
-                      <li className="tag-default tag-pill tag-outline">
-                        implementations
-                      </li>
-                    </ul>
-                  </a>
-                </div>
-
-                <div className="article-preview">
-                  <div className="article-meta">
-                    <a href="/profile/albert-pai">
-                      <img src="http://i.imgur.com/N4VcUeJ.jpg" />
-                    </a>
-                    <div className="info">
-                      <a href="/profile/albert-pai" className="author">
-                        Albert Pai
-                      </a>
-                      <span className="date">January 20th</span>
-                    </div>
-                    <button className="btn btn-outline-primary btn-sm pull-xs-right">
-                      <i className="ion-heart"></i> 32
-                    </button>
-                  </div>
-                  <a href="/article/the-song-you" className="preview-link">
-                    <h1>
-                      The song you won't ever stop singing. No matter how hard
-                      you try.
-                    </h1>
-                    <p>This is the description for the post.</p>
-                    <span>Read more...</span>
-                    <ul className="tag-list">
-                      <li className="tag-default tag-pill tag-outline">
-                        realworld
-                      </li>
-                      <li className="tag-default tag-pill tag-outline">
-                        implementations
-                      </li>
-                    </ul>
-                  </a>
-                </div>
+                  );
+                })}
 
                 <ul className="pagination">
                   <li className="page-item active">
@@ -121,37 +96,12 @@ export const Home = () => {
               <div className="col-md-3">
                 <div className="sidebar">
                   <p>Popular Tags</p>
-
                   <div className="tag-list">
                     {tags?.tags.map((tag,i) => (
-                      <a key={i} href="" className="tag-pill tag-default">
+                      <NavLink key={i} to="" className="tag-pill tag-default">
                        {tag}
-                      </a>
+                      </NavLink>
                     ))}
-                    {/* <a href="" className="tag-pill tag-default">
-                      programming
-                    </a>
-                    <a href="" className="tag-pill tag-default">
-                      javascript
-                    </a>
-                    <a href="" className="tag-pill tag-default">
-                      emberjs
-                    </a>
-                    <a href="" className="tag-pill tag-default">
-                      angularjs
-                    </a>
-                    <a href="" className="tag-pill tag-default">
-                      react
-                    </a>
-                    <a href="" className="tag-pill tag-default">
-                      mean
-                    </a>
-                    <a href="" className="tag-pill tag-default">
-                      node
-                    </a>
-                    <a href="" className="tag-pill tag-default">
-                      rails
-                    </a> */}
                   </div>
                 </div>
               </div>

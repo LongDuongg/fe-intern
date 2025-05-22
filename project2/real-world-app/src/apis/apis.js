@@ -24,6 +24,16 @@ export const user = {
   signUp: async ({ name, email, password }) => {},
 };
 
+export const article = {
+  getArticles: async () => {
+    await waitTimeout(1000);
+    return fetch("https://conduit-realworld-example-app.fly.dev/api/articles")
+    .then((res) => res.json())
+    .then((data) => data);
+  },
+}
+
+
 export const tag = {
   getTags: async () => {
     await waitTimeout(1000);
@@ -33,6 +43,6 @@ export const tag = {
   },
 }
 
-const apis = { user, tag };
+const apis = { user, article, tag };
 
 export default apis;
