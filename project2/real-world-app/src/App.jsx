@@ -10,8 +10,8 @@ import { ArticleForm } from "./routes/article/article-form.jsx";
 import { Profile } from "./routes/profile/profile.jsx";
 
 import { cs } from "./common/chain-services.js";
-import { State } from "./common/react/state.js";
 import { provideContext } from "./common/react/context.js";
+import { rLsStore } from "./common/react/ls-store.js";
 
 
 export const App = () => {
@@ -41,18 +41,11 @@ export const App = () => {
 
 const Auth = ({ next }) => {
   return cs(
-    ["userInfo", ({}, next) => State({ 
-      getInitValue: () => {
-        const savedUser = localStorage.getItem("user");
-        return savedUser ? JSON.parse(savedUser) : null
-      }, 
-      next 
-    })], 
+    ["userInfo", rLsStore("user")], 
     ({ userInfo }) => next({
       user: userInfo.value?.user,
       login: (user) => {
         userInfo.onChange(user);
-        localStorage.setItem("user", JSON.stringify(user));
       },
     })
   );
