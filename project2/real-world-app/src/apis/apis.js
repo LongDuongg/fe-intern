@@ -3,8 +3,7 @@ import { waitTimeout } from "../common/utils/async";
 export const user = {
   login: async ({ email, password }) => {
     await waitTimeout(1000);
-    return fetch(
-      "https://conduit-realworld-example-app.fly.dev/api/users/login",
+    return fetch( "https://conduit-realworld-example-app.fly.dev/api/users/login",
       {
         method: "POST",
         headers: {
@@ -25,6 +24,15 @@ export const user = {
   signUp: async ({ name, email, password }) => {},
 };
 
-const apis = { user };
+export const tag = {
+  getTags: async () => {
+    await waitTimeout(1000);
+    return fetch("https://conduit-realworld-example-app.fly.dev/api/tags")
+    .then((res) => res.json())
+    .then((data) => data);
+  },
+}
+
+const apis = { user, tag };
 
 export default apis;

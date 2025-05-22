@@ -1,10 +1,16 @@
-import { cs } from "../../common/chain-services.js";
 import { Layout } from "../layout/layout.jsx";
+
+
+import apis from "../../apis/apis.js";
+import { cs } from "../../common/chain-services.js";
+import { Load } from "../../common/react/load.js";
+
 
 export const Home = () => {
   return cs(
     ({}, next) => <Layout>{next()}</Layout>,
-    () => {
+    ["tags", ({}, next) => Load({ fetch: async () => await apis.tag.getTags(), next })],
+    ({tags}) => {
       return (
         <div className="home-page">
           <div className="banner">
@@ -117,7 +123,12 @@ export const Home = () => {
                   <p>Popular Tags</p>
 
                   <div className="tag-list">
-                    <a href="" className="tag-pill tag-default">
+                    {tags?.tags.map((tag,i) => (
+                      <a key={i} href="" className="tag-pill tag-default">
+                       {tag}
+                      </a>
+                    ))}
+                    {/* <a href="" className="tag-pill tag-default">
                       programming
                     </a>
                     <a href="" className="tag-pill tag-default">
@@ -140,7 +151,7 @@ export const Home = () => {
                     </a>
                     <a href="" className="tag-pill tag-default">
                       rails
-                    </a>
+                    </a> */}
                   </div>
                 </div>
               </div>
