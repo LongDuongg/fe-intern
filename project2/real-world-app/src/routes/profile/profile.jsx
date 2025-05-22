@@ -1,14 +1,17 @@
+import { useNavigate } from "react-router-dom";
+
 import { cs } from "../../common/chain-services.js";
 import { EmptyFC } from "../../common/react/empty-fc.js";
 import { Layout } from "../layout/layout.jsx";
-import { useNavigate } from "react-router-dom";
+import { consumeContext } from "../../common/react/context.js";
 
 export const Profile = () => {
   return cs(
+    consumeContext("auth"),
     ({}, next) => EmptyFC({ next }),
     ["navigate", ({}, next) => next(useNavigate())],
     ({}, next) => <Layout>{next()}</Layout>,
-    ({ navigate }) => {
+    ({ auth, navigate }) => {
       return (
         <div className="profile-page">
           <div className="user-info">
@@ -19,14 +22,14 @@ export const Profile = () => {
                     src="http://i.imgur.com/Qr71crq.jpg"
                     className="user-img"
                   />
-                  <h4>Eric Simons</h4>
+                  <h4>{auth.user.username}</h4>
                   <p>
                     Cofounder @GoThinkster, lived in Aol's HQ for a few months,
                     kinda looks like Peeta from the Hunger Games
                   </p>
                   <button className="btn btn-sm btn-outline-secondary action-btn">
                     <i className="ion-plus-round"></i>
-                    &nbsp; Follow Eric Simons
+                    &nbsp; Follow {auth.user.username}
                   </button>
                   <button
                     className="btn btn-sm btn-outline-secondary action-btn"
@@ -67,7 +70,7 @@ export const Profile = () => {
                     </a>
                     <div className="info">
                       <a href="/profile/eric-simons" className="author">
-                        Eric Simons
+                        {auth.user.username}
                       </a>
                       <span className="date">January 20th</span>
                     </div>
