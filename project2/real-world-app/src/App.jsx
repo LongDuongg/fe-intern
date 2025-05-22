@@ -8,6 +8,7 @@ import { Setting } from "./routes/setting/setting.jsx";
 import { Article } from "./routes/article/article.jsx";
 import { ArticleForm } from "./routes/article/article-form.jsx";
 import { Profile } from "./routes/profile/profile.jsx";
+import { ProtectedRoute } from "./routes/protected-route/protected-route.jsx";
 
 import { cs } from "./common/chain-services.js";
 import { provideContext } from "./common/react/context.js";
@@ -26,12 +27,13 @@ export const App = () => {
             <Route path="/" element={Home()} />
             <Route path="/login" element={Login()} />
             <Route path="/register" element={Signup()} />
-            <Route path="/settings" element={Setting()} />
-            <Route path="/editor" element={ArticleForm()} />
-            <Route path="/editor/:slug" element={ArticleForm()} />
-            <Route path="/article/:slug" element={Article()} />
-            <Route path="/profile/:username" element={Profile()} />
-            <Route path="/profile/:username/favorite" element={Profile()} />
+
+            <Route path="/settings" element={ProtectedRoute({ children: Setting() })} />
+            <Route path="/editor" element={ProtectedRoute({ children: ArticleForm() })} />
+            <Route path="/editor/:slug" element={ProtectedRoute({ children: ArticleForm() })} />
+            <Route path="/article/:slug" element={ProtectedRoute({ children: Article() })} />
+            <Route path="/profile/:username" element={ProtectedRoute({ children: Profile() })} />
+            <Route path="/profile/:username/favorite" element={ProtectedRoute({ children: Profile() })} />
           </Routes>
         </HashRouter>
       );
