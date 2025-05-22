@@ -47,6 +47,9 @@ const Auth = ({ next }) => {
       login: (user) => {
         userInfo.onChange(user);
       },
+      logout: () => {
+        userInfo.onChange(null);
+      },
     })
   );
 };
