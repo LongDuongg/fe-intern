@@ -19,6 +19,7 @@ export const App = () => {
     ["auth", ({}, next) => Auth({ next })],
     ({auth}, next) => provideContext("auth", auth, next),
     ({auth}) => {
+      console.log(auth.user);
       return (
         <HashRouter>
           <Routes>
@@ -40,11 +41,18 @@ export const App = () => {
 
 const Auth = ({ next }) => {
   return cs(
-    ["userInfo", ({}, next) => State({ next })], 
+    ["userInfo", ({}, next) => State({ 
+      getInitValue: () => {
+        const savedUser = localStorage.getItem("user");
+        return savedUser ? JSON.parse(savedUser) : null
+      }, 
+      next 
+    })], 
     ({ userInfo }) => next({
       user: userInfo.value?.user,
       login: (user) => {
         userInfo.onChange(user);
+        localStorage.setItem("user", JSON.stringify(user));
       },
     })
   );
