@@ -1,8 +1,6 @@
 import { Layout } from "../layout/layout.jsx";
-import { useNavigate } from "react-router-dom";
 
 import { cs } from "../../common/chain-services.js";
-import { EmptyFC } from "../../common/react/empty-fc.js";
 import apis from "../../apis/apis.js";
 import { State } from "../../common/react/state.js";
 import { bindInput } from "../../../../../project1/interactive-card/src/common/react/bind-input.js";
@@ -16,9 +14,7 @@ export const Login = () => {
     ["errors", ({}, next) => State({  next })],
     ["isLoading", ({}, next) => State({  next })],
     ({}, next) => <Layout>{next()}</Layout>,
-    ({}, next) => EmptyFC({ next }),
-    ["navigate", ({}, next) => next(useNavigate())],
-    ({ navigate, state, auth, errors, isLoading }) => {
+    ({ state, auth, errors, isLoading }) => {
       return (
         <div className="auth-page">
           <div className="container page">
@@ -56,15 +52,15 @@ export const Login = () => {
                   </fieldset>
                   <button
                     className="btn btn-lg btn-primary pull-xs-right"
-                    onClick={async () => {
+                    onClick={async (e) => {
+                      e.preventDefault();
                       isLoading.onChange(true);
-                      setTimeout(() => isLoading.onChange(false), 2000);
                       const user = await apis.user.login(state?.value);
                       if (user.errors) {
                         errors.onChange(user.errors.body);
+                        isLoading.onChange(false);
                       } else {
                         auth.login(user);
-                        navigate("/");
                       }
                     }}
                   >
