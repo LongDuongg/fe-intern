@@ -1,20 +1,19 @@
-import { Layout } from "../layout/layout.jsx";
-
-import { cs } from "../../common/chain-services.js";
-import apis from "../../apis/apis.js";
-import { State } from "../../common/react/state.js";
-import { bindInput } from "../../../../../project1/interactive-card/src/common/react/bind-input.js";
-import { scope } from "../../../../../project1/interactive-card/src/common/react/scope.js";
-import { consumeContext } from "../../common/react/context.js";
+import {bindInput}      from "../../../../../project1/interactive-card/src/common/react/bind-input.js";
+import {scope}          from "../../../../../project1/interactive-card/src/common/react/scope.js";
+import {cs}             from "../../common/chain-services.js";
+import {consumeContext} from "../../common/react/context.js";
+import {State}          from "../../common/react/state.js";
+import {Layout}         from "../layout/layout.jsx";
 
 export const Login = () => {
   return cs(
     consumeContext("auth"),
+    consumeContext("apis"),
     ["state", ({}, next) => State({ initValue: {}, next })],
     ["errors", ({}, next) => State({  next })],
     ["isLoading", ({}, next) => State({  next })],
     ({}, next) => <Layout>{next()}</Layout>,
-    ({ state, auth, errors, isLoading }) => {
+    ({ state, auth, errors, isLoading, apis }) => {
       return (
         <div className="auth-page">
           <div className="container page">
