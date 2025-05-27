@@ -132,27 +132,15 @@ export const Home = () => cs(
                         </ul>
                     </div>
 
-                    <div className="col-md-3">
-                        <div className="sidebar">
-                            <p>Popular Tags</p>
-                            <div className="tag-list">
-                                {cs(
-                                    ["tags", ({}, next) => Load({
-                                        fetch: async () => await apis.tag.getTags(),
-                                        next,
-                                    })],
-                                    ({tags}) => tags?.tags.map((tag, i) => (
-                                        <NavLink key={i} to="" className="tag-pill tag-default">
-                                            {tag}
-                                        </NavLink>
-                                    )),
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div className="col-md-3">
+              <div className="sidebar">
+                <p>Popular Tags</p>
+                <div className="tag-list">{Tags()}</div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     )
 );
 
