@@ -24,27 +24,25 @@ export const createApis = ({ onUnauthen }) => {
       signUp: async ({ name, email, password }) => {},
     },
     article: {
-      getArticles: async ({ page }) => {
+      getGlobalFeed: async ({ page }) => {
         return fetch(
-          "https://conduit-realworld-example-app.fly.dev/api/articles?limit=5&offset=" +
-            (page - 1)
+          `https://conduit-realworld-example-app.fly.dev/api/articles?limit=5&offset=${page}`
         )
           .then((res) => res.json())
           .then((data) => data);
       },
 
-      getArticlesWithTag: async ({ tag }) => {
+      getFeedByTag: async ({ tag, page }) => {
         return fetch(
-          `https://conduit-realworld-example-app.fly.dev/api/articles?tag=${tag}`
+          `https://conduit-realworld-example-app.fly.dev/api/articles?tag=${tag}&offset=${page}&limit=5`
         )
           .then((res) => res.json())
           .then((data) => data);
       },
 
-      getArticlesByAuthor: async ({ username, page }) => {
+      getMyFeed: async ({ page }) => {
         return fetch(
-          `https://conduit-realworld-example-app.fly.dev/api/articles?author=${username}` +
-            (page - 1)
+          `https://conduit-realworld-example-app.fly.dev/api/articles/feed?offset=${page}`
         )
           .then((res) => res.json())
           .then((data) => data);
