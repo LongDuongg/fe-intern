@@ -1,7 +1,9 @@
 import { TagPanel } from "./tag-panel.jsx";
-import { cs } from "../../common/chain-services.js";
 import { Layout } from "../layout/layout.jsx";
 import { FeedPanel } from "./feed-panel.jsx";
+
+import { cs } from "../../common/chain-services.js";
+import { State } from "../../common/react/state.js";
 
 export const Home = () => {
   return cs(
