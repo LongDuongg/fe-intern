@@ -19,7 +19,9 @@ export const Pagination = ({ currentPage, onChange }) => {
                 },
               }}
             >
-              <a className="page-link">{p}</a>
+              <a className="page-link" style={{ cursor: "pointer" }}>
+                {p}
+              </a>
             </li>
           ))
         )}
