@@ -6,7 +6,8 @@ import { FeedPanel } from "./feed-panel.jsx";
 export const Home = () => {
   return cs(
     ({}, next) => <Layout>{next()}</Layout>,
-    ({}) => {
+    ["selectedTag", ({}, next) => State({ initValue: null, next })],
+    ({ selectedTag }) => {
       return (
         <div className="home-page">
           <div className="banner">
@@ -18,10 +19,10 @@ export const Home = () => {
 
           <div className="container page">
             <div className="row">
-              <div className="col-md-9">{FeedPanel()}</div>
+              <div className="col-md-9">{FeedPanel({ selectedTag })}</div>
 
               <div className="col-md-3">
-                {TagPanel({ title: "Popular Tags" })}
+                {TagPanel({ title: "Popular Tags", selectedTag })}
               </div>
             </div>
           </div>

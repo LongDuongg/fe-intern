@@ -3,8 +3,8 @@ import { cs } from "../../common/chain-services";
 import { TabHeader, Tabs } from "./tab";
 import { ArticlePreviewList } from "./article-preview-list";
 
-export const FeedPanel = () => {
-  return cs(({}) => {
+export const FeedPanel = ({ selectedTag }) => {
+  return cs(consumeContext("apis"), ({ apis }) => {
     const tabs = [
       {
         key: "your-feed",
@@ -18,11 +18,27 @@ export const FeedPanel = () => {
         //   render: () => ArticlePreviewList({ activeTab }),
         render: () => "Global Feed is not implemented yet.",
       },
-      //   {
-      //     label: `#${"any tag"}`,
-      //     render: () => {},
-      //   },
     ];
-    return Tabs({ tabs, initActive: 1 });
+
+    if (selectedTag.value) {
+      tabs.push({
+        key: `${selectedTag.value}`,
+        label: `#${selectedTag.value}`,
+        render: () =>
+          ArticlePreviewList({
+            getData: ({ page }) =>
+              apis.article.getFeedByTag({ page, tag: selectedTag.value }),
+          }),
+        forced: true,
+      });
+    }
+
+    return Tabs({
+      tabs,
+      initActive: 1,
+      onChangeTab: () => {
+        selectedTag.onChange(null);
+      },
+    }); // 1 is the index for "Global Feed"
   });
 };

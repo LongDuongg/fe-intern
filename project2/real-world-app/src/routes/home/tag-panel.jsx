@@ -4,7 +4,7 @@ import { cs } from "../../common/chain-services";
 import { Load } from "../../common/react/load";
 import { consumeContext } from "../../common/react/context";
 
-export const TagPanel = ({ title, activeTab }) => {
+export const TagPanel = ({ title, selectedTag }) => {
   return cs(
     consumeContext("apis"),
     [
@@ -26,7 +26,7 @@ export const TagPanel = ({ title, activeTab }) => {
                 key={i}
                 className="tag-pill tag-default"
                 onClick={() => {
-                  // activeTab.onChange(tag);
+                  selectedTag.onChange(tag);
                 }}
               >
                 {tag}
