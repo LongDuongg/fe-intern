@@ -1,25 +1,51 @@
 import { cs } from "../../common/chain-services";
 import { cx1 } from "../../common/cx1";
+import { keyed } from "../../common/react/keyed";
 import { State } from "../../common/react/state";
+import { Fragment } from "react";
 
-export const Tabs = ({ tabs, initActive = 0 }) => {
+export const Tabs = ({ tabs, initActive = 0, onChangeTab }) => {
   return cs(
-    ["active", ({}, next) => State({ initValue: initActive, next })],
-    ({ active }) => {
-      const activeTab = tabs[active.value];
+    [
+      "forcedIndex",
+      ({}, next) => {
+        const forcedIndex = tabs.findIndex((tab) => tab.forced);
+        return next(forcedIndex > -1 ? forcedIndex : null);
+      },
+    ],
+    [
+      "active",
+      ({ forcedIndex }, next) =>
+        State({ initValue: forcedIndex || initActive, next }),
+    ],
+
+    ({ active, forcedIndex }) => {
+      const activeIndex = forcedIndex || active.value;
+      console.log("activeIndex", activeIndex);
+      console.log("forcedIndex", forcedIndex);
+      const activeTab = tabs[activeIndex];
+
       console.log(activeTab);
       console.log(active.value);
       return (
         <>
           <div className="feed-toggle">
             {TabHeader({
-              isActive: (index) => active.value === index,
+              isActive: (index) => activeIndex === index,
               tabs,
-              onChange: active.onChange,
+              onChange: (i) => {
+                if (forcedIndex && i === forcedIndex) {
+                  return;
+                }
+                console.log(i);
+                active.onChange(i);
+                onChangeTab();
+              },
             })}
           </div>
 
-          {activeTab.render()}
+          {cs(keyed(activeTab.key), () => activeTab.render())}
+          {/* <Fragment key={activeTab.key}>{activeTab.render()}</Fragment> */}
         </>
       );
     }
