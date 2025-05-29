@@ -10,46 +10,38 @@ import { formatDate } from "../../common/utils/date";
 import { State } from "../../common/react/state";
 import { parseUrlQuery } from "../../common/parse-url-query";
 
-export const ArticlePreviewList = ({ activeTab }) => {
+export const ArticlePreviewList = ({ getData }) => {
   return cs(
     consumeContext("apis"),
     consumeContext("auth"),
-    ({}, next) => EmptyFC({ next }),
-    ["location", (_, next) => next(useLocation())],
-    ["navigate", (_, next) => next(useNavigate())],
-    [
-      "page",
-      ({ location, navigate }, next) =>
-        State({
-          initValue: +(parseUrlQuery(location.search)?.page ?? 1),
-          next: (state) =>
-            next({
-              value: state.value,
-              onChange: (newPage) => {
-                state.onChange(newPage);
-                navigate("?page=" + newPage);
-              },
-            }),
-        }),
-    ],
+    // ({}, next) => EmptyFC({ next }),
+    // ["location", (_, next) => next(useLocation())],
+    // ["navigate", (_, next) => next(useNavigate())],
+    // [
+    //   "page",
+    //   ({ location, navigate }, next) =>
+    //     State({
+    //       initValue: +(parseUrlQuery(location.search)?.page ?? 1),
+    //       next: (state) =>
+    //         next({
+    //           value: state.value,
+    //           onChange: (newPage) => {
+    //             state.onChange(newPage);
+    //             navigate("?page=" + newPage);
+    //           },
+    //         }),
+    //     }),
+    // ],
+    ["page", ({}, next) => State({ initValue: 0, next })],
     [
       "feeds",
       ({ apis, auth, page }, next) =>
         Load({
           _key: page.value,
           fetch: async () => {
-            if (activeTab.value === "Global Feed") {
-              return await apis.article.getArticles({ page: page.value });
-            } else if (activeTab.value === "Your Feed") {
-              return await apis.article.getArticlesByAuthor({
-                username: auth.username,
-                page: page.value,
-              });
-            } else {
-              return await apis.article.getArticlesWithTag({
-                tag: activeTab.value,
-              });
-            }
+            return await getData({
+              page: page.value,
+            });
           },
           next,
         }),
@@ -58,7 +50,7 @@ export const ArticlePreviewList = ({ activeTab }) => {
       console.log(feeds);
       return (
         <>
-          {feeds?.articles.map((article, i) => {
+          {feeds?.articles?.map((article, i) => {
             return (
               <div key={i} className="article-preview">
                 <div className="article-meta">
