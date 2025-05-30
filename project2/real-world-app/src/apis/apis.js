@@ -41,12 +41,6 @@ export const createApis = ({ onUnauthen }) => {
           .then((res) => res.json())
           .then((data) => data);
       },
-
-      // getCurrentUser: async () => {
-      //   return fetch(`https://conduit-realworld-example-app.fly.dev/api/user`)
-      //     .then((res) => res.json())
-      //     .then((data) => data);
-      // },
     },
     article: {
       getGlobalFeed: async ({ page }) => {

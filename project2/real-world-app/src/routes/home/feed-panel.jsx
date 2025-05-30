@@ -1,12 +1,43 @@
 import { cs } from "../../common/chain-services";
 
-import { Tabs } from "./tab";
+import { TabHeader, Tabs } from "./tab";
 import { ArticlePreviewList } from "./article-preview-list";
 import { consumeContext } from "../../common/react/context";
 
-export const FeedPanel = ({ tabs, selectedTag }) => {
+export const FeedPanel = ({ selectedTag }) => {
   return cs(consumeContext("apis"), ({ apis }) => {
-    if (selectedTag?.value) {
+    const tabs = [
+      {
+        key: "your-feed",
+        label: "Your Feed",
+        // render: () => (
+        //   <ArticlePreviewList
+        //     key={"your-feed"}
+        //     getData={apis.article.getMyFeed}
+        //   />
+        // ),
+        render: () =>
+          ArticlePreviewList({
+            getData: apis.article.getMyFeed,
+          }),
+      },
+      {
+        key: "global-feed",
+        label: "Global Feed",
+        // render: () => (
+        //   <ArticlePreviewList
+        //     key={"global-feed"}
+        //     getData={apis.article.getGlobalFeed}
+        //   />
+        // ),
+        render: () =>
+          ArticlePreviewList({
+            getData: apis.article.getGlobalFeed,
+          }),
+      },
+    ];
+
+    if (selectedTag.value) {
       tabs.push({
         key: `${selectedTag.value}`,
         label: `#${selectedTag.value}`,
@@ -23,7 +54,7 @@ export const FeedPanel = ({ tabs, selectedTag }) => {
       tabs,
       initActive: 1,
       onChangeTab: () => {
-        selectedTag?.onChange(null);
+        selectedTag.onChange(null);
       },
     });
   });
