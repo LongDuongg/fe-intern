@@ -56,6 +56,6 @@ export const FeedPanel = ({ selectedTag }) => {
       onChangeTab: () => {
         selectedTag.onChange(null);
       },
-    }); // 1 is the index for "Global Feed"
+    });
   });
 };

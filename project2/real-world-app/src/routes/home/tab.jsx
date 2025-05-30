@@ -21,12 +21,8 @@ export const Tabs = ({ tabs, initActive = 0, onChangeTab }) => {
 
     ({ active, forcedIndex }) => {
       const activeIndex = forcedIndex || active.value;
-      console.log("activeIndex", activeIndex);
-      console.log("forcedIndex", forcedIndex);
       const activeTab = tabs[activeIndex];
 
-      console.log(activeTab);
-      console.log(active.value);
       return (
         <>
           <div className="feed-toggle">
@@ -37,7 +33,6 @@ export const Tabs = ({ tabs, initActive = 0, onChangeTab }) => {
                 if (forcedIndex && i === forcedIndex) {
                   return;
                 }
-                console.log(i);
                 active.onChange(i);
                 onChangeTab();
               },
