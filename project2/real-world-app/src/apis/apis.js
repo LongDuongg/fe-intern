@@ -21,7 +21,26 @@ export const createApis = ({ onUnauthen }) => {
           .then((data) => data);
       },
 
-      signUp: async ({ name, email, password }) => {},
+      signUp: async ({ name, email, password }) => {
+        return fetch(
+          "https://conduit-realworld-example-app.fly.dev/api/users",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user: {
+                name,
+                email,
+                password,
+              },
+            }),
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => data);
+      },
     },
     article: {
       getGlobalFeed: async ({ page }) => {

@@ -47,7 +47,6 @@ export const ArticlePreviewList = ({ getData }) => {
         }),
     ],
     ({ page, feeds }) => {
-      console.log(feeds);
       return (
         <>
           {feeds?.articles?.map((article, i) => {
