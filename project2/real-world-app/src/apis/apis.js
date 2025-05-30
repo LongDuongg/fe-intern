@@ -122,3 +122,36 @@ export const createApis = ({ onUnauthen }) => {
     },
   };
 };
+
+const createFetcher = ({ onUnauthen, token }) => {
+  const makeRequest = (method) => {
+    return async (url, payload) => {
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+
+      if (token) {
+        headers.append("Authorization", `Token ${token}`);
+      }
+
+      const res = await fetch(`${API_HOST}${url}`, {
+        method,
+        headers,
+        body: payload ? JSON.stringify(payload) : null,
+      });
+
+      const data = await res.json();
+
+      if (res.status === 401) {
+        console.log(data);
+        onUnauthen?.(data.errors.body[0]);
+      }
+      return data;
+    };
+  };
+  return {
+    get: makeRequest("GET"),
+    post: makeRequest("POST"),
+    put: makeRequest("PUT"),
+    delete: makeRequest("DELETE"),
+  };
+};
