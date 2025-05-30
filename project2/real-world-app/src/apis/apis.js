@@ -42,6 +42,7 @@ export const createApis = ({ onUnauthen }) => {
           .then((data) => data);
       },
     },
+
     article: {
       getGlobalFeed: async ({ page }) => {
         return fetch(
@@ -66,7 +67,52 @@ export const createApis = ({ onUnauthen }) => {
           .then((res) => res.json())
           .then((data) => data);
       },
+
+      createArticle: async ({ title, description, body, tagList }) => {
+        return fetch(
+          "https://conduit-realworld-example-app.fly.dev/api/articles",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              article: {
+                title,
+                description,
+                body,
+                tagList,
+              },
+            }),
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => data);
+      },
+
+      likeArticle: async ({ slug }) => {
+        return fetch(
+          `https://conduit-realworld-example-app.fly.dev/api/articles/${slug}/favorite`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // body: JSON.stringify({
+            //   article: {
+            //     title,
+            //     description,
+            //     body,
+            //     tagList,
+            //   },
+            // }),
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => data);
+      },
     },
+
     tag: {
       getTags: async () => {
         return fetch("https://conduit-realworld-example-app.fly.dev/api/tags")

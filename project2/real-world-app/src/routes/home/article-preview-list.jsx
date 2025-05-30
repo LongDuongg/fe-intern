@@ -46,7 +46,7 @@ export const ArticlePreviewList = ({ getData }) => {
           next,
         }),
     ],
-    ({ page, feeds }) => {
+    ({ page, feeds, apis }) => {
       return (
         <>
           {feeds?.articles?.map((article, i) => {
@@ -67,7 +67,15 @@ export const ArticlePreviewList = ({ getData }) => {
                       {formatDate(article.createdAt)}
                     </span>
                   </div>
-                  <button className="btn btn-outline-primary btn-sm pull-xs-right">
+                  <button
+                    className="btn btn-outline-primary btn-sm pull-xs-right"
+                    onClick={async () => {
+                      await apis.article.likeArticle({
+                        slug: article.slug,
+                      });
+                      article.favoritesCount += 1;
+                    }}
+                  >
                     <i className="ion-heart"></i> {article.favoritesCount}
                   </button>
                 </div>

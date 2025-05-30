@@ -72,11 +72,11 @@ export const Signup = () => {
                         errors.onChange(registerData.errors.body);
                         isLoading.onChange(false);
                       } else {
-                        // navigate("/login");
+                        navigate("/login");
                       }
                     }}
                   >
-                    Sign up
+                    {isLoading ? "Loading..." : "Sign up"}
                   </button>
                 </form>
               </div>
