@@ -21,7 +21,7 @@ export const createApis = ({ onUnauthen }) => {
           .then((data) => data);
       },
 
-      signUp: async ({ name, email, password }) => {
+      signUp: async ({ username, email, password }) => {
         return fetch(
           "https://conduit-realworld-example-app.fly.dev/api/users",
           {
@@ -31,7 +31,7 @@ export const createApis = ({ onUnauthen }) => {
             },
             body: JSON.stringify({
               user: {
-                name,
+                username,
                 email,
                 password,
               },

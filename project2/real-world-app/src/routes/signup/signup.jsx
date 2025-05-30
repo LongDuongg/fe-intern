@@ -10,6 +10,7 @@ import { scope } from "../../common/react/scope.js";
 
 export const Signup = () => {
   return cs(
+    consumeContext("auth"),
     consumeContext("apis"),
     ({}, next) => <Layout>{next()}</Layout>,
     ({}, next) => EmptyFC({ next }),
@@ -17,7 +18,7 @@ export const Signup = () => {
     ["state", ({}, next) => State({ initValue: null, next })],
     ["errors", ({}, next) => State({ next })],
     ["isLoading", ({}, next) => State({ next })],
-    ({ apis, navigate, state, errors, isLoading }) => {
+    ({ auth, apis, navigate, state, errors, isLoading }) => {
       return (
         <div className="auth-page">
           <div className="container page">
@@ -72,11 +73,11 @@ export const Signup = () => {
                         errors.onChange(registerData.errors.body);
                         isLoading.onChange(false);
                       } else {
-                        navigate("/login");
+                        auth.login(registerData);
                       }
                     }}
                   >
-                    {isLoading ? "Loading..." : "Sign up"}
+                    {isLoading.value ? "Loading..." : "Sign up"}
                   </button>
                 </form>
               </div>
