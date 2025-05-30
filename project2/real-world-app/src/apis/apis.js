@@ -1,124 +1,95 @@
-export const createApis = ({ onUnauthen }) => {
+const API_HOST = "https://conduit-realworld-example-app.fly.dev/api";
+
+export const createApis = ({ onUnauthen, token }) => {
+  const fetcher = createFetcher({ onUnauthen, token });
   return {
     user: {
-      login: async ({ email, password }) => {
-        return fetch(
-          "https://conduit-realworld-example-app.fly.dev/api/users/login",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              user: {
-                email,
-                password,
-              },
-            }),
-          }
-        )
-          .then((res) => res.json())
-          .then((data) => data);
-      },
+      login: ({ email, password }) =>
+        fetcher.post("/users/login", {
+          user: {
+            email,
+            password,
+          },
+        }),
 
-      signUp: async ({ username, email, password }) => {
-        return fetch(
-          "https://conduit-realworld-example-app.fly.dev/api/users",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              user: {
-                username,
-                email,
-                password,
-              },
-            }),
-          }
-        )
-          .then((res) => res.json())
-          .then((data) => data);
-      },
+      // login: async ({ email, password }) => {
+      //   return fetch(`${API_HOST}/users/login`, {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       user: {
+      //         email,
+      //         password,
+      //       },
+      //     }),
+      //   })
+      //     .then((res) => res.json())
+      //     .then((data) => data);
+      // },
+
+      signUp: async ({ username, email, password }) =>
+        fetcher.post("/users", {
+          user: {
+            username,
+            email,
+            password,
+          },
+        }),
     },
 
     article: {
-      getGlobalFeed: async ({ page }) => {
-        return fetch(
-          `https://conduit-realworld-example-app.fly.dev/api/articles?limit=5&offset=${page}`
-        )
-          .then((res) => res.json())
-          .then((data) => data);
-      },
+      getGlobalFeed: ({ page }) =>
+        fetcher.get(`/articles?limit=5&offset=${page}`),
 
-      getFeedByTag: async ({ tag, page }) => {
-        return fetch(
-          `https://conduit-realworld-example-app.fly.dev/api/articles?tag=${tag}&offset=${page}&limit=5`
-        )
-          .then((res) => res.json())
-          .then((data) => data);
-      },
+      getFeedByTag: ({ tag, page }) =>
+        fetcher.get(`/articles?tag=${tag}&limit=5&offset=${page}`),
 
-      getMyFeed: async ({ page }) => {
-        return fetch(
-          `https://conduit-realworld-example-app.fly.dev/api/articles/feed?offset=${page}`
-        )
-          .then((res) => res.json())
-          .then((data) => data);
-      },
+      //   getFeedByTag: async ({ tag, page }) => {
+      //   return fetch(`${API_HOST}/articles?tag=${tag}&offset=${page}&limit=5`)
+      //     .then((res) => res.json())
+      //     .then((data) => data);
+      // },
 
-      createArticle: async ({ title, description, body, tagList }) => {
-        return fetch(
-          "https://conduit-realworld-example-app.fly.dev/api/articles",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              article: {
-                title,
-                description,
-                body,
-                tagList,
-              },
-            }),
-          }
-        )
-          .then((res) => res.json())
-          .then((data) => data);
-      },
+      getMyFeed: async ({ page }) =>
+        fetcher.get(`/articles/feed?limit=5&offset=${page}`),
 
-      likeArticle: async ({ slug }) => {
-        return fetch(
-          `https://conduit-realworld-example-app.fly.dev/api/articles/${slug}/favorite`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            // body: JSON.stringify({
-            //   article: {
-            //     title,
-            //     description,
-            //     body,
-            //     tagList,
-            //   },
-            // }),
-          }
-        )
-          .then((res) => res.json())
-          .then((data) => data);
-      },
+      createArticle: async ({ title, description, body, tagList }) =>
+        fetcher.post("/articles", {
+          article: {
+            title,
+            description,
+            body,
+            tagList,
+          },
+        }),
+
+      //   createArticle: async ({ title, description, body, tagList }) => {
+      //   return fetch(`${API_HOST}/articles`, {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       article: {
+      //         title,
+      //         description,
+      //         body,
+      //         tagList,
+      //       },
+      //     }),
+      //   })
+      //     .then((res) => res.json())
+      //     .then((data) => data);
+      // },
+
+      likeArticle: async ({ slug }) =>
+        fetcher.post(`/articles/${slug}/favorite`),
     },
 
     tag: {
-      getTags: async () => {
-        return fetch("https://conduit-realworld-example-app.fly.dev/api/tags")
-          .then((res) => res.json())
-          .then((data) => data);
-      },
+      getTags: async () => fetcher.get("/tags"),
     },
   };
 };
