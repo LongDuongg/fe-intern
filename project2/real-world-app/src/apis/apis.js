@@ -77,13 +77,35 @@ export const createApis = ({ onUnauthen }) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              user: {
+              article: {
                 title,
                 description,
                 body,
                 tagList,
               },
             }),
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => data);
+      },
+
+      likeArticle: async ({ slug }) => {
+        return fetch(
+          `https://conduit-realworld-example-app.fly.dev/api/articles/${slug}/favorite`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // body: JSON.stringify({
+            //   article: {
+            //     title,
+            //     description,
+            //     body,
+            //     tagList,
+            //   },
+            // }),
           }
         )
           .then((res) => res.json())
