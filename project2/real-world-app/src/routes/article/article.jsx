@@ -1,49 +1,82 @@
-import { cs } from "../../common/chain-services.js";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import { Layout } from "../layout/layout.jsx";
+
+import { cs } from "../../common/chain-services.js";
 import { EmptyFC } from "../../common/react/empty-fc.js";
-import { useNavigate } from "react-router-dom";
+import { consumeContext } from "../../common/react/context.js";
+import { Load } from "../../common/react/load.js";
+import { formatDate } from "../../common/utils/date.js";
 
 export const Article = () => {
   return cs(
+    consumeContext("apis"),
+    ({}, next) => <Layout>{next()}</Layout>,
     ({}, next) => EmptyFC({ next }),
     ["navigate", ({}, next) => next(useNavigate())],
-    ({}, next) => <Layout>{next()}</Layout>,
-    ({ navigate }) => {
+    ["location", ({}, next) => next(useLocation())],
+    [
+      "slug",
+      ({ location }, next) => next(location.pathname.split("/").slice(-1)[0]),
+    ],
+    [
+      "article",
+      ({ apis, slug }, next) =>
+        Load({
+          _key: slug,
+          fetch: async () => await apis.article.getSingleArticle({ slug }),
+          next,
+        }),
+    ],
+    ({ apis, navigate, article }) => {
+      console.log(article);
       return (
         <div className="article-page">
           <div className="banner">
             <div className="container">
-              <h1>How to build webapps that scale</h1>
+              <h1>{article?.article?.title}</h1>
 
               <div className="article-meta">
-                <a href="/profile/eric-simons">
-                  <img src="http://i.imgur.com/Qr71crq.jpg" />
+                <a href={`/profile/${article?.article?.author?.username}`}>
+                  <img src={article?.article?.author?.image} />
                 </a>
                 <div className="info">
                   <a href="/profile/eric-simons" className="author">
-                    Eric Simons
+                    {article?.article?.author?.username}
                   </a>
-                  <span className="date">January 20th</span>
+                  <span className="date">
+                    {formatDate(article?.article?.createdAt)}
+                  </span>
                 </div>
                 <button className="btn btn-sm btn-outline-secondary">
                   <i className="ion-plus-round"></i>
-                  &nbsp; Follow Eric Simons{" "}
-                  <span className="counter">(10)</span>
+                  &nbsp; Follow {article?.article?.author?.username}{" "}
+                  <span className="counter">
+                    ({article?.article?.author?.followersCount})
+                  </span>
                 </button>
                 &nbsp;&nbsp;
                 <button className="btn btn-sm btn-outline-primary">
                   <i className="ion-heart"></i>
-                  &nbsp; Favorite Post <span className="counter">(29)</span>
+                  &nbsp; Favorite Post{" "}
+                  <span className="counter">
+                    ({article?.article?.favoritesCount})
+                  </span>
                 </button>
-                <button
+                {/* <button
                   className="btn btn-sm btn-outline-secondary"
                   onClick={() => navigate("/editor/234234fdsdaf")}
                 >
                   <i className="ion-edit"></i> Edit Article
                 </button>
-                <button className="btn btn-sm btn-outline-danger">
+                <button
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={async () => {
+                    await apis.article.deleteArticle("slug here");
+                  }}
+                >
                   <i className="ion-trash-a"></i> Delete Article
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -51,55 +84,19 @@ export const Article = () => {
           <div className="container page">
             <div className="row article-content">
               <div className="col-md-12">
-                <p>
-                  Web development technologies have evolved at an incredible
-                  clip over the past few years.
-                </p>
-                <h2 id="introducing-ionic">Introducing RealWorld.</h2>
-                <p>
-                  It's a great solution for learning how other frameworks work.
-                </p>
+                <p>{article?.article?.body}</p>
+                <p>{article?.article?.description}</p>
                 <ul className="tag-list">
-                  <li className="tag-default tag-pill tag-outline">
-                    realworld
-                  </li>
-                  <li className="tag-default tag-pill tag-outline">
-                    implementations
-                  </li>
+                  {article?.article?.tagList?.map((tag, i) => (
+                    <li key={i} className="tag-default tag-pill tag-outline">
+                      {tag}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
 
             <hr />
-
-            <div className="article-actions">
-              <div className="article-meta">
-                <a href="profile.html">
-                  <img src="http://i.imgur.com/Qr71crq.jpg" />
-                </a>
-                <div className="info">
-                  <a href="" className="author">
-                    Eric Simons
-                  </a>
-                  <span className="date">January 20th</span>
-                </div>
-                {/* <button className="btn btn-sm btn-outline-secondary">
-                  <i className="ion-plus-round"></i>
-                  &nbsp; Follow Eric Simons
-                </button>
-                &nbsp;
-                <button className="btn btn-sm btn-outline-primary">
-                  <i className="ion-heart"></i>
-                  &nbsp; Favorite Article <span className="counter">(29)</span>
-                </button>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="ion-edit"></i> Edit Article
-                </button>
-                <button className="btn btn-sm btn-outline-danger">
-                  <i className="ion-trash-a"></i> Delete Article
-                </button> */}
-              </div>
-            </div>
 
             <div className="row">
               <div className="col-xs-12 col-md-8 offset-md-2">
@@ -121,28 +118,6 @@ export const Article = () => {
                     </button>
                   </div>
                 </form>
-
-                <div className="card">
-                  <div className="card-block">
-                    <p className="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                  </div>
-                  <div className="card-footer">
-                    <a href="/profile/author" className="comment-author">
-                      <img
-                        src="http://i.imgur.com/Qr71crq.jpg"
-                        className="comment-author-img"
-                      />
-                    </a>
-                    &nbsp;
-                    <a href="/profile/jacob-schmidt" className="comment-author">
-                      Jacob Schmidt
-                    </a>
-                    <span className="date-posted">Dec 29th</span>
-                  </div>
-                </div>
 
                 <div className="card">
                   <div className="card-block">

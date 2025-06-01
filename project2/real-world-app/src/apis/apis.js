@@ -49,6 +49,8 @@ export const createApis = ({ onUnauthen, token }) => {
       getMyFeed: async ({ username, page }) =>
         fetcher.get(`/articles?author=${username}&limit=5&offset=${page}`),
 
+      getSingleArticle: async ({ slug }) => fetcher.get(`/articles/${slug}`),
+
       createArticle: async ({ title, description, body, tagList }) =>
         fetcher.post("/articles", {
           article: {
