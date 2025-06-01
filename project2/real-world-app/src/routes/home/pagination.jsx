@@ -20,7 +20,7 @@ export const Pagination = ({ currentPage, onChange }) => {
               }}
             >
               <a className="page-link" style={{ cursor: "pointer" }}>
-                {p}
+                {p + 1}
               </a>
             </li>
           ))
@@ -30,4 +30,4 @@ export const Pagination = ({ currentPage, onChange }) => {
   });
 };
 
-const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const pages = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
