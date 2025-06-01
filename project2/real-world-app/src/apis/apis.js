@@ -46,14 +46,8 @@ export const createApis = ({ onUnauthen, token }) => {
       getFeedByTag: ({ tag, page }) =>
         fetcher.get(`/articles?tag=${tag}&limit=5&offset=${page}`),
 
-      //   getFeedByTag: async ({ tag, page }) => {
-      //   return fetch(`${API_HOST}/articles?tag=${tag}&offset=${page}&limit=5`)
-      //     .then((res) => res.json())
-      //     .then((data) => data);
-      // },
-
-      getMyFeed: async ({ page }) =>
-        fetcher.get(`/articles/feed?limit=5&offset=${page}`),
+      getMyFeed: async ({ username, page }) =>
+        fetcher.get(`/articles?author=${username}&limit=5&offset=${page}`),
 
       createArticle: async ({ title, description, body, tagList }) =>
         fetcher.post("/articles", {

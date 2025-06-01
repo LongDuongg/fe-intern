@@ -21,7 +21,8 @@ export const FeedPanel = ({ selectedTag }) => {
           // ),
           render: () =>
             ArticlePreviewList({
-              getData: apis.article.getMyFeed,
+              getData: ({ page }) =>
+                apis.article.getMyFeed({ username: auth.user.username, page }),
             }),
         },
         {
