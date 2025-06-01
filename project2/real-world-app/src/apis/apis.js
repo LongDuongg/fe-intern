@@ -65,6 +65,9 @@ export const createApis = ({ onUnauthen, token }) => {
 
       likeArticle: async ({ slug }) =>
         fetcher.post(`/articles/${slug}/favorite`),
+
+      unlikeArticle: async ({ slug }) =>
+        fetcher.delete(`/articles/${slug}/favorite`),
     },
 
     tag: {

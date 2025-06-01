@@ -3,12 +3,13 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Pagination } from "./pagination";
 
 import { cs } from "../../common/chain-services";
-import { Load } from "../../common/react/load";
+import { Load2 } from "../../common/react/load2";
 import { consumeContext } from "../../common/react/context";
 import { EmptyFC } from "../../common/react/empty-fc";
 import { formatDate } from "../../common/utils/date";
 import { State } from "../../common/react/state";
 import { parseUrlQuery } from "../../common/parse-url-query";
+import { LikeButton } from "./like-button";
 
 export const ArticlePreviewList = ({ getData }) => {
   return cs(
@@ -36,7 +37,7 @@ export const ArticlePreviewList = ({ getData }) => {
     [
       "feeds",
       ({ apis, auth, page }, next) =>
-        Load({
+        Load2({
           _key: page.value,
           fetch: async () => {
             return await getData({
@@ -47,61 +48,72 @@ export const ArticlePreviewList = ({ getData }) => {
         }),
     ],
     ({ page, feeds, apis, auth }) => {
+      if (feeds.loading) {
+        return "Loading...";
+      }
+
+      if (feeds.value?.errors) {
+        return (
+          <div style={{ color: "red", marginTop: "10px" }}>
+            {feeds.value.errors.body[0]}
+          </div>
+        );
+      }
+
+      if (!feeds.value.articles?.length) {
+        return "No data";
+      }
+
       return (
         <>
-          {feeds
-            ? feeds?.articles?.map((article, i) => {
-                return (
-                  <div key={i} className="article-preview">
-                    <div className="article-meta">
-                      <NavLink to={`/profile/${article.author.username}`}>
-                        <img src={article.author.image} />
-                      </NavLink>
-                      <div className="info">
-                        <NavLink
-                          to={`/profile/${article.author.username}`}
-                          className="author"
-                        >
-                          {article.author.username}
-                        </NavLink>
-                        <span className="date">
-                          {formatDate(article.createdAt)}
-                        </span>
-                      </div>
-                      <button
-                        className="btn btn-outline-primary btn-sm pull-xs-right"
-                        onClick={async () => {
-                          await apis.article.likeArticle({
-                            slug: article.slug,
-                          });
-                          article.favoritesCount += 1;
-                        }}
-                      >
-                        <i className="ion-heart"></i> {article.favoritesCount}
-                      </button>
-                    </div>
+          {feeds.value.articles?.map((article, i) => {
+            return (
+              <div key={i} className="article-preview">
+                <div className="article-meta">
+                  <NavLink to={`/profile/${article.author.username}`}>
+                    <img src={article.author.image} />
+                  </NavLink>
+                  <div className="info">
                     <NavLink
-                      to={`/article/${article.slug}`}
-                      className="preview-link"
+                      to={`/profile/${article.author.username}`}
+                      className="author"
                     >
-                      <h1>{article.title}</h1>
-                      <p>{article.description}</p>
-                      <span>Read more...</span>
-                      <ul className="tag-list">
-                        {article.tagList.map((tag, i) => {
-                          <li
-                            key={i}
-                            className="tag-default tag-pill tag-outline"
-                          >
-                            {tag}
-                          </li>;
-                        })}
-                      </ul>
+                      {article.author.username}
                     </NavLink>
+                    <span className="date">
+                      {formatDate(article.createdAt)}
+                    </span>
                   </div>
-                );
-              })
-            : `No articles found.`}
+                  {LikeButton({
+                    article,
+                    onChange: async (updatedArticle) => {
+                      feeds.onChange({
+                        ...feeds.value,
+                        articles: feeds.value.articles.map((a) =>
+                          a.slug === updatedArticle.slug ? updatedArticle : a
+                        ),
+                      });
+                    },
+                  })}
+                </div>
+                <NavLink
+                  to={`/article/${article.slug}`}
+                  className="preview-link"
+                >
+                  <h1>{article.title}</h1>
+                  <p>{article.description}</p>
+                  <span>Read more...</span>
+                  <ul className="tag-list">
+                    {article.tagList.map((tag, i) => {
+                      <li key={i} className="tag-default tag-pill tag-outline">
+                        {tag}
+                      </li>;
+                    })}
+                  </ul>
+                </NavLink>
+              </div>
+            );
+          })}
 
           {Pagination({ currentPage: page.value, onChange: page.onChange })}
         </>
