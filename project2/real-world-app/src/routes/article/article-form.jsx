@@ -89,7 +89,7 @@ export const ArticleForm = () => {
                         }
                       }}
                     >
-                      {isLoading.value ? "Loading..." : "Publish Article"}
+                      {isLoading.value ? "Publishing..." : "Publish Article"}
                     </button>
                   </fieldset>
                 </form>
