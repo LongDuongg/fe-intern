@@ -49,23 +49,8 @@ export const Article = () => {
                     {formatDate(article?.article?.createdAt)}
                   </span>
                 </div>
-                <button className="btn btn-sm btn-outline-secondary">
-                  <i className="ion-plus-round"></i>
-                  &nbsp; Follow {article?.article?.author?.username}{" "}
-                  <span className="counter">
-                    ({article?.article?.author?.followersCount})
-                  </span>
-                </button>
-                &nbsp;&nbsp;
-                <button className="btn btn-sm btn-outline-primary">
-                  <i className="ion-heart"></i>
-                  &nbsp; Favorite Post{" "}
-                  <span className="counter">
-                    ({article?.article?.favoritesCount})
-                  </span>
-                </button>
-                &nbsp;&nbsp;
-                {article?.article?.author?.username === auth.user?.username && (
+
+                {article?.article?.author?.username === auth.user?.username ? (
                   <>
                     <button
                       className="btn btn-sm btn-outline-secondary"
@@ -82,6 +67,25 @@ export const Article = () => {
                     >
                       <i className="ion-trash-a"></i> Delete Article
                     </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="btn btn-sm btn-outline-secondary">
+                      <i className="ion-plus-round"></i>
+                      &nbsp; Follow {article?.article?.author?.username}{" "}
+                      <span className="counter">
+                        ({article?.article?.author?.followersCount})
+                      </span>
+                    </button>
+                    &nbsp;&nbsp;
+                    <button className="btn btn-sm btn-outline-primary">
+                      <i className="ion-heart"></i>
+                      &nbsp; Favorite Post{" "}
+                      <span className="counter">
+                        ({article?.article?.favoritesCount})
+                      </span>
+                    </button>
+                    &nbsp;&nbsp;
                   </>
                 )}
               </div>
