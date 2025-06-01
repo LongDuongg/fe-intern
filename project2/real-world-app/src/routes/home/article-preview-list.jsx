@@ -50,8 +50,7 @@ export const ArticlePreviewList = ({ getData }) => {
       return (
         <>
           {feeds
-            ? `${auth.user.username} doesn't have any articles yet.`
-            : feeds?.articles?.map((article, i) => {
+            ? feeds?.articles?.map((article, i) => {
                 return (
                   <div key={i} className="article-preview">
                     <div className="article-meta">
@@ -101,7 +100,8 @@ export const ArticlePreviewList = ({ getData }) => {
                     </NavLink>
                   </div>
                 );
-              })}
+              })
+            : `No articles found.`}
 
           {Pagination({ currentPage: page.value, onChange: page.onChange })}
         </>
