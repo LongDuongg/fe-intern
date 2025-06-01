@@ -11,6 +11,7 @@ import { formatDate } from "../../common/utils/date.js";
 export const Article = () => {
   return cs(
     consumeContext("apis"),
+    consumeContext("auth"),
     ({}, next) => <Layout>{next()}</Layout>,
     ({}, next) => EmptyFC({ next }),
     ["navigate", ({}, next) => next(useNavigate())],
@@ -28,7 +29,7 @@ export const Article = () => {
           next,
         }),
     ],
-    ({ apis, navigate, article }) => {
+    ({ apis, auth, navigate, article }) => {
       console.log(article);
       return (
         <div className="article-page">
@@ -63,20 +64,26 @@ export const Article = () => {
                     ({article?.article?.favoritesCount})
                   </span>
                 </button>
-                {/* <button
-                  className="btn btn-sm btn-outline-secondary"
-                  onClick={() => navigate("/editor/234234fdsdaf")}
-                >
-                  <i className="ion-edit"></i> Edit Article
-                </button>
-                <button
-                  className="btn btn-sm btn-outline-danger"
-                  onClick={async () => {
-                    await apis.article.deleteArticle("slug here");
-                  }}
-                >
-                  <i className="ion-trash-a"></i> Delete Article
-                </button> */}
+                &nbsp;&nbsp;
+                {article?.article?.author?.username === auth.user?.username && (
+                  <>
+                    <button
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() => navigate("/editor/234234fdsdaf")}
+                    >
+                      <i className="ion-edit"></i> Edit Article
+                    </button>
+                    &nbsp;&nbsp;
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={async () => {
+                        await apis.article.deleteArticle("slug here");
+                      }}
+                    >
+                      <i className="ion-trash-a"></i> Delete Article
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
