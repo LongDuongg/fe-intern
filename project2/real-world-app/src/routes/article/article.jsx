@@ -62,7 +62,10 @@ export const Article = () => {
                     <button
                       className="btn btn-sm btn-outline-danger"
                       onClick={async () => {
-                        await apis.article.deleteArticle("slug here");
+                        await apis.article.deleteArticle({
+                          slug: article?.article?.slug,
+                        });
+                        navigate("/");
                       }}
                     >
                       <i className="ion-trash-a"></i> Delete Article

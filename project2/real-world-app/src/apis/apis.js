@@ -61,24 +61,7 @@ export const createApis = ({ onUnauthen, token }) => {
           },
         }),
 
-      //   createArticle: async ({ title, description, body, tagList }) => {
-      //   return fetch(`${API_HOST}/articles`, {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       article: {
-      //         title,
-      //         description,
-      //         body,
-      //         tagList,
-      //       },
-      //     }),
-      //   })
-      //     .then((res) => res.json())
-      //     .then((data) => data);
-      // },
+      deleteArticle: async ({ slug }) => fetcher.delete(`/articles/${slug}`),
 
       likeArticle: async ({ slug }) =>
         fetcher.post(`/articles/${slug}/favorite`),
