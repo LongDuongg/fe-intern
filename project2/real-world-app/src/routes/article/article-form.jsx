@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { cs } from "../../common/chain-services.js";
 import { Layout } from "../layout/layout.jsx";
@@ -7,6 +7,7 @@ import { bindInput } from "../../common/react/bind-input.js";
 import { scope } from "../../common/react/scope.js";
 import { State } from "../../common/react/state.js";
 import { consumeContext } from "../../common/react/context.js";
+import { Load } from "../../common/react/load.js";
 
 export const ArticleForm = () => {
   return cs(
@@ -14,7 +15,34 @@ export const ArticleForm = () => {
     ({}, next) => <Layout>{next()}</Layout>,
     ({}, next) => EmptyFC({ next }),
     ["navigate", ({}, next) => next(useNavigate())],
-    ["state", ({}, next) => State({ initValue: null, next })],
+    ["location", ({}, next) => next(useLocation())],
+    [
+      "slug",
+      ({ location }, next) => next(location.pathname.split("/").slice(-1)[0]),
+    ],
+    [
+      "selectedArticle",
+      ({ apis, slug }, next) =>
+        Load({
+          _key: slug,
+          fetch: async () => await apis.article.getSingleArticle({ slug }),
+          next,
+        }),
+    ],
+    [
+      "state",
+      ({ selectedArticle }, next) =>
+        State({
+          initValue:
+            {
+              title: selectedArticle?.article?.title,
+              description: selectedArticle?.article?.description,
+              body: selectedArticle?.article?.body,
+              tagList: selectedArticle?.article?.tagList,
+            } || null,
+          next,
+        }),
+    ],
     ["errors", ({}, next) => State({ next })],
     ["isLoading", ({}, next) => State({ next })],
     ({ apis, navigate, state, errors, isLoading }) => {

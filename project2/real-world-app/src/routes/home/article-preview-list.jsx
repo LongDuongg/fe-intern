@@ -11,6 +11,8 @@ import { State } from "../../common/react/state";
 import { parseUrlQuery } from "../../common/parse-url-query";
 import { LikeButton } from "./like-button";
 
+export const ARTICLES_PER_PAGE = 3;
+
 export const ArticlePreviewList = ({ getData }) => {
   return cs(
     consumeContext("apis"),
@@ -42,6 +44,7 @@ export const ArticlePreviewList = ({ getData }) => {
           fetch: async () => {
             return await getData({
               page: page.value,
+              limit: ARTICLES_PER_PAGE,
             });
           },
           next,
@@ -115,7 +118,13 @@ export const ArticlePreviewList = ({ getData }) => {
             );
           })}
 
-          {Pagination({ currentPage: page.value, onChange: page.onChange })}
+          {Pagination({
+            currentPage: page.value,
+            onChange: page.onChange,
+            totalPages: Math.ceil(
+              feeds.value.articlesCount / ARTICLES_PER_PAGE
+            ),
+          })}
         </>
       );
     }

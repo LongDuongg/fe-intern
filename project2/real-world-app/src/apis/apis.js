@@ -1,4 +1,7 @@
+import { ARTICLES_PER_PAGE } from "../routes/home/article-preview-list";
+
 const API_HOST = "https://conduit-realworld-example-app.fly.dev/api";
+// const API_HOST = "https://api.realworld.io/api";
 
 export const createApis = ({ onUnauthen, token }) => {
   const fetcher = createFetcher({ onUnauthen, token });
@@ -40,14 +43,16 @@ export const createApis = ({ onUnauthen, token }) => {
     },
 
     article: {
-      getGlobalFeed: ({ page }) =>
-        fetcher.get(`/articles?limit=5&offset=${page}`),
+      getGlobalFeed: ({ page, limit = ARTICLES_PER_PAGE }) =>
+        fetcher.get(`/articles?limit=${limit}&offset=${page}`),
 
-      getFeedByTag: ({ tag, page }) =>
-        fetcher.get(`/articles?tag=${tag}&limit=5&offset=${page}`),
+      getFeedByTag: ({ tag, page, limit = ARTICLES_PER_PAGE }) =>
+        fetcher.get(`/articles?tag=${tag}&limit=${limit}&offset=${page}`),
 
-      getMyFeed: async ({ username, page }) =>
-        fetcher.get(`/articles?author=${username}&limit=5&offset=${page}`),
+      getMyFeed: async ({ username, page, limit = ARTICLES_PER_PAGE }) =>
+        fetcher.get(
+          `/articles?author=${username}&limit=${limit}&offset=${page}`
+        ),
 
       getSingleArticle: async ({ slug }) => fetcher.get(`/articles/${slug}`),
 
