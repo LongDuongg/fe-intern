@@ -1,24 +1,24 @@
 import { useNavigate } from "react-router-dom";
 
-import { EmptyFC } from "../../common/react/empty-fc.js";
-import { cs } from "../../common/chain-services.js";
-import { Layout } from "../layout/layout.jsx";
-import { consumeContext } from "../../common/react/context.js";
-import { State } from "../../common/react/state.js";
-import { bindInput } from "../../common/react/bind-input.js";
-import { scope } from "../../common/react/scope.js";
+import {cs}             from "../../common/chain-services.js";
+import {bindInput}      from "../../common/react/bind-input.js";
+import {consumeContext} from "../../common/react/context.js";
+import {EmptyFC}        from "../../common/react/empty-fc.js";
+import {scope}          from "../../common/react/scope.js";
+import {State}          from "../../common/react/state.js";
+import {Layout}         from "../layout/layout.jsx";
 
 export const Signup = () => {
   return cs(
     consumeContext("auth"),
-    consumeContext("apis"),
+    consumeContext("guestApis"),
     ({}, next) => <Layout>{next()}</Layout>,
     ({}, next) => EmptyFC({ next }),
     ["navigate", ({}, next) => next(useNavigate())],
     ["state", ({}, next) => State({ initValue: null, next })],
     ["errors", ({}, next) => State({ next })],
     ["isLoading", ({}, next) => State({ next })],
-    ({ auth, apis, navigate, state, errors, isLoading }) => {
+    ({ auth, guestApis, navigate, state, errors, isLoading }) => {
       return (
         <div className="auth-page">
           <div className="container page">
@@ -67,7 +67,7 @@ export const Signup = () => {
                     onClick={async (e) => {
                       e.preventDefault();
                       isLoading.onChange(true);
-                      const registerData = await apis.user.signUp(state?.value);
+                      const registerData = await guestApis.user.signUp(state?.value);
                       if (registerData.errors) {
                         console.error(registerData.errors);
                         errors.onChange(registerData.errors.body);

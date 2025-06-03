@@ -1,19 +1,19 @@
-import { bindInput } from "../../../../../project1/interactive-card/src/common/react/bind-input.js";
-import { scope } from "../../../../../project1/interactive-card/src/common/react/scope.js";
-import { cs } from "../../common/chain-services.js";
-import { consumeContext } from "../../common/react/context.js";
-import { State } from "../../common/react/state.js";
-import { Layout } from "../layout/layout.jsx";
+import {bindInput}      from "../../../../../project1/interactive-card/src/common/react/bind-input.js";
+import {scope}          from "../../../../../project1/interactive-card/src/common/react/scope.js";
+import {cs}             from "../../common/chain-services.js";
+import {consumeContext} from "../../common/react/context.js";
+import {State}          from "../../common/react/state.js";
+import {Layout}         from "../layout/layout.jsx";
 
 export const Login = () => {
   return cs(
     consumeContext("auth"),
-    consumeContext("apis"),
+    consumeContext("guestApis"),
     ["state", ({}, next) => State({ initValue: {}, next })],
     ["errors", ({}, next) => State({ next })],
     ["isLoading", ({}, next) => State({ next })],
     ({}, next) => <Layout>{next()}</Layout>,
-    ({ state, auth, errors, isLoading, apis }) => {
+    ({ state, auth, errors, isLoading, guestApis }) => {
       return (
         <div className="auth-page">
           <div className="container page">
@@ -54,7 +54,7 @@ export const Login = () => {
                     onClick={async (e) => {
                       e.preventDefault();
                       isLoading.onChange(true);
-                      const user = await apis.user.login(state?.value);
+                      const user = await guestApis.user.login(state?.value);
                       if (user.errors) {
                         errors.onChange(user.errors.body);
                         isLoading.onChange(false);

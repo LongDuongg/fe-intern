@@ -1,46 +1,47 @@
-import { ARTICLES_PER_PAGE } from "../routes/home/article-preview-list";
+import {ARTICLES_PER_PAGE} from "../routes/home/article-preview-list";
 
 const API_HOST = "https://conduit-realworld-example-app.fly.dev/api";
+
 // const API_HOST = "https://api.realworld.io/api";
 
 export const createApis = ({ onUnauthen, token }) => {
   const fetcher = createFetcher({ onUnauthen, token });
   return {
-    user: {
-      login: ({ email, password }) =>
-        fetcher.post("/users/login", {
-          user: {
-            email,
-            password,
-          },
-        }),
-
-      // login: async ({ email, password }) => {
-      //   return fetch(`${API_HOST}/users/login`, {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       user: {
-      //         email,
-      //         password,
-      //       },
-      //     }),
-      //   })
-      //     .then((res) => res.json())
-      //     .then((data) => data);
-      // },
-
-      signUp: async ({ username, email, password }) =>
-        fetcher.post("/users", {
-          user: {
-            username,
-            email,
-            password,
-          },
-        }),
-    },
+    // user: {
+    //   login: ({ email, password }) =>
+    //     fetcher.post("/users/login", {
+    //       user: {
+    //         email,
+    //         password,
+    //       },
+    //     }),
+    //
+    //   // login: async ({ email, password }) => {
+    //   //   return fetch(`${API_HOST}/users/login`, {
+    //   //     method: "POST",
+    //   //     headers: {
+    //   //       "Content-Type": "application/json",
+    //   //     },
+    //   //     body: JSON.stringify({
+    //   //       user: {
+    //   //         email,
+    //   //         password,
+    //   //       },
+    //   //     }),
+    //   //   })
+    //   //     .then((res) => res.json())
+    //   //     .then((data) => data);
+    //   // },
+    //
+    //   signUp: async ({ username, email, password }) =>
+    //     fetcher.post("/users", {
+    //       user: {
+    //         username,
+    //         email,
+    //         password,
+    //       },
+    //     }),
+    // },
 
     article: {
       getGlobalFeed: ({ page, limit = ARTICLES_PER_PAGE }) =>
