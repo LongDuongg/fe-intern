@@ -1,19 +1,21 @@
-import {cs}       from "../common/chain-services.js";
-import {Load2}    from "../common/react/load2.js";
-import {rLsStore} from "../common/react/ls-store.js";
+import { cs } from "../common/chain-services.js";
+import { Load2 } from "../common/react/load2.js";
+import { rLsStore } from "../common/react/ls-store.js";
 
-export const Auth = ({guestApis, next }) => {
+export const Auth = ({ guestApis, next }) => {
     return cs(
+        // prettier-ignore
         ["userInfo", ({}, next) => Load2({
             fetch: () => {
                 const authToken = getCookie("auth_token");
                 if (!authToken) {
                     return null;
                 }
-                return guestApis.user.getUser({authToken});
+                return guestApis.user.getUser({ authToken });
             },
             next,
         })],
+        // prettier-ignore
         ({ userInfo }) => next({
             user: userInfo.value?.user,
             login: (user) => {
@@ -29,7 +31,7 @@ export const Auth = ({guestApis, next }) => {
 };
 
 const deleteCookie = (name) => {
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 };
 
 const getCookie = (name) => {
@@ -38,5 +40,5 @@ const getCookie = (name) => {
         if (n1 === name) {
             return value;
         }
-    };
+    }
 };

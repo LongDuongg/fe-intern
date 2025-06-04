@@ -4,14 +4,14 @@ export const createGuestApis = () => {
     const fetcher = createFetcher();
     return {
         user: {
-            getUser: async ({authToken}) => {
-                const ret = await fetcher.get("/user", {authToken});
+            getUser: async ({ authToken }) => {
+                const ret = await fetcher.get("/user", { authToken });
                 if (ret.errors) {
                     return null;
                 }
                 return ret;
             },
-            login: ({email, password}) =>
+            login: ({ email, password }) =>
                 fetcher.post("/users/login", {
                     user: {
                         email,
@@ -36,14 +36,14 @@ export const createGuestApis = () => {
             //     .then((data) => data);
             // },
 
-            signUp: async ({username, email, password}) => {
+            signUp: async ({ username, email, password }) => {
                 return fetcher.post("/users", {
                     user: {
                         username,
                         email,
                         password,
                     },
-                })
+                });
             },
         },
     };
@@ -51,7 +51,6 @@ export const createGuestApis = () => {
 
 const createFetcher = () => {
     const makeRequest = (method, noPayload) => {
-
         return async (url, payload, options) => {
             if (noPayload) {
                 options = payload;
