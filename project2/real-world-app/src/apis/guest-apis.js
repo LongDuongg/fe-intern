@@ -5,36 +5,20 @@ export const createGuestApis = () => {
     return {
         user: {
             getUser: async ({ authToken }) => {
-                const ret = await fetcher.get("/user", { authToken });
-                if (ret.errors) {
+                const res = await fetcher.get("/user", { authToken });
+                if (res.errors) {
                     return null;
                 }
-                return ret;
+                return res;
             },
-            login: ({ email, password }) =>
-                fetcher.post("/users/login", {
-                    user: {
-                        email,
-                        password,
-                    },
-                }),
 
-            // login: async ({ email, password }) => {
-            //   return fetch(`${API_HOST}/users/login`, {
-            //     method: "POST",
-            //     headers: {
-            //       "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({
-            //       user: {
-            //         email,
-            //         password,
-            //       },
-            //     }),
-            //   })
-            //     .then((res) => res.json())
-            //     .then((data) => data);
-            // },
+            // prettier-ignore
+            login: ({ email, password }) => fetcher.post("/users/login", {
+                user: {
+                    email,
+                    password,
+                },
+            }),
 
             signUp: async ({ username, email, password }) => {
                 return fetcher.post("/users", {
@@ -56,12 +40,14 @@ const createFetcher = () => {
                 options = payload;
                 payload = null;
             }
+
             const headers = new Headers();
             headers.append("Content-Type", "application/json");
 
             if (options?.authToken) {
                 headers.append("Authorization", `Token ${options.authToken}`);
             }
+
             const res = await fetch(`${API_HOST}/api${url}`, {
                 method,
                 headers,

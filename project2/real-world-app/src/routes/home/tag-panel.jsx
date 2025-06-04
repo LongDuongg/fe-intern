@@ -6,7 +6,7 @@ export const TagPanel = ({ title, selectedTag }) =>
     cs(
         consumeContext("apis"),
         // prettier-ignore
-        ["tags", ({ apis }, next) = Load({
+        ["tags", ({ apis }, next) => Load({
             fetch: async () => await apis.tag.getTags(),
             next,
         })],
