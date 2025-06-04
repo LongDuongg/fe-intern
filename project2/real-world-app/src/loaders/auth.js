@@ -1,3 +1,4 @@
+import { use } from "react";
 import { cs } from "../common/chain-services.js";
 import { Load2 } from "../common/react/load2.js";
 import { rLsStore } from "../common/react/ls-store.js";
@@ -15,13 +16,28 @@ export const Auth = ({ guestApis, next }) => {
             },
             next,
         })],
+
         // prettier-ignore
         ({ userInfo }) => next({
             user: userInfo.value?.user,
+
+            updateUser: (user) => {
+                userInfo.onChange({
+                    user: {
+                        ...userInfo.value.user,
+                        username: user.username,
+                        email: user.email,
+                        bio: user.bio,
+                        image: user.image,
+                    },
+                });
+            },
+
             login: (user) => {
                 userInfo.onChange(user);
                 document.cookie = "auth_token=" + user.user.token;
             },
+
             logout: () => {
                 userInfo.onChange(null);
                 deleteCookie("auth_token");
@@ -31,7 +47,8 @@ export const Auth = ({ guestApis, next }) => {
 };
 
 const deleteCookie = (name) => {
-    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+        name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 };
 
 const getCookie = (name) => {
