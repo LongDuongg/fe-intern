@@ -45,6 +45,19 @@ export const createApis = ({ onUnauthen, token }) => {
                     },
                 }),
 
+            // prettier-ignore
+            updateArticle: async ({ slug, title, description, body, tagList }) =>
+                fetcher.put(`/articles/${slug}`, {
+                    article: {
+                        slug,
+                        title,
+                        description,
+                        body,
+                        tagList,
+                    }
+                }
+            ),
+
             deleteArticle: async ({ slug }) =>
                 fetcher.delete(`/articles/${slug}`),
 

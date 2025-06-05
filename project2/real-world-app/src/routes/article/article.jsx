@@ -70,7 +70,7 @@ export const Article = () => {
                 );
             }
 
-            console.log(article.value.article);
+            // console.log(article.value.article);
 
             return (
                 <div className="article-page">
@@ -80,15 +80,17 @@ export const Article = () => {
 
                             <div className="article-meta">
                                 <NavLink
-                                    to={`/profile/${article.value.article.author.username}`}
+                                    to={`/profile/${article.value.article?.author.username}`}
                                 >
                                     <img
-                                        src={article.value.article.author.image}
+                                        src={
+                                            article.value.article?.author.image
+                                        }
                                     />
                                 </NavLink>
                                 <div className="info">
                                     <NavLink
-                                        to={`/profile/${article.value.article.author.username}`}
+                                        to={`/profile/${article.value.article?.author.username}`}
                                         className="author"
                                     >
                                         {
@@ -139,14 +141,14 @@ export const Article = () => {
                                             <i className="ion-plus-round"></i>
                                             &nbsp; Follow{" "}
                                             {
-                                                article.value.article.author
+                                                article.value.article?.author
                                                     .username
                                             }{" "}
                                             <span className="counter">
                                                 (
                                                 {
-                                                    article.value.article.author
-                                                        .followersCount
+                                                    article.value.article
+                                                        ?.author.followersCount
                                                 }
                                                 )
                                             </span>
@@ -187,10 +189,10 @@ export const Article = () => {
                     <div className="container page">
                         <div className="row article-content">
                             <div className="col-md-12">
-                                <p>{article.value.article.body}</p>
-                                <p>{article.value.article.description}</p>
+                                <p>{article.value.article?.body}</p>
+                                <p>{article.value.article?.description}</p>
                                 <ul className="tag-list">
-                                    {article.value.article.tagList.map(
+                                    {article.value.article?.tagList.map(
                                         (tag, i) => (
                                             <li
                                                 key={i}

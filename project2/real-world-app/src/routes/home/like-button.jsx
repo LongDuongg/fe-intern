@@ -11,7 +11,7 @@ export const LikeButton = ({ title = "", className, article, onChange }) => {
                 <button
                     className={className}
                     style={
-                        article.favorited
+                        article?.favorited
                             ? { backgroundColor: "green", color: "white" }
                             : { backgroundColor: "white", color: "green" }
                     }
@@ -20,13 +20,13 @@ export const LikeButton = ({ title = "", className, article, onChange }) => {
                         isLoading.onChange(true);
                         let res;
 
-                        if (article.favorited) {
+                        if (article?.favorited) {
                             res = await apis.article.unlikeArticle({
-                                slug: article.slug,
+                                slug: article?.slug,
                             });
                         } else {
                             res = await apis.article.likeArticle({
-                                slug: article.slug,
+                                slug: article?.slug,
                             });
                         }
 
@@ -40,7 +40,7 @@ export const LikeButton = ({ title = "", className, article, onChange }) => {
                     }}
                 >
                     <i className="ion-heart"></i> {title}{" "}
-                    {article.favoritesCount}
+                    {article?.favoritesCount}
                 </button>
             );
         }
