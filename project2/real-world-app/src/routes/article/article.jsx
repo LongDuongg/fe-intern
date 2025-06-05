@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, NavLink } from "react-router-dom";
 
 import { Layout } from "../layout/layout.jsx";
 import { CardComment } from "./card-comment.jsx";
@@ -79,25 +79,23 @@ export const Article = () => {
                             <h1>{article.value.article?.title}</h1>
 
                             <div className="article-meta">
-                                <a
-                                    href={`/profile/${article.value.article?.author?.username}`}
+                                <NavLink
+                                    to={`/profile/${article.value.article.author.username}`}
                                 >
                                     <img
-                                        src={
-                                            article.value.article?.author?.image
-                                        }
+                                        src={article.value.article.author.image}
                                     />
-                                </a>
+                                </NavLink>
                                 <div className="info">
-                                    <a
-                                        href="/profile/eric-simons"
+                                    <NavLink
+                                        to={`/profile/${article.value.article.author.username}`}
                                         className="author"
                                     >
                                         {
                                             article.value.article?.author
                                                 ?.username
                                         }
-                                    </a>
+                                    </NavLink>
                                     <span className="date">
                                         {formatDate(
                                             article.value.article?.createdAt
@@ -111,9 +109,8 @@ export const Article = () => {
                                         <button
                                             className="btn btn-sm btn-outline-secondary"
                                             onClick={() =>
-                                                navigate(
-                                                    `/editor/${article.value.article?.slug}`
-                                                )
+                                                // prettier-ignore
+                                                navigate( `/editor/${article.value.article?.slug}`)
                                             }
                                         >
                                             <i className="ion-edit"></i> Edit
