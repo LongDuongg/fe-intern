@@ -4,14 +4,14 @@ import { State } from "../../common/react/state";
 import { bindInput } from "../../common/react/bind-input";
 import { consumeContext } from "../../common/react/context";
 
-export const CommentSection = () => {
+export const CommentSection = ({ slug }) => {
     return cs(() => {
         return (
             <>
-                <CommentForm />
-                {[1].map((i) => (
+                {CommentForm({ slug })}
+                {/* {[1].map((i) => (
                     <CommentCard key={i} />
-                ))}
+                ))} */}
             </>
         );
     });
@@ -19,9 +19,10 @@ export const CommentSection = () => {
 
 export const CommentForm = ({ slug, onChange }) => {
     return cs(
+        consumeContext("auth"),
         consumeContext("apis"),
         ["state", ({}, next) => State({ initValue: "", next })],
-        ({ apis, state }) => {
+        ({ auth, apis, state }) => {
             return (
                 <form className="card comment-form">
                     <div className="card-block">
@@ -33,16 +34,15 @@ export const CommentForm = ({ slug, onChange }) => {
                         ></textarea>
                     </div>
                     <div className="card-footer">
-                        <img src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
+                        <img src={auth.user.image} className="comment-author-img" />
                         <button
                             className="btn btn-sm btn-primary"
                             onClick={async (e) => {
                                 e.preventDefault();
                                 console.log(state.value);
-                                // prettier-ignore
                                 const comment = await apis.article.commentArticle({
                                     slug: slug,
-                                    body: state.value,
+                                    body: state.value.body,
                                 });
                                 onChange(comment);
                                 state.onChange("");

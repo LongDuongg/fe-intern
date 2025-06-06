@@ -94,7 +94,7 @@ export const Article = () => {
 
                         <div className="row">
                             <div className="col-xs-12 col-md-8 offset-md-2">
-                                <CommentSection />
+                                {CommentSection({ slug: params.slug })}
                             </div>
                         </div>
                     </div>

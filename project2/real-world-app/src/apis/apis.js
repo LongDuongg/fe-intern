@@ -18,6 +18,7 @@ export const createApis = ({ onUnauthen, token }) => {
                 },
             }),
         },
+
         article: {
             getGlobalFeed: ({ page, limit = ARTICLES_PER_PAGE }) =>
                 fetcher.get(`/articles?limit=${limit}&offset=${page}`),
@@ -66,6 +67,11 @@ export const createApis = ({ onUnauthen, token }) => {
 
             unlikeArticle: async ({ slug }) =>
                 fetcher.delete(`/articles/${slug}/favorite`),
+
+            commentArticle: async ({ slug, body }) =>
+                fetcher.post(`/articles/${slug}/comments`, {
+                    comment: { body },
+                }),
         },
 
         tag: {
