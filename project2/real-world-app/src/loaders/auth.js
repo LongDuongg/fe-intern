@@ -19,6 +19,7 @@ export const Auth = ({ guestApis, next }) => {
 
         // prettier-ignore
         ({ userInfo }) => next({
+            loading: userInfo.loading,
             user: userInfo.value?.user,
 
             updateUser: (user) => {
@@ -47,8 +48,7 @@ export const Auth = ({ guestApis, next }) => {
 };
 
 const deleteCookie = (name) => {
-    document.cookie =
-        name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 };
 
 const getCookie = (name) => {

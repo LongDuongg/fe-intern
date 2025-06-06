@@ -1,10 +1,4 @@
-import {
-    Routes,
-    Route,
-    HashRouter,
-    Navigate,
-    useNavigate,
-} from "react-router-dom";
+import { Routes, Route, HashRouter, Navigate, useNavigate } from "react-router-dom";
 
 import "./App.css";
 
@@ -32,46 +26,43 @@ export const App = () => cs(
     ({}, next) => <HashRouter>{next()}</HashRouter>,
     ({}, next) => AppProvider({ next }),
     ({ auth }) => {
-        // console.log(auth);
-        const requireAuth = (element) => {
-            if (auth.user) {
-                return element;
-            }
-            return <Navigate to="/login" />;
-        };
-        const requireUnauth = (element) => {
-            if (!auth.user) {
-                return element;
-            }
-            return <Navigate to="/" />;
-        };
+
 
         return (
             <Routes>
                 <Route path="/" element={Home()} />
-                <Route path="/login" element={requireUnauth(Login())} />
-                <Route path="/register" element={requireUnauth(Signup())} />
+                <Route
+                    path="/login"
+                    element={<RouteProtector requireUnauth>{Login()}</RouteProtector>}
+                />
+                <Route
+                    path="/register"
+                    element={<RouteProtector requireUnauth>{Signup()}</RouteProtector>}
+                />
 
-                <Route path="/settings" element={requireAuth(Setting())} />
+                <Route
+                    path="/settings"
+                    element={<RouteProtector requireAuth>{Setting()}</RouteProtector>}
+                />
                 <Route
                     path="/editor"
-                    element={requireAuth(ArticleForm())}
+                    element={<RouteProtector requireAuth>{ArticleForm()}</RouteProtector>}
                 />
                 <Route
                     path="/editor/:slug"
-                    element={requireAuth(ArticleForm())}
+                    element={<RouteProtector requireAuth>{ArticleForm()}</RouteProtector>}
                 />
                 <Route
                     path="/article/:slug"
-                    element={requireAuth(Article())}
+                    element={<RouteProtector requireAuth>{Article()}</RouteProtector>}
                 />
                 <Route
                     path="/profile/:username"
-                    element={requireAuth(Profile())}
+                    element={<RouteProtector requireAuth>{Profile()}</RouteProtector>}
                 />
                 <Route
                     path="/profile/:username/favorite"
-                    element={requireAuth(Profile())}
+                    element={<RouteProtector requireAuth>{Profile()}</RouteProtector>}
                 />
             </Routes>
         );
@@ -97,4 +88,26 @@ const AppProvider = ({ next }) => {
         ),
         ({}) => next()
     );
+};
+
+const RouteProtector = ({ children, requireAuth, requireUnauth }) => {
+    return cs(consumeContext("auth"), ({ auth }) => {
+        if (auth.loading) {
+            return "Loading...";
+        }
+
+        if (requireAuth) {
+            if (auth.user) {
+                return children;
+            }
+            return <Navigate to="/login" />;
+        }
+
+        if (requireUnauth) {
+            if (!auth.user) {
+                return children;
+            }
+            return <Navigate to="/" />;
+        }
+    });
 };
