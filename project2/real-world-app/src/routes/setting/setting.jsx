@@ -1,34 +1,32 @@
-import { useNavigate } from "react-router-dom";
-
 import { cs } from "../../common/chain-services.js";
 import { scope } from "../../common/react/scope.js";
 import { bindInput } from "../../common/react/bind-input.js";
 import { State } from "../../common/react/state.js";
 import { consumeContext } from "../../common/react/context.js";
-import { EmptyFC } from "../../common/react/empty-fc.js";
 
 import { Layout } from "../layout/layout.jsx";
+import { equalDeep, omit } from "../../common/utils/objects.js";
 
 export const Setting = () => {
     return cs(
         consumeContext("apis"),
         consumeContext("auth"),
         ({}, next) => <Layout>{next()}</Layout>,
-        ({}, next) => EmptyFC({ next }),
-        ["navigate", ({}, next) => next(useNavigate())],
-        ["state", ({ auth }, next) => State({ initValue: auth.user, next })],
+        ["oriValue", ({ auth }, next) => next({ ...omit(auth.user, ["token"]), password: null })],
+
+        //prettier-ignore
+        ["state", ({ oriValue }, next) => State({ initValue: oriValue, next })],
+
         ["errors", ({}, next) => State({ next })],
-        ["isSubmit", ({}, next) => State({ initValue: false, next })],
-        ({ apis, auth, navigate, state, errors, isSubmit }) => {
-            // console.log(auth);
+        ({ apis, auth, state, errors, oriValue }) => {
+            console.log("1", oriValue);
+            console.log("2", state?.value);
             return (
                 <div className="settings-page">
                     <div className="container page">
                         <div className="row">
                             <div className="col-md-6 offset-md-3 col-xs-12">
-                                <h1 className="text-xs-center">
-                                    Your Settings
-                                </h1>
+                                <h1 className="text-xs-center">Your Settings</h1>
 
                                 {errors?.value && (
                                     <ul className="error-messages">
@@ -45,9 +43,7 @@ export const Setting = () => {
                                                 className="form-control"
                                                 type="text"
                                                 placeholder="URL of profile picture"
-                                                {...bindInput(
-                                                    scope(state, ["image"])
-                                                )}
+                                                {...bindInput(scope(state, ["image"]))}
                                             />
                                         </fieldset>
                                         <fieldset className="form-group">
@@ -55,9 +51,7 @@ export const Setting = () => {
                                                 className="form-control form-control-lg"
                                                 type="text"
                                                 placeholder="Your Name"
-                                                {...bindInput(
-                                                    scope(state, ["username"])
-                                                )}
+                                                {...bindInput(scope(state, ["username"]))}
                                             />
                                         </fieldset>
                                         <fieldset className="form-group">
@@ -65,9 +59,7 @@ export const Setting = () => {
                                                 className="form-control form-control-lg"
                                                 rows="8"
                                                 placeholder="Short bio about you"
-                                                {...bindInput(
-                                                    scope(state, ["bio"])
-                                                )}
+                                                {...bindInput(scope(state, ["bio"]))}
                                             ></textarea>
                                         </fieldset>
                                         <fieldset className="form-group">
@@ -75,9 +67,7 @@ export const Setting = () => {
                                                 className="form-control form-control-lg"
                                                 type="text"
                                                 placeholder="Email"
-                                                {...bindInput(
-                                                    scope(state, ["email"])
-                                                )}
+                                                {...bindInput(scope(state, ["email"]))}
                                             />
                                         </fieldset>
                                         <fieldset className="form-group">
@@ -85,41 +75,39 @@ export const Setting = () => {
                                                 className="form-control form-control-lg"
                                                 type="password"
                                                 placeholder="New Password"
-                                                {...bindInput(
-                                                    scope(state, ["password"])
-                                                )}
+                                                {...bindInput(scope(state, ["password"]))}
                                             />
                                         </fieldset>
-                                        {isSubmit.value ? (
-                                            <></>
-                                        ) : (
-                                            <button
-                                                className="btn btn-lg btn-primary pull-xs-right"
-                                                onClick={async (e) => {
-                                                    e.preventDefault();
-                                                    // prettier-ignore
-                                                    const user = await apis.user.updateUser(state?.value);
-                                                    if (user.errors) {
-                                                        errors.onChange(
-                                                            user.errors.body
-                                                        );
-                                                    } else {
-                                                        auth.updateUser(
-                                                            user.user
-                                                        );
-                                                        // prettier-ignore
-                                                        navigate(`/profile/${user.user.username}`);
-                                                    }
-                                                    isSubmit.onChange(true);
-                                                }}
-                                            >
-                                                Update Settings
-                                            </button>
-                                        )}
+                                        <button
+                                            className="btn btn-lg btn-primary pull-xs-right"
+                                            disabled={equalDeep(oriValue, state?.value)}
+                                            onClick={async (e) => {
+                                                e.preventDefault();
+
+                                                const res = await apis.user.updateUser(
+                                                    state?.value
+                                                );
+
+                                                if (res.errors) {
+                                                    errors.onChange(res.errors.body);
+                                                } else {
+                                                    auth.updateUser(res.user);
+                                                    state.onChange({
+                                                        ...omit(res.user, ["token"]),
+                                                        password: null,
+                                                    });
+                                                }
+                                            }}
+                                        >
+                                            Update Settings
+                                        </button>
                                     </fieldset>
                                 </form>
                                 <hr />
-                                <button className="btn btn-outline-danger">
+                                <button
+                                    className="btn btn-outline-danger"
+                                    onClick={() => auth.logout()}
+                                >
                                     Or click here to logout.
                                 </button>
                             </div>
