@@ -1,15 +1,14 @@
-import { useNavigate, useLocation, NavLink } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 import { Layout } from "../layout/layout.jsx";
-import { CardComment } from "./card-comment.jsx";
-import { CommentForm } from "./comment-form.jsx";
-import { LikeButton } from "../home/like-button.jsx";
+import { CommentSection } from "./comment-section.jsx";
 
 import { cs } from "../../common/chain-services.js";
 import { EmptyFC } from "../../common/react/empty-fc.js";
 import { consumeContext } from "../../common/react/context.js";
 import { Load2 } from "../../common/react/load2.js";
-import { formatDate } from "../../common/utils/date.js";
+
+import { ArticleMeta } from "./article-meta.jsx";
 
 export const Article = () => {
     return cs(
@@ -18,19 +17,17 @@ export const Article = () => {
         ({}, next) => <Layout>{next()}</Layout>,
         ({}, next) => EmptyFC({ next }),
         ["navigate", ({}, next) => next(useNavigate())],
-        ["location", ({}, next) => next(useLocation())],
+        ["params", ({}, next) => next(useParams())],
 
         // prettier-ignore
-        ["slug", ({ location }, next) => next(location.pathname.split("/").slice(-1)[0])],
-
-        // prettier-ignore
-        ["article", ({ apis, slug }, next) => Load2({
-            _key: slug,
-            fetch: async () => await apis.article.getSingleArticle({ slug }),
+        ["article", ({ apis, params }, next) => Load2({
+            _key: params.slug,
+            fetch: async () => await apis.article.getSingleArticle({ slug: params.slug }),
             next,
         })],
 
-        ({ apis, auth, navigate, article }) => {
+        ({ apis, auth, navigate, article, params }) => {
+            console.log(params);
             if (article.loading) {
                 return (
                     <div className="article-page">
@@ -43,22 +40,19 @@ export const Article = () => {
                 );
             }
 
-            if (article.value?.error) {
+            if (article.value?.errors) {
                 return (
-                    <div
-                        className="article-page"
-                        style={{ color: "red", marginTop: "10px" }}
-                    >
+                    <div className="article-page" style={{ color: "red", marginTop: "10px" }}>
                         <div className="banner">
                             <div className="container">
-                                <h1>{article.value.error.body[0]}</h1>
+                                <h1>{article.value.errors.body[0]}</h1>
                             </div>
                         </div>
                     </div>
                 );
             }
 
-            if (article.value.article?.length) {
+            if (article.value.article == null) {
                 return (
                     <div className="article-page">
                         <div className="banner">
@@ -77,112 +71,7 @@ export const Article = () => {
                     <div className="banner">
                         <div className="container">
                             <h1>{article.value.article?.title}</h1>
-
-                            <div className="article-meta">
-                                <NavLink
-                                    to={`/profile/${article.value.article?.author.username}`}
-                                >
-                                    <img
-                                        src={
-                                            article.value.article?.author.image
-                                        }
-                                    />
-                                </NavLink>
-                                <div className="info">
-                                    <NavLink
-                                        to={`/profile/${article.value.article?.author.username}`}
-                                        className="author"
-                                    >
-                                        {
-                                            article.value.article?.author
-                                                ?.username
-                                        }
-                                    </NavLink>
-                                    <span className="date">
-                                        {formatDate(
-                                            article.value.article?.createdAt
-                                        )}
-                                    </span>
-                                </div>
-
-                                {article.value.article?.author?.username ===
-                                auth.user?.username ? (
-                                    <>
-                                        <button
-                                            className="btn btn-sm btn-outline-secondary"
-                                            onClick={() =>
-                                                // prettier-ignore
-                                                navigate( `/editor/${article.value.article?.slug}`)
-                                            }
-                                        >
-                                            <i className="ion-edit"></i> Edit
-                                            Article
-                                        </button>
-                                        &nbsp;&nbsp;
-                                        <button
-                                            className="btn btn-sm btn-outline-danger"
-                                            onClick={async () => {
-                                                await apis.article.deleteArticle(
-                                                    {
-                                                        slug: article.value
-                                                            ?.article?.slug,
-                                                    }
-                                                );
-                                                navigate("/");
-                                            }}
-                                        >
-                                            <i className="ion-trash-a"></i>{" "}
-                                            Delete Article
-                                        </button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <button className="btn btn-sm btn-outline-secondary">
-                                            <i className="ion-plus-round"></i>
-                                            &nbsp; Follow{" "}
-                                            {
-                                                article.value.article?.author
-                                                    .username
-                                            }{" "}
-                                            <span className="counter">
-                                                (
-                                                {
-                                                    article.value.article
-                                                        ?.author.followersCount
-                                                }
-                                                )
-                                            </span>
-                                        </button>
-                                        &nbsp;&nbsp;
-                                        {LikeButton({
-                                            title: "Favorite Post",
-                                            className:
-                                                "btn btn-sm btn-outline-primary",
-                                            article: article.value.article,
-                                            // prettier-ignore
-                                            onChange: async ( updatedArticle) => {
-                                                article.onChange({
-                                                    ...article.value,
-                                                    article: updatedArticle,
-                                                });
-                                            },
-                                        })}
-                                        {/* <button className="btn btn-sm btn-outline-primary">
-                                            <i className="ion-heart"></i>
-                                            &nbsp; Favorite Post{" "}
-                                            <span className="counter">
-                                                (
-                                                {
-                                                    article.value.article
-                                                        ?.favoritesCount
-                                                }
-                                                )
-                                            </span>
-                                        </button> */}
-                                        &nbsp;&nbsp;
-                                    </>
-                                )}
-                            </div>
+                            {ArticleMeta({ article })}
                         </div>
                     </div>
 
@@ -192,16 +81,11 @@ export const Article = () => {
                                 <p>{article.value.article?.body}</p>
                                 <p>{article.value.article?.description}</p>
                                 <ul className="tag-list">
-                                    {article.value.article?.tagList.map(
-                                        (tag, i) => (
-                                            <li
-                                                key={i}
-                                                className="tag-default tag-pill tag-outline"
-                                            >
-                                                {tag}
-                                            </li>
-                                        )
-                                    )}
+                                    {article.value.article?.tagList.map((tag, i) => (
+                                        <li key={i} className="tag-default tag-pill tag-outline">
+                                            {tag}
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         </div>
@@ -210,8 +94,7 @@ export const Article = () => {
 
                         <div className="row">
                             <div className="col-xs-12 col-md-8 offset-md-2">
-                                <CommentForm />
-                                <CardComment />
+                                <CommentSection />
                             </div>
                         </div>
                     </div>
