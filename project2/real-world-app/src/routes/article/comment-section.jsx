@@ -3,18 +3,38 @@ import { scope } from "../../common/react/scope";
 import { State } from "../../common/react/state";
 import { bindInput } from "../../common/react/bind-input";
 import { consumeContext } from "../../common/react/context";
+import { Load2 } from "../../common/react/load2";
+import { keyed } from "../../common/react/keyed";
+import { formatDate } from "../../common/utils/date";
 
 export const CommentSection = ({ slug }) => {
-    return cs(() => {
-        return (
-            <>
-                {CommentForm({ slug })}
-                {/* {[1].map((i) => (
-                    <CommentCard key={i} />
-                ))} */}
-            </>
-        );
-    });
+    return cs(
+        consumeContext("apis"),
+        // prettier-ignore
+        ["comments", ({apis}, next) => Load2({ 
+            _key: slug, 
+            fetch: () => apis.article.getComments({ slug }), 
+            next 
+        })],
+        ({ comments }) => {
+            if (comments.loading) {
+                return <div>Loading...</div>;
+            }
+
+            return (
+                <>
+                    {CommentForm({ slug })}
+                    {!comments.value.comments.length ? (
+                        <div>There are no comments yet...</div>
+                    ) : (
+                        comments.value.comments.map((comment) =>
+                            cs(keyed(comment.id), ({}) => CommentCard({ comment }))
+                        )
+                    )}
+                </>
+            );
+        }
+    );
 };
 
 export const CommentForm = ({ slug, onChange }) => {
@@ -57,24 +77,22 @@ export const CommentForm = ({ slug, onChange }) => {
     );
 };
 
-export const CommentCard = () => {
+export const CommentCard = ({ comment }) => {
     return cs(({}) => {
         return (
             <div className="card">
                 <div className="card-block">
-                    <p className="card-text">
-                        With supporting text below as a natural lead-in to additional content.
-                    </p>
+                    <p className="card-text">{comment.body}</p>
                 </div>
                 <div className="card-footer">
-                    <a href="/profile/author" className="comment-author">
-                        <img src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
+                    <a href={`/profile/${comment.author.username}`} className="comment-author">
+                        <img src={comment.author.image} className="comment-author-img" />
                     </a>
                     &nbsp;
-                    <a href="/profile/jacob-schmidt" className="comment-author">
-                        Jacob Schmidt
+                    <a href={`/profile/${comment.author.username}`} className="comment-author">
+                        {comment.author.username}
                     </a>
-                    <span className="date-posted">Dec 29th</span>
+                    <span className="date-posted">{formatDate(comment.createdAt)}</span>
                     <span className="mod-options">
                         <i className="ion-trash-a"></i>
                     </span>

@@ -24,17 +24,12 @@ export const createApis = ({ onUnauthen, token }) => {
                 fetcher.get(`/articles?limit=${limit}&offset=${page}`),
 
             getFeedByTag: ({ tag, page, limit = ARTICLES_PER_PAGE }) =>
-                fetcher.get(
-                    `/articles?tag=${tag}&limit=${limit}&offset=${page}`
-                ),
+                fetcher.get(`/articles?tag=${tag}&limit=${limit}&offset=${page}`),
 
             getMyFeed: async ({ username, page, limit = ARTICLES_PER_PAGE }) =>
-                fetcher.get(
-                    `/articles?author=${username}&limit=${limit}&offset=${page}`
-                ),
+                fetcher.get(`/articles?author=${username}&limit=${limit}&offset=${page}`),
 
-            getSingleArticle: async ({ slug }) =>
-                fetcher.get(`/articles/${slug}`),
+            getSingleArticle: async ({ slug }) => fetcher.get(`/articles/${slug}`),
 
             createArticle: async ({ title, description, body, tagList }) =>
                 fetcher.post("/articles", {
@@ -59,14 +54,13 @@ export const createApis = ({ onUnauthen, token }) => {
                 }
             ),
 
-            deleteArticle: async ({ slug }) =>
-                fetcher.delete(`/articles/${slug}`),
+            deleteArticle: async ({ slug }) => fetcher.delete(`/articles/${slug}`),
 
-            likeArticle: async ({ slug }) =>
-                fetcher.post(`/articles/${slug}/favorite`),
+            likeArticle: async ({ slug }) => fetcher.post(`/articles/${slug}/favorite`),
 
-            unlikeArticle: async ({ slug }) =>
-                fetcher.delete(`/articles/${slug}/favorite`),
+            unlikeArticle: async ({ slug }) => fetcher.delete(`/articles/${slug}/favorite`),
+
+            getComments: async ({ slug }) => fetcher.get(`/articles/${slug}/comments`),
 
             commentArticle: async ({ slug, body }) =>
                 fetcher.post(`/articles/${slug}/comments`, {
