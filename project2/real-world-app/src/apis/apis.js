@@ -66,6 +66,9 @@ export const createApis = ({ onUnauthen, token }) => {
                 fetcher.post(`/articles/${slug}/comments`, {
                     comment: { body },
                 }),
+
+            deleteComment: async ({ slug, id }) =>
+                fetcher.delete(`/articles/${slug}/comments/${id}`),
         },
 
         tag: {

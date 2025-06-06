@@ -33,7 +33,19 @@ export const CommentSection = ({ slug }) => {
                         <div>There are no comments yet...</div>
                     ) : (
                         comments.value.comments.map((comment) =>
-                            cs(keyed(comment.id), ({}) => CommentCard({ comment }))
+                            cs(keyed(comment.id), ({}) =>
+                                CommentCard({
+                                    comment,
+                                    slug,
+                                    onDelete: (id) => {
+                                        comments.onChange({
+                                            comments: comments.value.comments.filter(
+                                                (comment) => comment.id !== id
+                                            ),
+                                        });
+                                    },
+                                })
+                            )
                         )
                     )}
                 </>
@@ -81,27 +93,43 @@ export const CommentForm = ({ slug, onChange }) => {
     );
 };
 
-export const CommentCard = ({ comment }) => {
-    return cs(({}) => {
-        return (
-            <div className="card">
-                <div className="card-block">
-                    <p className="card-text">{comment?.body}</p>
+export const CommentCard = ({ comment, slug, onDelete }) => {
+    // prettier-ignore
+    return cs(
+        consumeContext("auth"), 
+        consumeContext("apis"), 
+        ({ auth, apis }) => {
+            return (
+                <div className="card">
+                    <div className="card-block">
+                        <p className="card-text">{comment?.body}</p>
+                    </div>
+                    <div className="card-footer">
+                        <a href={`/profile/${comment?.author.username}`} className="comment-author">
+                            <img src={comment?.author.image} className="comment-author-img" />
+                        </a>
+                        &nbsp;
+                        <a href={`/profile/${comment?.author.username}`} className="comment-author">
+                            {comment?.author.username}
+                        </a>
+                        <span className="date-posted">{formatDate(comment?.createdAt)}</span>
+                        {comment?.author.username === auth.user?.username && (
+                            <span
+                                className="mod-options"
+                                onClick={async () => {
+                                    await apis.article.deleteComment({
+                                        slug: slug,
+                                        id: comment?.id,
+                                    });
+                                    onDelete(comment?.id);
+                                }}
+                            >
+                                <i className="ion-trash-a"></i>
+                            </span>
+                        )}
+                    </div>
                 </div>
-                <div className="card-footer">
-                    <a href={`/profile/${comment?.author.username}`} className="comment-author">
-                        <img src={comment?.author.image} className="comment-author-img" />
-                    </a>
-                    &nbsp;
-                    <a href={`/profile/${comment?.author.username}`} className="comment-author">
-                        {comment?.author.username}
-                    </a>
-                    <span className="date-posted">{formatDate(comment?.createdAt)}</span>
-                    <span className="mod-options">
-                        <i className="ion-trash-a"></i>
-                    </span>
-                </div>
-            </div>
-        );
-    });
+            );
+        }
+    );
 };
