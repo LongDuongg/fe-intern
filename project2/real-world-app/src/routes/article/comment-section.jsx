@@ -23,7 +23,12 @@ export const CommentSection = ({ slug }) => {
 
             return (
                 <>
-                    {CommentForm({ slug })}
+                    {CommentForm({
+                        slug,
+                        onChange: (comment) => {
+                            comments.onChange({ comments: [comment, ...comments.value.comments] });
+                        },
+                    })}
                     {!comments.value.comments.length ? (
                         <div>There are no comments yet...</div>
                     ) : (
@@ -59,7 +64,6 @@ export const CommentForm = ({ slug, onChange }) => {
                             className="btn btn-sm btn-primary"
                             onClick={async (e) => {
                                 e.preventDefault();
-                                console.log(state.value);
                                 const comment = await apis.article.commentArticle({
                                     slug: slug,
                                     body: state.value.body,
@@ -82,17 +86,17 @@ export const CommentCard = ({ comment }) => {
         return (
             <div className="card">
                 <div className="card-block">
-                    <p className="card-text">{comment.body}</p>
+                    <p className="card-text">{comment?.body}</p>
                 </div>
                 <div className="card-footer">
-                    <a href={`/profile/${comment.author.username}`} className="comment-author">
-                        <img src={comment.author.image} className="comment-author-img" />
+                    <a href={`/profile/${comment?.author.username}`} className="comment-author">
+                        <img src={comment?.author.image} className="comment-author-img" />
                     </a>
                     &nbsp;
-                    <a href={`/profile/${comment.author.username}`} className="comment-author">
-                        {comment.author.username}
+                    <a href={`/profile/${comment?.author.username}`} className="comment-author">
+                        {comment?.author.username}
                     </a>
-                    <span className="date-posted">{formatDate(comment.createdAt)}</span>
+                    <span className="date-posted">{formatDate(comment?.createdAt)}</span>
                     <span className="mod-options">
                         <i className="ion-trash-a"></i>
                     </span>
