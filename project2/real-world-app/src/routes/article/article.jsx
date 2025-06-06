@@ -27,7 +27,7 @@ export const Article = () => {
         })],
 
         ({ apis, auth, navigate, article, params }) => {
-            console.log(params);
+            // console.log(params);
             if (article.loading) {
                 return (
                     <div className="article-page">

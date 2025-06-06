@@ -8,6 +8,7 @@ import { consumeContext } from "../../common/react/context.js";
 import { FollowButton } from "./follow-button.jsx";
 
 export const ArticleMeta = ({ article }) => {
+    // console.log(article.value);
     return cs(consumeContext("auth"), ({ auth }) => {
         return (
             <div className="article-meta">
@@ -46,7 +47,15 @@ export const ArticleMeta = ({ article }) => {
                     </>
                 ) : (
                     <>
-                        {FollowButton({ article: article.value.article })}
+                        {FollowButton({
+                            article: article.value.article,
+                            onFollow: (profile) => {
+                                article.onChange({
+                                    ...article.value,
+                                    article: { ...article.value.article, author: profile },
+                                });
+                            },
+                        })}
                         &nbsp;&nbsp;
                         {LikeButton({
                             title: "Favorite Post",

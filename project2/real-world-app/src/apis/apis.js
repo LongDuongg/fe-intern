@@ -1,4 +1,3 @@
-import { use } from "react";
 import { ARTICLES_PER_PAGE } from "../routes/home/article-preview-list";
 
 const API_HOST = "https://conduit-realworld-example-app.fly.dev";
@@ -17,6 +16,12 @@ export const createApis = ({ onUnauthen, token }) => {
                     password,
                 },
             }),
+        },
+
+        profile: {
+            followUser: async ({ username }) => fetcher.post(`/profiles/${username}/follow`),
+
+            unfollowUser: async ({ username }) => fetcher.delete(`/profiles/${username}/follow`),
         },
 
         article: {
