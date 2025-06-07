@@ -1,52 +1,74 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { cs } from "../../common/chain-services.js";
 import { consumeContext } from "../../common/react/context.js";
 import { EmptyFC } from "../../common/react/empty-fc.js";
 import { Layout } from "../layout/layout.jsx";
+import { Load2 } from "../../common/react/load2.js";
+import { FollowButton } from "../article/follow-button.jsx";
 
 export const Profile = () =>
     cs(
         consumeContext("auth"),
+        consumeContext("apis"),
         ({}, next) => <Layout>{next()}</Layout>,
         ({}, next) => EmptyFC({ next }),
         ["navigate", ({}, next) => next(useNavigate())],
-        ["location", ({}, next) => next(useLocation())],
-        ["username", ({ location }, next) => next(location.pathname.split("/").slice(-1)[0])],
-        ({ auth, navigate, username }) => {
-            //   console.log(`username: ${username}`);
+        ["params", ({}, next) => next(useParams())],
+        ["username", ({ params }, next) => next(params.username)],
+
+        // prettier-ignore
+        ["profile", ({ apis, username }, next) => Load2({
+            _key: username,
+            fetch: async () => await apis.profile.getProfile({ username }),
+            next,
+        })],
+
+        ({ auth, navigate, profile }) => {
+            if (profile.loading) {
+                return;
+            }
+
+            // console.log(profile.value);
             return (
                 <div className="profile-page">
                     <div className="user-info">
                         <div className="container">
                             <div className="row">
                                 <div className="col-xs-12 col-md-10 offset-md-1">
-                                    <img
-                                        src="http://i.imgur.com/Qr71crq.jpg"
-                                        className="user-img"
-                                    />
-                                    <h4>
-                                        {auth.user.username === username
-                                            ? auth.user.username
-                                            : username}
-                                    </h4>
-                                    <p>{auth.user.bio}</p>
-
-                                    {auth.user.username === username ? (
-                                        <button
-                                            className="btn btn-sm btn-outline-secondary action-btn"
-                                            onClick={() => {
-                                                navigate("/settings");
-                                            }}
-                                        >
-                                            <i className="ion-gear-a"></i>
-                                            &nbsp; Edit Profile Settings
-                                        </button>
+                                    <img src={profile.value.profile?.image} className="user-img" />
+                                    {auth.user.username === profile.value.profile?.username ? (
+                                        <>
+                                            {" "}
+                                            <h4>{auth.user.username}</h4>
+                                            <p>{auth.user.bio}</p>
+                                            <button
+                                                className="btn btn-sm btn-outline-secondary action-btn"
+                                                onClick={() => {
+                                                    navigate("/settings");
+                                                }}
+                                            >
+                                                <i className="ion-gear-a"></i>
+                                                &nbsp; Edit Profile Settings
+                                            </button>
+                                        </>
                                     ) : (
-                                        <button className="btn btn-sm btn-outline-secondary action-btn">
-                                            <i className="ion-plus-round"></i>
-                                            &nbsp; Follow {username}
-                                        </button>
+                                        <>
+                                            {" "}
+                                            <h4>{profile.value.profile?.username}</h4>
+                                            <p>{profile.value.profile?.bio}</p>
+                                            {FollowButton({
+                                                userInfo: profile.value.profile,
+                                                className:
+                                                    "btn btn-sm btn-outline-secondary action-btn",
+                                                onFollow: (updatedProfile) => {
+                                                    profile.onChange({
+                                                        ...profile.value,
+                                                        profile: updatedProfile,
+                                                    });
+                                                },
+                                            })}
+                                        </>
                                     )}
                                 </div>
                             </div>

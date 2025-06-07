@@ -19,6 +19,8 @@ export const createApis = ({ onUnauthen, token }) => {
         },
 
         profile: {
+            getProfile: async ({ username }) => fetcher.get(`/profiles/${username}`),
+
             followUser: async ({ username }) => fetcher.post(`/profiles/${username}/follow`),
 
             unfollowUser: async ({ username }) => fetcher.delete(`/profiles/${username}/follow`),
