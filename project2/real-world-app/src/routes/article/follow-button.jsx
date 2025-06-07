@@ -1,33 +1,32 @@
 import { cs } from "../../common/chain-services";
 import { consumeContext } from "../../common/react/context";
 
-export const FollowButton = ({ article, onFollow }) => {
+export const FollowButton = ({ userInfo, className, onFollow }) => {
     // prettier-ignore
     return cs(
         consumeContext("apis"),
         ({apis}) => {
             return (
                 <button
-                    className="btn btn-sm btn-outline-secondary"
+                    className={className}
                     onClick={async () => {
                         let res = null;
-                        if (article?.author.following) {
+                        if (userInfo?.following) {
                             res = await apis.profile.unfollowUser({
-                                username: article?.author.username,
+                                username: userInfo?.username,
                             });
                         } else {
                             res = await apis.profile.followUser({
-                                username: article?.author.username,
+                                username: userInfo?.username,
                             });
                         }
                         onFollow(res.profile);
                         // console.log(res);
                     }}
                 >
-                    {article?.author.following ? "" : <i className="ion-plus-round"></i>}
-                    &nbsp; {article?.author.following ? "Followed" : "Follow"}{" "}
-                    {article?.author.username}{" "}
-                    <span className="counter">({article?.author.followersCount})</span>
+                    {userInfo?.following ? "" : <i className="ion-plus-round"></i>}
+                    &nbsp; {userInfo?.following ? "Following" : "Follow"} {userInfo?.username}{" "}
+                    <span className="counter">({userInfo?.followersCount})</span>
                 </button>
             );
         }

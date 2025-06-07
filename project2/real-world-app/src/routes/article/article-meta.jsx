@@ -48,11 +48,12 @@ export const ArticleMeta = ({ article }) => {
                 ) : (
                     <>
                         {FollowButton({
-                            article: article.value.article,
-                            onFollow: (profile) => {
+                            userInfo: article.value.article.author,
+                            className: "btn btn-sm btn-outline-secondary",
+                            onFollow: (updatedProfile) => {
                                 article.onChange({
                                     ...article.value,
-                                    article: { ...article.value.article, author: profile },
+                                    article: { ...article.value.article, author: updatedProfile },
                                 });
                             },
                         })}
