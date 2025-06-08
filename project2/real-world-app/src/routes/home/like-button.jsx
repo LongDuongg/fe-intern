@@ -1,15 +1,16 @@
 import { cs } from "../../common/chain-services";
+import { cx1 } from "../../common/cx1";
 import { consumeContext } from "../../common/react/context";
 import { State } from "../../common/react/state";
 
-export const LikeButton = ({ title = "", className, article, onChange }) => {
+export const LikeButton = ({ label = "", className = "", article, onChange }) => {
     return cs(
         consumeContext("apis"),
         ["isLoading", ({}, next) => State({ next })],
         ({ apis, isLoading }) => {
             return (
                 <button
-                    className={className}
+                    className={cx1("btn btn-sm btn-outline-primary", className)}
                     style={
                         article?.favorited
                             ? { backgroundColor: "green", color: "white" }
@@ -39,8 +40,7 @@ export const LikeButton = ({ title = "", className, article, onChange }) => {
                         isLoading.onChange(false);
                     }}
                 >
-                    <i className="ion-heart"></i> {title}{" "}
-                    {article?.favoritesCount}
+                    <i className="ion-heart"></i> {label} {article?.favoritesCount}
                 </button>
             );
         }

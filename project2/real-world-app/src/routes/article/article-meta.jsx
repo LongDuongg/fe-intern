@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { LikeButton } from "../home/like-button.jsx";
+import { FollowButton } from "./follow-button.jsx";
 
 import { cs } from "../../common/chain-services";
 import { formatDate } from "../../common/utils/date.js";
-
-import { LikeButton } from "../home/like-button.jsx";
 import { consumeContext } from "../../common/react/context.js";
-import { FollowButton } from "./follow-button.jsx";
+import { State } from "../../common/react/state.js";
+import { EmptyFC } from "../../common/react/empty-fc.js";
 
 export const ArticleMeta = ({ article }) => {
     // console.log(article.value);
@@ -27,23 +29,13 @@ export const ArticleMeta = ({ article }) => {
 
                 {article.value.article?.author?.username === auth.user?.username ? (
                     <>
-                        <button className="btn btn-sm btn-outline-secondary">
-                            <Link to={`/editor/${article.value.article?.slug}`}>
+                        <Link to={`/editor/${article.value.article?.slug}`}>
+                            <button className="btn btn-sm btn-outline-secondary">
                                 <i className="ion-edit"></i> Edit Article
-                            </Link>
-                        </button>
+                            </button>
+                        </Link>
                         &nbsp;&nbsp;
-                        <button
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={async () => {
-                                await apis.article.deleteArticle({
-                                    slug: article.value?.article?.slug,
-                                });
-                                navigate("/");
-                            }}
-                        >
-                            <i className="ion-trash-a"></i> Delete Article
-                        </button>
+                        {DeleteButton({ article: article.value.article })}
                     </>
                 ) : (
                     <>
@@ -52,7 +44,6 @@ export const ArticleMeta = ({ article }) => {
 
                             onChange: (updatedProfile) => {
                                 article.onChange({
-                                    ...article.value,
                                     article: { ...article.value.article, author: updatedProfile },
                                 });
                             },
@@ -61,9 +52,8 @@ export const ArticleMeta = ({ article }) => {
                         {LikeButton({
                             label: "Favorite Post",
                             article: article.value.article,
-                            onChange: async (updatedArticle) => {
+                            onChange: (updatedArticle) => {
                                 article.onChange({
-                                    ...article.value,
                                     article: updatedArticle,
                                 });
                             },
@@ -74,4 +64,36 @@ export const ArticleMeta = ({ article }) => {
             </div>
         );
     });
+};
+
+const DeleteButton = ({ article }) => {
+    // prettier-ignore
+    return cs(
+        consumeContext("apis"),
+        ({}, next) => EmptyFC({next}),
+        ["navigate", (_, next) => next(useNavigate())],
+        ["isLoading", ({}, next) => State({ initValue: false, next })],
+        ({ apis, navigate, isLoading }) => {
+            return (
+                <button
+                    className="btn btn-sm btn-outline-danger"
+                    disabled={isLoading.value}
+                    onClick={async () => {
+                        isLoading.onChange(true);
+                        const res = await apis.article.deleteArticle({
+                            slug: article?.slug,
+                        });
+
+                        if (!res.errors) {
+                            navigate("/");
+                        }
+
+                        isLoading.onChange(false);
+                    }}
+                >
+                    <i className="ion-trash-a"></i> Delete Article
+                </button>
+            );
+        }
+    );
 };

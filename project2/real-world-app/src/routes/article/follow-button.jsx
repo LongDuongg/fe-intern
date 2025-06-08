@@ -1,15 +1,20 @@
 import { cs } from "../../common/chain-services";
 import { consumeContext } from "../../common/react/context";
+import { cx1 } from "../../common/cx1";
+import { State } from "../../common/react/state";
 
-export const FollowButton = ({ userInfo, className, onFollow }) => {
+export const FollowButton = ({ userInfo, className = "", onChange }) => {
     // prettier-ignore
     return cs(
         consumeContext("apis"),
-        ({apis}) => {
+        ["isLoading", ({}, next) => State({ initValue: false, next })],
+        ({ apis, isLoading }) => {
             return (
                 <button
-                    className={className}
+                    className={cx1("btn btn-sm btn-outline-secondary", className)}
+                    disabled={isLoading.value}
                     onClick={async () => {
+                        isLoading.onChange(true);
                         let res = null;
                         if (userInfo?.following) {
                             res = await apis.profile.unfollowUser({
@@ -20,7 +25,13 @@ export const FollowButton = ({ userInfo, className, onFollow }) => {
                                 username: userInfo?.username,
                             });
                         }
-                        onFollow(res.profile);
+
+                        if (!res.errors) {
+
+                            onChange(res.profile);
+                        }
+
+                        isLoading.onChange(false);
                         // console.log(res);
                     }}
                 >

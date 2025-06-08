@@ -20,20 +20,23 @@ export const CommentSection = ({ slug }) => {
             if (comments.loading) {
                 return <div>Loading...</div>;
             }
-
+            console.log(comments.value);
             return (
                 <>
                     {CommentForm({
                         slug,
-                        onChange: (comment) => {
-                            comments.onChange({ comments: [comment, ...comments.value.comments] });
+                        onAdd: (comment) => {
+                            console.log(comment);
+                            comments.onChange({
+                                comments: [comment, ...comments.value.comments],
+                            });
                         },
                     })}
                     {!comments.value.comments.length ? (
                         <div>There are no comments yet...</div>
                     ) : (
-                        comments.value.comments.map((comment) =>
-                            cs(keyed(comment.id), ({}) =>
+                        comments.value.comments.map((comment, i) =>
+                            cs(keyed(i), ({}) =>
                                 CommentCard({
                                     comment,
                                     slug,
@@ -54,12 +57,13 @@ export const CommentSection = ({ slug }) => {
     );
 };
 
-export const CommentForm = ({ slug, onChange }) => {
+export const CommentForm = ({ slug, onAdd }) => {
     return cs(
         consumeContext("auth"),
         consumeContext("apis"),
         ["state", ({}, next) => State({ initValue: "", next })],
-        ({ auth, apis, state }) => {
+        ["isLoading", ({}, next) => State({ initValue: false, next })],
+        ({ auth, apis, state, isLoading }) => {
             return (
                 <form className="card comment-form">
                     <div className="card-block">
@@ -74,14 +78,21 @@ export const CommentForm = ({ slug, onChange }) => {
                         <img src={auth.user.image} className="comment-author-img" />
                         <button
                             className="btn btn-sm btn-primary"
+                            disabled={isLoading.value}
                             onClick={async (e) => {
                                 e.preventDefault();
-                                const comment = await apis.article.commentArticle({
+                                isLoading.onChange(true);
+                                const res = await apis.article.commentArticle({
                                     slug: slug,
                                     body: state.value.body,
                                 });
-                                onChange(comment);
-                                state.onChange("");
+
+                                if (!res.errors) {
+                                    onAdd(res.comment);
+                                    state.onChange("");
+                                }
+
+                                isLoading.onChange(false);
                             }}
                         >
                             Post Comment
@@ -105,23 +116,26 @@ export const CommentCard = ({ comment, slug, onDelete }) => {
                         <p className="card-text">{comment?.body}</p>
                     </div>
                     <div className="card-footer">
-                        <a href={`/profile/${comment?.author.username}`} className="comment-author">
-                            <img src={comment?.author.image} className="comment-author-img" />
+                        <a href={`/profile/${comment.author?.username}`} className="comment-author">
+                            <img src={comment.author?.image} className="comment-author-img" />
                         </a>
                         &nbsp;
-                        <a href={`/profile/${comment?.author.username}`} className="comment-author">
-                            {comment?.author.username}
+                        <a href={`/profile/${comment.author?.username}`} className="comment-author">
+                            {comment.author?.username}
                         </a>
                         <span className="date-posted">{formatDate(comment?.createdAt)}</span>
-                        {comment?.author.username === auth.user?.username && (
+                        {comment.author?.username === auth.user?.username && (
                             <span
                                 className="mod-options"
                                 onClick={async () => {
-                                    await apis.article.deleteComment({
+                                    const res = await apis.article.deleteComment({
                                         slug: slug,
                                         id: comment?.id,
                                     });
-                                    onDelete(comment?.id);
+
+                                    if (!res.errors) {
+                                        onDelete(comment?.id);
+                                    }
                                 }}
                             >
                                 <i className="ion-trash-a"></i>

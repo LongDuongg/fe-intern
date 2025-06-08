@@ -1,4 +1,5 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 import { Layout } from "../layout/layout.jsx";
 import { CommentSection } from "./comment-section.jsx";
@@ -78,7 +79,10 @@ export const Article = () => {
                     <div className="container page">
                         <div className="row article-content">
                             <div className="col-md-12">
-                                <p>{article.value.article?.body}</p>
+                                {article.value.article?.body && (
+                                    <ReactMarkdown>{article.value.article.body}</ReactMarkdown>
+                                )}
+
                                 <p>{article.value.article?.description}</p>
                                 <ul className="tag-list">
                                     {article.value.article?.tagList.map((tag, i) => (

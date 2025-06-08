@@ -71,9 +71,7 @@ export const ArticlePreviewList = ({ getData }) => {
                         return (
                             <div key={i} className="article-preview">
                                 <div className="article-meta">
-                                    <NavLink
-                                        to={`/profile/${article.author.username}`}
-                                    >
+                                    <NavLink to={`/profile/${article.author.username}`}>
                                         <img src={article.author.image} />
                                     </NavLink>
                                     <div className="info">
@@ -93,22 +91,16 @@ export const ArticlePreviewList = ({ getData }) => {
                                         onChange: async (updatedArticle) => {
                                             feeds.onChange({
                                                 ...feeds.value,
-                                                articles:
-                                                    feeds.value.articles.map(
-                                                        (a) =>
-                                                            a.slug ===
-                                                            updatedArticle.slug
-                                                                ? updatedArticle
-                                                                : a
-                                                    ),
+                                                articles: feeds.value.articles.map((a) =>
+                                                    a.slug === updatedArticle.slug
+                                                        ? updatedArticle
+                                                        : a
+                                                ),
                                             });
                                         },
                                     })}
                                 </div>
-                                <NavLink
-                                    to={`/article/${article.slug}`}
-                                    className="preview-link"
-                                >
+                                <NavLink to={`/article/${article.slug}`} className="preview-link">
                                     <h1>{article.title}</h1>
                                     <p>{article.description}</p>
                                     <span>Read more...</span>
@@ -130,9 +122,7 @@ export const ArticlePreviewList = ({ getData }) => {
                     {Pagination({
                         currentPage: page.value,
                         onChange: page.onChange,
-                        totalPages: Math.ceil(
-                            feeds.value.articlesCount / ARTICLES_PER_PAGE
-                        ),
+                        totalPages: Math.ceil(feeds.value.articlesCount / ARTICLES_PER_PAGE),
                     })}
                 </>
             );
