@@ -49,8 +49,8 @@ export const ArticleMeta = ({ article }) => {
                     <>
                         {FollowButton({
                             userInfo: article.value.article.author,
-                            className: "btn btn-sm btn-outline-secondary",
-                            onFollow: (updatedProfile) => {
+
+                            onChange: (updatedProfile) => {
                                 article.onChange({
                                     ...article.value,
                                     article: { ...article.value.article, author: updatedProfile },
@@ -59,8 +59,7 @@ export const ArticleMeta = ({ article }) => {
                         })}
                         &nbsp;&nbsp;
                         {LikeButton({
-                            title: "Favorite Post",
-                            className: "btn btn-sm btn-outline-primary",
+                            label: "Favorite Post",
                             article: article.value.article,
                             onChange: async (updatedArticle) => {
                                 article.onChange({

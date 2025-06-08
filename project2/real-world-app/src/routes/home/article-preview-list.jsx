@@ -88,8 +88,7 @@ export const ArticlePreviewList = ({ getData }) => {
                                         </span>
                                     </div>
                                     {LikeButton({
-                                        className:
-                                            "btn btn-outline-primary btn-sm pull-xs-right",
+                                        className: "pull-xs-right",
                                         article,
                                         onChange: async (updatedArticle) => {
                                             feeds.onChange({

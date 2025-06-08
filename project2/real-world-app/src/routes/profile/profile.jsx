@@ -59,8 +59,7 @@ export const Profile = () =>
                                             <p>{profile.value.profile?.bio}</p>
                                             {FollowButton({
                                                 userInfo: profile.value.profile,
-                                                className:
-                                                    "btn btn-sm btn-outline-secondary action-btn",
+                                                className: " action-btn",
                                                 onFollow: (updatedProfile) => {
                                                     profile.onChange({
                                                         ...profile.value,
