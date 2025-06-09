@@ -36,6 +36,9 @@ export const createApis = ({ onUnauthen, token }) => {
             getMyFeed: async ({ username, page, limit = ARTICLES_PER_PAGE }) =>
                 fetcher.get(`/articles?author=${username}&limit=${limit}&offset=${page}`),
 
+            getFavoritedArticles: async ({ username, page, limit = ARTICLES_PER_PAGE }) =>
+                fetcher.get(`/articles?favorited=${username}&limit=${limit}&offset=${page}`),
+
             getSingleArticle: async ({ slug }) => fetcher.get(`/articles/${slug}`),
 
             createArticle: async ({ title, description, body, tagList }) =>

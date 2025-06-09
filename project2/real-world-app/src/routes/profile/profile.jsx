@@ -6,6 +6,7 @@ import { EmptyFC } from "../../common/react/empty-fc.js";
 import { Layout } from "../layout/layout.jsx";
 import { Load2 } from "../../common/react/load2.js";
 import { FollowButton } from "../article/follow-button.jsx";
+import { ArticlePanel } from "./article-panel.jsx";
 
 export const Profile = () =>
     cs(
@@ -77,7 +78,8 @@ export const Profile = () =>
                     <div className="container">
                         <div className="row">
                             <div className="col-xs-12 col-md-10 offset-md-1">
-                                <div className="articles-toggle">
+                                {ArticlePanel({})}
+                                {/* <div className="articles-toggle">
                                     <ul className="nav nav-pills outline-active">
                                         <li className="nav-item">
                                             <a className="nav-link active" href="">
@@ -169,7 +171,7 @@ export const Profile = () =>
                                             2
                                         </a>
                                     </li>
-                                </ul>
+                                </ul> */}
                             </div>
                         </div>
                     </div>
