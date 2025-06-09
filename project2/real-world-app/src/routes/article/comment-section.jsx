@@ -20,13 +20,13 @@ export const CommentSection = ({ slug }) => {
             if (comments.loading) {
                 return <div>Loading...</div>;
             }
-            console.log(comments.value);
+            // console.log(comments.value);
             return (
                 <>
                     {CommentForm({
                         slug,
                         onAdd: (comment) => {
-                            console.log(comment);
+                            // console.log(comment);
                             comments.onChange({
                                 comments: [comment, ...comments.value.comments],
                             });
