@@ -16,12 +16,11 @@ export const Profile = () =>
         ({}, next) => EmptyFC({ next }),
         ["navigate", ({}, next) => next(useNavigate())],
         ["params", ({}, next) => next(useParams())],
-        ["username", ({ params }, next) => next(params.username)],
 
         // prettier-ignore
-        ["profile", ({ apis, username }, next) => Load2({
-            _key: username,
-            fetch: async () => await apis.profile.getProfile({ username }),
+        ["profile", ({ apis, params }, next) => Load2({
+            _key: params.username,
+            fetch: async () => await apis.profile.getProfile({ username: params.username }),
             next,
         })],
 

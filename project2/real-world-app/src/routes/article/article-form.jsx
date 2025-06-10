@@ -18,15 +18,12 @@ export const ArticleForm = () => {
         ["params", ({}, next) => next(useParams())],
 
         // prettier-ignore
-        ["slug", ({ params }, next) => next(params.slug)],
-
-        // prettier-ignore
-        ["article", ({ apis, slug }, next) => {
-            if (slug) {
+        ["article", ({ apis, params }, next) => {
+            if (params.slug) {
                 return Load2({
-                    _key: slug,
+                    _key: params.slug,
                     fetch: async () => {
-                        const res = await apis.article.getSingleArticle({ slug });
+                        const res = await apis.article.getSingleArticle({ slug: params.slug });
                         return res.article;
                     },
                     // fetch:  () =>  apis.article.getSingleArticle({ slug }).then(res => res.article),
