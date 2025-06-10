@@ -107,24 +107,24 @@ export const ArticleForm = () => {
                                             onClick={async (e) => {
                                                 e.preventDefault();
                                                 isLoading.onChange(true);
-                                                let articleData = null;
+                                                let res = null;
 
                                                 if (article.value.slug) {
                                                     // prettier-ignore
-                                                    articleData = await apis.article.updateArticle(article?.value);
+                                                    res = await apis.article.updateArticle(article?.value);
                                                 } else {
                                                     // prettier-ignore
-                                                    articleData = await apis.article.createArticle(article?.value);
+                                                    res = await apis.article.createArticle(article?.value);
                                                 }
 
-                                                if (articleData.errors) {
-                                                    console.error(articleData.errors);
-                                                    errors.onChange(articleData.errors.body);
+                                                if (res.errors) {
+                                                    console.error(res.errors);
+                                                    errors.onChange(res.errors.body);
                                                     isLoading.onChange(false);
                                                 } else {
                                                     isLoading.onChange(false);
                                                     // prettier-ignore
-                                                    navigate(`/article/${articleData.article.slug}`);
+                                                    navigate(`/article/${res.article.slug}`);
                                                 }
                                             }}
                                         >
