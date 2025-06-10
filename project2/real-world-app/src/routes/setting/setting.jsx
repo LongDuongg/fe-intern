@@ -19,8 +19,6 @@ export const Setting = () => {
 
         ["errors", ({}, next) => State({ next })],
         ({ apis, auth, state, errors, oriValue }) => {
-            // console.log("1", oriValue);
-            // console.log("2", state?.value);
             return (
                 <div className="settings-page">
                     <div className="container page">
