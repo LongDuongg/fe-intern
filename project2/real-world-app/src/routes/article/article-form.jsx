@@ -47,7 +47,7 @@ export const ArticleForm = () => {
                     </div>
                 );
             }
-            // console.log(article.value);
+            console.log(article.value?.tagList);
             return (
                 <div className="editor-page">
                     <div className="container page">
@@ -88,17 +88,52 @@ export const ArticleForm = () => {
                                             ></textarea>
                                         </fieldset>
                                         <fieldset className="form-group">
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Enter tags"
-                                                {...bindInput(scope(article, ["tagList"]))}
-                                            />
+                                            {(() => {
+                                                const { value, onChange } = scope(article, [
+                                                    "tagList",
+                                                ]);
+                                                return (
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Enter tags"
+                                                        {...bindInput({
+                                                            value: value?.join(","),
+                                                            onChange: (v) => onChange(v.split(",")),
+                                                        })}
+                                                        // value={value ? value.join(",") : ""}
+                                                        // onChange={(e) =>
+                                                        //     onChange(e.target.value.split(","))
+                                                        // }
+                                                    />
+                                                );
+                                            })()}
+
                                             <div className="tag-list">
-                                                <span className="tag-default tag-pill">
-                                                    {" "}
-                                                    <i className="ion-close-round"></i> tag{" "}
-                                                </span>
+                                                {article.value?.tagList
+                                                    ?.filter((v) => v)
+                                                    .map((tag, i) => (
+                                                        <span
+                                                            key={i}
+                                                            className="tag-default tag-pill"
+                                                        >
+                                                            {" "}
+                                                            <i
+                                                                className="ion-close-round"
+                                                                onClick={() => {
+                                                                    console.log(tag);
+                                                                    article.onChange({
+                                                                        ...article.value,
+                                                                        tagList:
+                                                                            article.value.tagList.filter(
+                                                                                (v) => v !== tag
+                                                                            ),
+                                                                    });
+                                                                }}
+                                                            />{" "}
+                                                            {tag}{" "}
+                                                        </span>
+                                                    ))}
                                             </div>
                                         </fieldset>
                                         <button
@@ -108,13 +143,19 @@ export const ArticleForm = () => {
                                                 e.preventDefault();
                                                 isLoading.onChange(true);
                                                 let res = null;
+                                                let payload = {
+                                                    ...article.value,
+                                                    tagList: article.value.tagList?.filter(
+                                                        (v) => v
+                                                    ),
+                                                };
 
                                                 if (article.value.slug) {
                                                     // prettier-ignore
-                                                    res = await apis.article.updateArticle(article?.value);
+                                                    res = await apis.article.updateArticle(payload);
                                                 } else {
                                                     // prettier-ignore
-                                                    res = await apis.article.createArticle(article?.value);
+                                                    res = await apis.article.createArticle(payload);
                                                 }
 
                                                 if (res.errors) {
