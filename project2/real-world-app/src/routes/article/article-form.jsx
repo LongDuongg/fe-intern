@@ -47,7 +47,7 @@ export const ArticleForm = () => {
                     </div>
                 );
             }
-            console.log(article.value?.tagList);
+            // console.log(article.value?.tagList);
             return (
                 <div className="editor-page">
                     <div className="container page">
@@ -143,12 +143,15 @@ export const ArticleForm = () => {
                                                 e.preventDefault();
                                                 isLoading.onChange(true);
                                                 let res = null;
+                                                console.log(article.value);
                                                 let payload = {
                                                     ...article.value,
-                                                    tagList: article.value.tagList?.filter(
-                                                        (v) => v
-                                                    ),
+                                                    tagList:
+                                                        article.value.tagList?.filter((v) => v) ||
+                                                        [],
                                                 };
+
+                                                console.log(article.value);
 
                                                 if (article.value.slug) {
                                                     // prettier-ignore
@@ -159,7 +162,6 @@ export const ArticleForm = () => {
                                                 }
 
                                                 if (res.errors) {
-                                                    console.error(res.errors);
                                                     errors.onChange(res.errors.body);
                                                     isLoading.onChange(false);
                                                 } else {
