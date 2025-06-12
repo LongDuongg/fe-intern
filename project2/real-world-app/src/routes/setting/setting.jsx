@@ -12,7 +12,7 @@ export const Setting = () => {
         consumeContext("apis"),
         consumeContext("auth"),
         ({}, next) => <Layout>{next()}</Layout>,
-        ["oriValue", ({ auth }, next) => next({ ...omit(auth.user, ["token"]), password: null })],
+        ["oriValue", ({ auth }, next) => next({ ...omit(auth.user, ["token"]), password: "" })],
 
         //prettier-ignore
         ["state", ({ oriValue }, next) => State({ initValue: oriValue, next })],
@@ -92,7 +92,7 @@ export const Setting = () => {
                                                     auth.updateUser(res.user);
                                                     state.onChange({
                                                         ...omit(res.user, ["token"]),
-                                                        password: null,
+                                                        password: "",
                                                     });
                                                 }
                                             }}
