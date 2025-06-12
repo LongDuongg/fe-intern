@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 import { cs } from "../../common/chain-services.js";
 import { consumeContext } from "../../common/react/context.js";
@@ -42,15 +42,12 @@ export const Profile = () =>
                                             {" "}
                                             <h4>{auth.user.username}</h4>
                                             <p>{auth.user.bio}</p>
-                                            <button
-                                                className="btn btn-sm btn-outline-secondary action-btn"
-                                                onClick={() => {
-                                                    navigate("/settings");
-                                                }}
-                                            >
-                                                <i className="ion-gear-a"></i>
-                                                &nbsp; Edit Profile Settings
-                                            </button>
+                                            <Link to={"/settings"}>
+                                                <button className="btn btn-sm btn-outline-secondary action-btn">
+                                                    <i className="ion-gear-a"></i>
+                                                    &nbsp; Edit Profile Settings
+                                                </button>
+                                            </Link>
                                         </>
                                     ) : (
                                         <>
