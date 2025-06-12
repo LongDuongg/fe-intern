@@ -47,7 +47,7 @@ export const Tabs = ({ tabs, initActive = 0, onChangeTab }) => {
     );
 };
 
-export const TabHeader = ({ isActive, tabs, onChange }) => {
+const TabHeader = ({ isActive, tabs, onChange }) => {
     return cs(() => {
         return (
             <ul className="nav nav-pills outline-active">
@@ -60,11 +60,10 @@ export const TabHeader = ({ isActive, tabs, onChange }) => {
                                     active: isActive(i),
                                 })}
                                 onClick={() => {
-                                    console.log(tab.path);
                                     onChange(i);
                                 }}
                             >
-                                {tab.path ? <Link to={tab.path}>{tab.label}</Link> : tab.label}
+                                {tab.label}
                             </div>
                         </li>
                     );
