@@ -2,7 +2,8 @@ import { cs } from "../../common/chain-services";
 import { cx1 } from "../../common/cx1";
 import { keyed } from "../../common/react/keyed";
 import { State } from "../../common/react/state";
-import { Fragment } from "react";
+
+import { Link } from "react-router-dom";
 
 export const Tabs = ({ tabs, initActive = 0, onChangeTab }) => {
     return cs(
@@ -59,10 +60,11 @@ export const TabHeader = ({ isActive, tabs, onChange }) => {
                                     active: isActive(i),
                                 })}
                                 onClick={() => {
+                                    console.log(tab.path);
                                     onChange(i);
                                 }}
                             >
-                                {tab.label}
+                                {tab.path ? <Link to={tab.path}>{tab.label}</Link> : tab.label}
                             </div>
                         </li>
                     );
