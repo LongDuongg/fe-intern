@@ -1,50 +1,27 @@
 import { cs } from "../../common/chain-services";
 import { cx1 } from "../../common/cx1";
 import { keyed } from "../../common/react/keyed";
-import { State } from "../../common/react/state";
 
-import { Link } from "react-router-dom";
+export const Tabs = ({ tabs, onChange, isActive }) => {
+    return cs(({}) => {
+        const activeTab = tabs.find((tab, i) => isActive(i));
 
-export const Tabs = ({ tabs, initActive = 0, onChangeTab }) => {
-    return cs(
-        [
-            "forcedIndex",
-            ({}, next) => {
-                const forcedIndex = tabs.findIndex((tab) => tab.forced);
-                return next(forcedIndex > -1 ? forcedIndex : null);
-            },
-        ],
-        [
-            "active",
-            ({ forcedIndex }, next) => State({ initValue: forcedIndex || initActive, next }),
-        ],
+        return (
+            <>
+                <div className="feed-toggle">
+                    {TabHeader({
+                        isActive,
+                        tabs,
 
-        ({ active, forcedIndex }) => {
-            const activeIndex = forcedIndex || active.value;
-            const activeTab = tabs[activeIndex];
+                        onChange,
+                    })}
+                </div>
 
-            return (
-                <>
-                    <div className="feed-toggle">
-                        {TabHeader({
-                            isActive: (index) => activeIndex === index,
-                            tabs,
-                            onChange: (i) => {
-                                if (forcedIndex && i === forcedIndex) {
-                                    return;
-                                }
-                                active.onChange(i);
-                                onChangeTab();
-                            },
-                        })}
-                    </div>
-
-                    {cs(keyed(activeTab.key), () => activeTab.render())}
-                    {/* <Fragment key={activeTab.key}>{activeTab.render()}</Fragment> */}
-                </>
-            );
-        }
-    );
+                {cs(keyed(activeTab.key), () => activeTab.render())}
+                {/* <Fragment key={activeTab.key}>{activeTab.render()}</Fragment> */}
+            </>
+        );
+    });
 };
 
 const TabHeader = ({ isActive, tabs, onChange }) => {
