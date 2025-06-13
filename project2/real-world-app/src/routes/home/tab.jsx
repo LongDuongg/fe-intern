@@ -4,7 +4,7 @@ import { keyed } from "../../common/react/keyed";
 
 export const Tabs = ({ tabs, onChange, isActive }) => {
     return cs(({}) => {
-        const activeTab = tabs.find((tab, i) => isActive(i));
+        const activeTab = tabs.find((tab, i) => isActive(tab, i));
 
         return (
             <>
@@ -26,22 +26,27 @@ export const Tabs = ({ tabs, onChange, isActive }) => {
 
 const TabHeader = ({ isActive, tabs, onChange }) => {
     return cs(() => {
+        const renderItem = (tab, i) => {
+            return (
+                <div
+                    style={{ cursor: "pointer" }}
+                    className={cx1("nav-link", {
+                        active: isActive(tab, i),
+                    })}
+                    onClick={() => {
+                        onChange(i);
+                    }}
+                >
+                    {tab.label}
+                </div>
+            );
+        };
         return (
             <ul className="nav nav-pills outline-active">
                 {tabs.map((tab, i) => {
                     return (
                         <li key={i} className="nav-item">
-                            <div
-                                style={{ cursor: "pointer" }}
-                                className={cx1("nav-link", {
-                                    active: isActive(i),
-                                })}
-                                onClick={() => {
-                                    onChange(i);
-                                }}
-                            >
-                                {tab.label}
-                            </div>
+                            {renderItem(tab, i)}
                         </li>
                     );
                 })}

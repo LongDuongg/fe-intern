@@ -23,6 +23,16 @@ export const ArticleTabs = ({ profile }) => {
                     {
                         key: "my-articles",
                         label: "My Articles",
+                        renderLabel: (children) => {
+                            return (
+                                <Link
+                                    to={`/profile/${username}`}
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    {children}
+                                </Link>
+                            );
+                        },
                         path: `/profile/${username}`,
                         render: () =>
                             ArticlePreviewList({
@@ -32,6 +42,16 @@ export const ArticleTabs = ({ profile }) => {
                     {
                         key: "favorited-articles",
                         label: "Favorited Articles",
+                        renderLabel: (children) => {
+                            return (
+                                <Link
+                                    to={`/profile/${username}/favorite`}
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    {children}
+                                </Link>
+                            );
+                        },
                         path: `/profile/${username}/favorite`,
                         render: () =>
                             ArticlePreviewList({
@@ -54,7 +74,22 @@ const Tabs = ({ tabs, isActive }) => {
     return cs(
 
         ({ }) => {
-            const activeTab = tabs.find((tab) => isActive(tab));
+            const activeTab = tabs.find((tab, i) => isActive(tab, i));
+            const renderItem = (tab, i) => {
+                return (
+                    <div
+                        style={{ cursor: "pointer" }}
+                        className={cx1("nav-link", {
+                            active: isActive(tab, i),
+                        })}
+                        // onClick={() => {
+                        //     onChange(i);
+                        // }}
+                    >
+                        {tab.label}
+                    </div>
+                );
+            };
             return (
                 <>
                     <div className="feed-toggle">
@@ -62,15 +97,8 @@ const Tabs = ({ tabs, isActive }) => {
                             {tabs.map((tab, i) => {
                                 return (
                                     <li key={i} className="nav-item">
-                                        <Link to={tab.path} style={{ textDecoration: "none" }}>
-                                            <div
-                                                className={cx1("nav-link", {
-                                                    active: isActive(tab),
-                                                })}
-                                            >
-                                                {tab.label}
-                                            </div>
-                                        </Link>
+                                        {tab.renderLabel(renderItem(tab, i))}
+
                                     </li>
                                 );
                             })}

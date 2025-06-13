@@ -67,7 +67,7 @@ export const FeedPanel = ({ selectedTag }) => {
             return Tabs({
                 tabs,
             
-                isActive: (index) => {
+                isActive: (tab, index) => {
                     const activeIndex = forcedIndex || active.value;
                     return index === activeIndex;
                 },
