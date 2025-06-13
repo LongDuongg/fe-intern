@@ -2,11 +2,10 @@ import { useLocation, Link } from "react-router-dom";
 
 import { cs } from "../../common/chain-services";
 import { consumeContext } from "../../common/react/context";
-import { keyed } from "../../common/react/keyed";
 import { EmptyFC } from "../../common/react/empty-fc";
-import { cx1 } from "../../common/cx1";
 
 import { ArticlePreviewList } from "../home/article-preview-list";
+import { Tabs } from "../home/tab";
 
 export const ArticleTabs = ({ profile }) => {
     // prettier-ignore
@@ -65,50 +64,6 @@ export const ArticleTabs = ({ profile }) => {
 
         ({ tabs, location }) => {
             return Tabs({ tabs, isActive: (tab) => tab.path === location.pathname });
-        }
-    );
-};
-
-const Tabs = ({ tabs, isActive }) => {
-    // prettier-ignore
-    return cs(
-
-        ({ }) => {
-            const activeTab = tabs.find((tab, i) => isActive(tab, i));
-            const renderItem = (tab, i) => {
-                return (
-                    <div
-                        style={{ cursor: "pointer" }}
-                        className={cx1("nav-link", {
-                            active: isActive(tab, i),
-                        })}
-                        // onClick={() => {
-                        //     onChange(i);
-                        // }}
-                    >
-                        {tab.label}
-                    </div>
-                );
-            };
-            return (
-                <>
-                    <div className="feed-toggle">
-                         <ul className="nav nav-pills outline-active">
-                            {tabs.map((tab, i) => {
-                                return (
-                                    <li key={i} className="nav-item">
-                                        {tab.renderLabel(renderItem(tab, i))}
-
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </div>
-
-                    {cs(keyed(activeTab.key), () => activeTab.render())}
-                    {/* <Fragment key={activeTab.key}>{activeTab.render()}</Fragment> */}
-                </>
-            );
         }
     );
 };

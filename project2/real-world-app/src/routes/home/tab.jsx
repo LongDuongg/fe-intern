@@ -12,7 +12,6 @@ export const Tabs = ({ tabs, onChange, isActive }) => {
                     {TabHeader({
                         isActive,
                         tabs,
-
                         onChange,
                     })}
                 </div>
@@ -34,7 +33,7 @@ const TabHeader = ({ isActive, tabs, onChange }) => {
                         active: isActive(tab, i),
                     })}
                     onClick={() => {
-                        onChange(i);
+                        onChange?.(i);
                     }}
                 >
                     {tab.label}
@@ -46,7 +45,9 @@ const TabHeader = ({ isActive, tabs, onChange }) => {
                 {tabs.map((tab, i) => {
                     return (
                         <li key={i} className="nav-item">
-                            {renderItem(tab, i)}
+                            {tab.renderLabel
+                                ? tab.renderLabel(renderItem(tab, i))
+                                : renderItem(tab, i)}
                         </li>
                     );
                 })}
